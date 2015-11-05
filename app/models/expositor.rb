@@ -1,0 +1,2 @@
+class Expositor < User
+end
