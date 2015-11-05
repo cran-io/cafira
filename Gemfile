@@ -11,6 +11,10 @@ gem 'coffee-rails', '~> 4.1.0'
 gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
+gem 'activeadmin', '1.0.0.pre1'
+gem 'activeadmin-translate'
+gem 'devise'
+gem 'active_admin_theme'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
 group :development, :test do
