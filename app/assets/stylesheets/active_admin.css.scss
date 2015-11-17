@@ -21,3 +21,22 @@
 .text-right{
 	text-align:center;
 }
+
+.status_tag{
+	font-weight:bold;
+	padding:8px;
+	border-radius:4px;
+}
+
+.status_tag.yes{
+	background-color:#2ecc71;
+}
+
+.status_tag.no{
+	background-color:#e74c3c;
+}
+
+span a{
+	text-decoration:none!important;
+	color:#3498db;
+}
