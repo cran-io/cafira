@@ -12,7 +12,13 @@ ActiveAdmin.register Exposition, :as => "Exposiciones" do
     column "Activo", :active, :class => 'text-right'
     column "Acciones" do |exposition|
       span do 
-        link_to 'Ver', edit_home_exposicione_path(exposition), :method => :get
+        link_to 'Ver', {:controller => 'home/expositores', :action => 'index', :exposition_id => exposition.id}, :method => :get
+      end
+      span do 
+        "|"
+      end
+      span do 
+        link_to 'Editar', edit_home_exposicione_path(exposition), :method => :get
       end
       span do 
         "|"
@@ -24,10 +30,10 @@ ActiveAdmin.register Exposition, :as => "Exposiciones" do
     
   end
 
-  # form do |f|
-
-  # end
-
+  form do 
+    table do
+    end    
+  end
   #CONTROLLER ACTIONS
   member_action :activate, method: :post do
     if resource.active?
