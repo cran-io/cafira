@@ -18,6 +18,7 @@ $ rake db:create && rake db:migrate
 @weekly sh /home/path/to/cron_script/weekly_status.sh > /home/path/to/cron_log/cron_task.log 2>&1
 =======
 
+=======
 ###Setup with docker
 To use [Docker](http://www.docker.com) (requires [docker-compose](https://docs.docker.com/compose/))
 ```sh
