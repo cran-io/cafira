@@ -76,4 +76,20 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  #mail configuration
+  # config.action_mailer.default_url_options = { :host => 'www.cafira.com' }
+  # config.mandrill_mailer.default_url_options = { :host => 'www.cafira.com' }
+  # ActionMailer::Base.smtp_settings = {
+  #   :port           => 587,
+  #   :address        => 'smtp.mandrillapp.com',
+  #   :user_name      => 'info@cran.io',
+  #   :password       => 'I5RPvtYJ5B0p4FHllUVRFg',
+  #   :domain         => 'cafira.com',
+  #   :authentication => :plain,
+  # }
+
+  # MandrillMailer.configure do |config|
+  #   config.api_key = "I5RPvtYJ5B0p4FHllUVRFg"
+  # end
 end
