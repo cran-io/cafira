@@ -11,9 +11,9 @@ Clone this repo, then run:
 ```{r, engine='bash', count_lines}
 $ bundle install
 $ rake db:create && rake db:migrate
+```
 
-
-#### Crontab
+#### Crontab:
 ```
 @weekly sh /home/path/to/cron_script/weekly_status.sh > /home/path/to/cron_log/cron_task.log 2>&1
 ```
