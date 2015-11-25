@@ -3,12 +3,19 @@ class ExpositorMailer < ApplicationMailer
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:
   #
-  #   en.expositor_mailer.signup_confirmation.subject
+  #   en.expositor_mailer.signup_mail.subject
   #
-  def signup_confirmation(expositor, expositor_password)
+  def signup_mail(expositor, expositor_password)
     @expositor = expositor
     @password = expositor_password
 
-    mail(to: @expositor.mail, subject: "BIENVENIDO A CAFIRA")
+    mail(to: @expositor.email, subject: "ALTA DE SOCIO CAFIRA")
   end
+
+  def deadline_mail(expositor)
+    @expositor = expositor
+
+    mail(to: @expositor.email, subject: "PLAZO POR VENCER CAFIRA")
+  end
+
 end

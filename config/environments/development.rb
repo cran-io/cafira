@@ -40,7 +40,6 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
-  config.mandrill_mailer.default_url_options = { :host => 'localhost:3000' }
   ActionMailer::Base.smtp_settings = {
     :port           => 587,
     :address        => 'smtp.mandrillapp.com',
@@ -48,9 +47,9 @@ Rails.application.configure do
     :password       => 'I5RPvtYJ5B0p4FHllUVRFg',
     :domain         => 'cafira.com',
     :authentication => :plain,
+    :enable_starttls_auto => true
   }
 
-  MandrillMailer.configure do |config|
-    config.api_key = "I5RPvtYJ5B0p4FHllUVRFg"
-  end
 end
+
+
