@@ -27,7 +27,6 @@ ActiveAdmin.register Exposition, :as => "Exposiciones" do
         link_to (exposition.active? ? 'Desactivar' : 'Activar'), activate_home_exposicione_path(exposition) , :method => :post
       end
     end
-    
   end
 
   form do 
@@ -43,7 +42,7 @@ ActiveAdmin.register Exposition, :as => "Exposiciones" do
       resource.active = true
       resource.save
     end
-    redirect_to home_exposiciones_path, notice: "Exposición #{resource.name} safisfactoriamente."
+    redirect_to home_exposiciones_path, notice: "Exposición #{resource.name} actualizada satisfactoriamente."
   end
 
   #FILTERS
