@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151117171006) do
+ActiveRecord::Schema.define(version: 20151204220940) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,6 +31,59 @@ ActiveRecord::Schema.define(version: 20151117171006) do
   add_index "active_admin_comments", ["namespace"], name: "index_active_admin_comments_on_namespace", using: :btree
   add_index "active_admin_comments", ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id", using: :btree
 
+  create_table "aditional_services", force: :cascade do |t|
+    t.boolean  "energia"
+    t.integer  "energia_cantidad"
+    t.boolean  "estacionamiento"
+    t.integer  "estacionamiento_cantidad"
+    t.boolean  "nylon"
+    t.integer  "nylon_cantidad"
+    t.boolean  "cuotas_sociales"
+    t.integer  "cuotas_sociales_cantidad"
+    t.boolean  "catalogo_extra"
+    t.integer  "coutas_sociales_cantidad"
+    t.integer  "expositor_id"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  create_table "blueprint_files", force: :cascade do |t|
+    t.boolean  "state"
+    t.string   "attachment_file_name"
+    t.string   "attachment_content_type"
+    t.integer  "attachment_file_size"
+    t.datetime "attachment_updated_at"
+    t.integer  "infrastructure_id"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  create_table "catalog_images", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "catalogs", force: :cascade do |t|
+    t.string   "stand_number"
+    t.string   "twitter"
+    t.string   "facebook"
+    t.string   "type"
+    t.integer  "expositor_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  create_table "credentials", force: :cascade do |t|
+    t.string   "name"
+    t.boolean  "armador"
+    t.boolean  "personal_stand"
+    t.boolean  "expositor"
+    t.boolean  "foto_video"
+    t.integer  "expositor_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
   create_table "exposition_expositors", force: :cascade do |t|
     t.integer  "exposition_id"
     t.integer  "expositor_id"
@@ -45,6 +98,14 @@ ActiveRecord::Schema.define(version: 20151117171006) do
     t.date     "ends_at"
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
+  end
+
+  create_table "infrastructures", force: :cascade do |t|
+    t.string   "alfombra"
+    t.boolean  "tarima"
+    t.boolean  "paneles"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
