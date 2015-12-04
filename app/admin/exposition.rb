@@ -33,6 +33,7 @@ ActiveAdmin.register Exposition, :as => "Exposiciones" do
     table do
     end    
   end
+  
   #CONTROLLER ACTIONS
   member_action :activate, method: :post do
     if resource.active?
