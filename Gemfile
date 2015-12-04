@@ -16,6 +16,7 @@ gem 'activeadmin-translate'
 gem 'devise'
 gem 'active_admin_theme'
 gem 'sdoc', '~> 0.4.0', group: :doc
+gem "paperclip", "~> 4.3"
 
 group :development, :test do
 	gem 'rspec-rails'
