@@ -4,7 +4,7 @@ ActiveAdmin.setup do |config|
   # Set the title that is displayed on the main layout
   # for each of the active admin pages.
   #
-  # config.site_title = "CAFIRA"
+  config.site_title = "CAFIRA"
   config.site_title_image = "/cafira_logo.png"
   # Set the link url for the title. For example, to take
   # users to your main site. Defaults to no link.
@@ -149,7 +149,7 @@ ActiveAdmin.setup do |config|
   # Breadcrumbs are enabled by default. You can customize them for individual
   # resources or you can disable them globally from here.
   #
-  # config.breadcrumb = false
+  config.breadcrumb = false
 
   # == Register Stylesheets & Javascripts
   #

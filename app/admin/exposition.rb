@@ -29,11 +29,33 @@ ActiveAdmin.register Exposition, :as => "Exposiciones" do
     end
   end
 
-  form do 
-    table do
-    end    
+  form do |f|
+    f.semantic_errors
+    f.inputs 'Editar Exposición' do
+      f.input :name, :label => "Nombre"
+      f.input :initialized_at, :label => "Fecha de comienzo", :as => :datepicker, :datepicker_options => { :min_date => Date.today }
+      f.input :ends_at, :label => "Fecha de finalización", :as => :datepicker, :datepicker_options => { :min_date => Date.today }
+    end
+    f.actions  
   end
-  
+
+  show do
+    attributes_table do
+      row "Nombre" do
+        resource.name
+      end
+      row "Fecha de comienzo" do
+        resource.initialized_at
+      end
+      row "Fecha de finalización" do
+        resource.ends_at
+      end
+      row "Estado" do
+        resource.active? ? "Activo" : "No activo"
+      end
+    end
+  end
+
   #CONTROLLER ACTIONS
   member_action :activate, method: :post do
     if resource.active?
