@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151204220940) do
+ActiveRecord::Schema.define(version: 20151209160308) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -104,8 +104,9 @@ ActiveRecord::Schema.define(version: 20151204220940) do
     t.string   "alfombra"
     t.boolean  "tarima"
     t.boolean  "paneles"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.integer  "expositor_id"
   end
 
   create_table "users", force: :cascade do |t|
