@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151209160308) do
+ActiveRecord::Schema.define(version: 20151209183703) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -77,11 +77,13 @@ ActiveRecord::Schema.define(version: 20151209160308) do
     t.string   "name"
     t.boolean  "armador"
     t.boolean  "personal_stand"
-    t.boolean  "expositor"
     t.boolean  "foto_video"
     t.integer  "expositor_id"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+    t.boolean  "art"
+    t.boolean  "es_expositor"
+    t.date     "fecha_alta"
   end
 
   create_table "exposition_expositors", force: :cascade do |t|
