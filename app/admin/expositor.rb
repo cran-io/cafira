@@ -1,19 +1,30 @@
 ActiveAdmin.register Expositor, :as => "Expositores" do
-   index do
-   	
-   	end
-  # See permitted parameters documentation:
-  # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
-  #
-  # permit_params :list, :of, :attributes, :on, :model
-  #
-  # or
-  #
-  # permit_params do
-  #   permitted = [:permitted, :attributes]
-  #   permitted << :other if resource.something?
-  #   permitted
-  # end
+  controller do
+    def scoped_collection
+      if params[:exposition_id]
+        @expositors = Exposition.find(params[:exposition_id]).expositors
+      else
+        @expositors = Expositor.all
+      end
+    end 
+  end
 
+  index do
+    if params[:exposition_id]
+      h2 "Expositores en \"" + Exposition.find(params[:exposition_id]).name + "\"" 
+    else
+      h2 "Expositores"
+    end
+    column "Nombre", :name
+    column "Cuit", :cuit
+    column "E-mail", :email
+    column "Credenciales" do |expositor|
+    end
+  end
+
+
+  filter :name, :label => "Nombre"
+  filter :cuit, :label => "Cuit"
+  filter :email, :label => "Email"
 
 end
