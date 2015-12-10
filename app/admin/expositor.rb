@@ -1,8 +1,21 @@
 ActiveAdmin.register Expositor do
   menu false
-  permit_params :name, :email, :cuit
+  permit_params :name, :email, :cuit, :password, :password_confirmation
 
   controller do
+    def index
+      Rails.cache.write('exposition_id', params[:exposition_id])      
+      index!
+    end
+
+    def create      
+      create! do
+        ExpositionExpositor.create(:exposition_id => Rails.cache.read(:exposition_id), :expositor_id => resource.id)
+        resource.aditional_service = AditionalService.new
+        home_expositors_path(:exposition_id => Rails.cache.read(:exposition_id))
+      end
+    end
+    
     def scoped_collection
       if params[:exposition_id]
         @expositors = Exposition.find(params[:exposition_id]).expositors
@@ -61,6 +74,8 @@ ActiveAdmin.register Expositor do
       f.input :name, :label => "Nombre"
       f.input :email, :label => "E-mail"
       f.input :cuit, :label => "Cuit"
+      f.input :password, :label => "Contraseña"
+      f.input :password_confirmation, :label => "Confirmación contraseña"
     end
     f.actions
   end
