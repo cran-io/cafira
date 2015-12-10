@@ -2,6 +2,11 @@ Rails.application.routes.draw do
   devise_for :users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   
+  namespace :home do
+    scope 'expositors/:expositor_id/' do
+      resource :aditional_service, :as => 'services'
+    end
+  end
   root 'home/expositions#index'
 
   # The priority is based upon order of creation: first created -> highest priority.
