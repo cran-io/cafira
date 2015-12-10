@@ -20,6 +20,30 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 es:
+  yes: "si"
+  activerecord:
+    models:
+      exposition:
+        one: "Exposición"
+        other: "Exposiciones"
+      expositor:
+        one: "Expositor"
+        other: "Expositores"
+      credential:
+        one: "Credencial"
+        other: "Credenciales"
+      infrastructure:
+        one: "Infraestructura"
+        other: "Infraestructuras"
+      user:
+        one: "Usuario"
+        other: "Usuarios"
+      catalog:
+        one: "Catálogo"
+        other: "Catálogos"
+      aditional_service:
+        one: "Servicio adicional"
+        other: "Servicios adicionales"
   active_admin:
     powered_by: "Desarrollado por cran.io"
   date:
