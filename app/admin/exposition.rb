@@ -1,8 +1,8 @@
-ActiveAdmin.register Exposition, :as => "Exposiciones" do
+ActiveAdmin.register Exposition do
   menu label: "Exposiciones"
   permit_params :ends_at, :initialized_at, :name, :active
   config.batch_actions = false
-
+  
   index do
     h2 "Lista de exposiciones"
     br
@@ -12,19 +12,19 @@ ActiveAdmin.register Exposition, :as => "Exposiciones" do
     column "Activo", :active, :class => 'text-right'
     column "Acciones" do |exposition|
       span do 
-        link_to 'Ver', {:controller => 'home/expositores', :action => 'index', :exposition_id => exposition.id}, :method => :get
+        link_to 'Ver', {:controller => 'home/expositors', :action => 'index', :exposition_id => exposition.id}, :method => :get
       end
       span do 
         "|"
       end
       span do 
-        link_to 'Editar', edit_home_exposicione_path(exposition), :method => :get
+        link_to 'Editar', edit_home_exposition_path(exposition), :method => :get
       end
       span do 
         "|"
       end
       span do
-        link_to (exposition.active? ? 'Desactivar' : 'Activar'), activate_home_exposicione_path(exposition) , :method => :post
+        link_to (exposition.active? ? 'Desactivar' : 'Activar'), activate_home_exposition_path(exposition) , :method => :post
       end
     end
   end
@@ -65,7 +65,7 @@ ActiveAdmin.register Exposition, :as => "Exposiciones" do
       resource.active = true
       resource.save
     end
-    redirect_to home_exposiciones_path, notice: "Exposición #{resource.name} actualizada satisfactoriamente."
+    redirect_to home_expositions_path, notice: "Exposición #{resource.name} actualizada satisfactoriamente."
   end
 
   #FILTERS
