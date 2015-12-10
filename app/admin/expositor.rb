@@ -13,7 +13,13 @@ ActiveAdmin.register Expositor do
   end
 
   sidebar "Acciones del expositor", :priority => 0, :only => [:show, :edit] do
+
     ul do
+      li do
+        span do
+          link_to 'Datos del expositor',  edit_home_expositor_path(resource), :method => :get
+        end
+      end
       li do
         span do
           link_to 'Credenciales',  home_expositor_credentials_path(resource), :method => :get
@@ -21,17 +27,17 @@ ActiveAdmin.register Expositor do
       end
       li do
         span do
-          link_to 'Servicios Adicionales',  '', :method => :get
+          link_to 'Servicios Adicionales', edit_home_services_path(resource), :method => :get
         end
       end
       li do
         span do
-          link_to 'Catálogo',  '', :method => :get
+          'Catálogo'
         end
       end
       li do
         span do
-          link_to 'Infraestructura',  '', :method => :get
+          'Infraestructura'
         end
       end
     end
