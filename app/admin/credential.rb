@@ -12,7 +12,7 @@ ActiveAdmin.register Credential do
     end
   end
 
-  index do
+  index :download_links => [:csv] do
     h2 "Credenciales"
     br
     column "Nombre", :name

@@ -12,7 +12,7 @@ ActiveAdmin.register Expositor do
     end 
   end
 
-  sidebar "Acciones del expositor", :priority => 0, :except => :index do
+  sidebar "Acciones del expositor", :priority => 0, :only => [:show, :edit] do
     ul do
       li do
         span do
@@ -37,7 +37,7 @@ ActiveAdmin.register Expositor do
     end
   end
 
-  index do
+  index :download_links => [:csv] do
     if params[:exposition_id]
       h2 "Expositors en \"" + Exposition.find(params[:exposition_id]).name + "\"" 
     else

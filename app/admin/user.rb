@@ -11,7 +11,7 @@ ActiveAdmin.register User do
       create!{ home_users_path }
     end
   end
-  index do
+  index :download_links => [:csv] do
     selectable_column
     column "E-mail", :email
     column "Tipo", :type

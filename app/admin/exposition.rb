@@ -12,7 +12,7 @@ ActiveAdmin.register Exposition do
     end
   end
 
-  index do
+  index :download_links => [:csv] do
     h2 "Lista de exposiciones"
     br
     column "Nombre", :name
