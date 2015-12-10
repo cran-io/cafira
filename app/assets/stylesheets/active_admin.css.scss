@@ -15,8 +15,24 @@
 // For example, to change the default status-tag color:
 //
 //   .status_tag { background: #6090DB; }
+
+$skinMainFirstColor: #4B4F52!default;
+$skinMainSecondColor: #F38E00!default;
+$skinBorderWindowColor: #ACACAC!default;
+
 @import "wigu/active_admin_theme";
 @import "active_admin/translate";
+
+#wrapper table.index_table th{
+	background-color:#F38E00;
+	color:white;
+    border-bottom: 3px solid #F38E00;
+    border-right: 1px solid #F38E00;
+}
+
+#wrapper table.index_table th a{
+	color:white;	
+}
 
 .text-right{
 	text-align:center;
