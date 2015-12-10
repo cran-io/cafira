@@ -1,9 +1,10 @@
 ActiveAdmin.register Credential do
-  menu false
-  
+  belongs_to :expositor
   permit_params :name, :art, :armador, :es_expositor, :personal_stand, :foto_video 
+  menu :if => proc{ false }
+  
   index do
-    h2 "Credenciales de " + Expositor.find(params[:expositor_id]).name if params[:expositor_id]
+    h2 "Credenciales"
     br
     column "Nombre", :name
     column "ART", :art, :class => "text-right"
