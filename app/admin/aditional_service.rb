@@ -8,7 +8,7 @@ ActiveAdmin.register AditionalService do
     end
 
     def update
-      update! { edit_home_services_path(resource) }
+      update! { edit_home_services_path(resource.expositor) }
     end
   end
   
