@@ -3,6 +3,15 @@ ActiveAdmin.register Exposition do
   permit_params :ends_at, :initialized_at, :name, :active
   config.batch_actions = false
   
+  controller do
+    def update
+      update!{ home_expositions_path }
+    end
+    def create
+      create!{ home_expositions_path }
+    end
+  end
+
   index do
     h2 "Lista de exposiciones"
     br

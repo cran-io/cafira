@@ -1,8 +1,17 @@
 ActiveAdmin.register Credential do
   belongs_to :expositor
-  permit_params :name, :art, :armador, :es_expositor, :personal_stand, :foto_video 
+  permit_params :name, :art, :armador, :es_expositor, :personal_stand, :foto_video, :fecha_alta
   menu :if => proc{ false }
   
+  controller do
+    def update
+      update!{ home_expositor_credentials_path }
+    end
+    def create
+      create!{ home_expositor_credentials_path }
+    end
+  end
+
   index do
     h2 "Credenciales"
     br
@@ -12,6 +21,7 @@ ActiveAdmin.register Credential do
     column "Personal Stand", :personal_stand, :class => 'text-right'
     column "Expositor", :es_expositor, :class => 'text-right'
     column "Foto/Video", :foto_video, :class => 'text-right'
+    column "Fecha de alta", :fecha_alta
     actions
   end  
 
@@ -24,6 +34,7 @@ ActiveAdmin.register Credential do
       f.input :es_expositor, :label => "Expositor"
       f.input :personal_stand, :label => "Personal Stand"
       f.input :foto_video, :label => "Foto/Video"
+      f.input :fecha_alta, :as => :datepicker
     end
     f.actions  
   end
@@ -47,6 +58,9 @@ ActiveAdmin.register Credential do
       end
       row "Foto/Video" do
         resource.foto_video? ? "Si" : "No"
+      end
+      row "Fecha de alta" do
+        resource.fecha_alta
       end
     end
   end
