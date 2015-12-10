@@ -4,11 +4,77 @@ ActiveAdmin.register Credential do
   menu :if => proc{ false }
   
   controller do
+    def index
+      @owner = Expositor.find(params[:expositor_id])
+      index!
+    end
+
     def update
       update!{ home_expositor_credentials_path }
     end
+    
     def create
       create!{ home_expositor_credentials_path }
+    end
+  end
+
+  sidebar "Acciones del expositor", :priority => 0, :only => [:index] do
+    ul do
+      li do
+        span do
+          link_to 'Datos del expositor',  edit_home_expositor_path(owner), :method => :get
+        end
+      end
+      li do
+        span do
+          link_to 'Credenciales',  home_expositor_credentials_path(owner), :method => :get
+        end
+      end
+      li do
+        span do
+          link_to 'Servicios Adicionales', edit_home_services_path(owner), :method => :get
+        end
+      end
+      li do
+        span do
+          'Catálogo'
+        end
+      end
+      li do
+        span do
+          'Infraestructura'
+        end
+      end
+    end
+  end
+
+  sidebar "Acciones del expositor", :priority => 0, :only => [:show, :edit] do
+    ul do
+      li do
+        span do
+          link_to 'Datos del expositor',  edit_home_expositor_path(resource.expositor), :method => :get
+        end
+      end
+      li do
+        span do
+          link_to 'Credenciales',  home_expositor_credentials_path(resource.expositor), :method => :get
+        end
+      end
+      li do
+        span do
+          link_to 'Servicios Adicionales', edit_home_services_path(resource.expositor), :method => :get
+        end
+      end
+      li do
+        span do
+          'Catálogo'
+        end
+      end
+      li do
+        span do
+          'Infraestructura'
+        end
+      end
     end
   end
 
