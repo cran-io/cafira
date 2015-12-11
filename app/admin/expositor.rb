@@ -12,9 +12,13 @@ ActiveAdmin.register Expositor do
       create! do
         ExpositionExpositor.create(:exposition_id => Rails.cache.read(:exposition_id), :expositor_id => resource.id)
         resource.aditional_service = AditionalService.new
-        resource.catalog = Catalog.new
+        resource.infrastructure    = Infrastructure.new
+        resource.catalog           = Catalog.new
         4.times do |i|
           resource.catalog.catalog_images << CatalogImage.new( :priority => (i.zero? ? 'principal' : 'secundaria') )
+        end
+        2.times do |i|
+          resource.infrastructure.blueprint_files << BlueprintFile.new
         end
         home_expositors_path(:exposition_id => Rails.cache.read(:exposition_id))
       end
@@ -30,7 +34,6 @@ ActiveAdmin.register Expositor do
   end
 
   sidebar "Acciones del expositor", :priority => 0, :only => [:show, :edit] do
-
     ul do
       li do
         span do
@@ -54,7 +57,7 @@ ActiveAdmin.register Expositor do
       end
       li do
         span do
-          'Infraestructura'
+          link_to 'Infraestructura', edit_home_infrastruct_path(resource), :method => :get
         end
       end
     end

@@ -51,7 +51,7 @@ ActiveAdmin.register Catalog do
       f.input :stand_number, :label => "Número de stand"
       f.input :twitter
       f.input :facebook
-      f.has_many :catalog_images, :new_record => false, :html => { :enctype => "multipart/form-data" } do |ff| 
+      f.has_many :catalog_images, :heading => "Subir imágenes", :new_record => false, :html => { :enctype => "multipart/form-data" } do |ff| 
         ff.input :priority, :label => "Tipo de imagen", :input_html => { :disabled => true }
         ff.input :attachment, :label => "Imagen", :as => :file, :require => false, :hint => ff.object.attachment.present? ? image_tag(ff.object.attachment.url, :style => "width:200px") : content_tag(:span, "No hay imagen subida aún")
       end
