@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151211012447) do
+ActiveRecord::Schema.define(version: 20151211190103) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,8 +43,9 @@ ActiveRecord::Schema.define(version: 20151211012447) do
     t.boolean  "catalogo_extra"
     t.integer  "coutas_sociales_cantidad"
     t.integer  "expositor_id"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
+    t.boolean  "completed",                default: false
   end
 
   create_table "blueprint_files", force: :cascade do |t|
@@ -75,8 +76,9 @@ ActiveRecord::Schema.define(version: 20151211012447) do
     t.string   "facebook"
     t.string   "type"
     t.integer  "expositor_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.boolean  "completed",    default: false
   end
 
   create_table "credentials", force: :cascade do |t|
@@ -116,9 +118,10 @@ ActiveRecord::Schema.define(version: 20151211012447) do
     t.string   "alfombra"
     t.boolean  "tarima"
     t.boolean  "paneles"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
     t.integer  "expositor_id"
+    t.boolean  "completed",    default: false
   end
 
   create_table "users", force: :cascade do |t|
