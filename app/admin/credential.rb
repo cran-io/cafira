@@ -27,6 +27,11 @@ ActiveAdmin.register Credential do
       end
       li do
         span do
+          link_to 'Catálogo', edit_home_catalogo_path(owner), :method => :get
+        end
+      end
+      li do
+        span do
           link_to 'Credenciales',  home_expositor_credentials_path(owner), :method => :get
         end
       end
@@ -37,22 +42,22 @@ ActiveAdmin.register Credential do
       end
       li do
         span do
-          link_to 'Catálogo', edit_home_catalogo_path(owner), :method => :get
-        end
-      end
-      li do
-        span do
           link_to 'Infraestructura', edit_home_infrastruct_path(owner), :method => :get
         end
       end
     end
   end
 
-  sidebar "Acciones del expositor", :priority => 0, :only => [:show, :edit, :new] do
+  sidebar "Acciones del expositor", :priority => 0, :only => [:show, :edit, :newq] do
     ul do
       li do
         span do
           link_to 'Datos del expositor',  edit_home_expositor_path(resource.expositor), :method => :get
+        end
+      end
+      li do
+        span do
+          link_to 'Catálogo', edit_home_catalogo_path(resource.expositor), :method => :get
         end
       end
       li do
@@ -63,11 +68,6 @@ ActiveAdmin.register Credential do
       li do
         span do
           link_to 'Servicios Adicionales', edit_home_services_path(resource.expositor), :method => :get
-        end
-      end
-      li do
-        span do
-          link_to 'Catálogo', edit_home_catalogo_path(resource.expositor), :method => :get
         end
       end
       li do

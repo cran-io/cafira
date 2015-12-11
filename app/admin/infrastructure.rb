@@ -23,17 +23,17 @@ ActiveAdmin.register Infrastructure do
       end
       li do
         span do
+          link_to 'Catálogo', edit_home_catalogo_path(resource.expositor), :method => :get
+        end
+      end
+      li do
+        span do
           link_to 'Credenciales',  home_expositor_credentials_path(resource.expositor), :method => :get
         end
       end
       li do
         span do
           link_to 'Servicios Adicionales', edit_home_services_path(resource.expositor), :method => :get
-        end
-      end
-      li do
-        span do
-          link_to 'Catálogo', edit_home_catalogo_path(resource.expositor), :method => :get
         end
       end
       li do
