@@ -37,7 +37,7 @@ ActiveAdmin.register Credential do
       end
       li do
         span do
-          'Catálogo'
+          link_to 'Catálogo', edit_home_catalogo_path(owner), :method => :get
         end
       end
       li do
