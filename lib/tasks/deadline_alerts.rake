@@ -7,10 +7,8 @@ end
 
 class DeadlineAlerts
   def self.send
-    @date = DateTime.now
-    Exposition.opened.expositors each do |e|
-      #logica para saber si un expositor de una Exposicion esta al dia.
-
-     end
+    Expositor.near_deadline each do |expositor|
+        deadline_mail(expositor).deliver
+    end
   end
 end
