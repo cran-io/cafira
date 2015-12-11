@@ -30,7 +30,7 @@ ActiveAdmin.register User do
   filter :email, :label => "E-mail"
   filter :type, :label => "Tipo de usuario"
   form do |f|
-    f.inputs "Admin Details" do
+    f.inputs (params[:action] == 'edit' ? "Editar usuario" : "Crear usuario") do
       f.input :email, :label => "E-mail"
       f.input :password, :label => "Contraseña"
       f.input :password_confirmation, :label => "Confirmar contraseña"

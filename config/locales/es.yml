@@ -20,7 +20,15 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 es:
-  yes: "si"
+  formtastic:
+    yes: 'Yes'
+    no: 'No'
+    create: 'Crear %{model}'
+    update: 'Guardar %{model}'
+    submit: 'Guardar %{model}'
+    cancel: 'Cancelar %{model}'
+    reset: 'Resetear %{model}'
+    required: 'requerido'
   activerecord:
     models:
       exposition:
@@ -46,6 +54,22 @@ es:
         other: "Servicios adicionales"
   active_admin:
     powered_by: "Desarrollado por cran.io"
+  helpers:
+    page_entries_info:
+      more_pages:
+        display_entries: Mostrando <b>%{first}&nbsp;-&nbsp;%{last}</b> %{entry_name} de <b>%{total}</b> en total
+      one_page:
+        display_entries:
+          one: Mostrando <b>%{count}</b> %{entry_name}
+          other: Mostrando <b>un total de %{count}</b> %{entry_name}
+          zero: No se han encontrado %{entry_name}
+  views:
+    pagination:
+      first: "&laquo; Primera"
+      last: "Última &raquo;"
+      next: Siguiente &rsaquo;
+      previous: "&lsaquo; Anterior"
+      truncate: "&hellip;"
   date:
     abbr_day_names:
     - dom

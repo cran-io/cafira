@@ -132,10 +132,10 @@ ActiveAdmin.register Credential do
   end
 
   filter :name, :label => "Nombre"
-  filter :art, :label => "ART"
-  filter :armador, :label => "Armador"
-  filter :es_expositor, :label => "Expositor"
-  filter :personal_stand, :label => "Personal Stand"
-  filter :foto_video, :label => "Foto/Video"
+  filter :art, :label => "ART", :collection => [["Si", true], ["No", false]]
+  filter :armador, :label => "Armador", :collection => [["Si", true], ["No", false]]
+  filter :es_expositor, :label => "Expositor", :collection => [["Si", true], ["No", false]]
+  filter :personal_stand, :label => "Personal Stand", :collection => [["Si", true], ["No", false]]
+  filter :foto_video, :label => "Foto/Video", :collection => [["Si", true], ["No", false]]
 
 end

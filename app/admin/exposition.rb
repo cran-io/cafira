@@ -89,5 +89,5 @@ ActiveAdmin.register Exposition do
   filter :name, :label => "Nombre exposición"
   filter :initialized_at, :label => "Comenzada el"
   filter :ends_at, :label => "Termina el"
-  filter :active, :label => "Activo"
+  filter :active, :label => "Activo", :collection => [["Si", true], ["No", false]]
 end
