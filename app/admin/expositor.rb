@@ -13,7 +13,9 @@ ActiveAdmin.register Expositor do
         ExpositionExpositor.create(:exposition_id => Rails.cache.read(:exposition_id), :expositor_id => resource.id)
         resource.aditional_service = AditionalService.new
         resource.catalog = Catalog.new
-        binding.pry
+        4.times do |i|
+          resource.catalog.catalog_images << CatalogImage.new( :priority => (i.zero? ? 'principal' : 'secundaria') )
+        end
         home_expositors_path(:exposition_id => Rails.cache.read(:exposition_id))
       end
     end
