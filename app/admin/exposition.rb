@@ -1,6 +1,6 @@
 ActiveAdmin.register Exposition do
   menu label: "Exposiciones"
-  permit_params :ends_at, :initialized_at, :name, :active
+  permit_params :ends_at, :initialized_at, :name, :active, :deadline_catalogs, :deadline_credentials, :deadline_infrastructures, :deadline_aditional_services
   config.batch_actions = false
   
   controller do
@@ -16,8 +16,12 @@ ActiveAdmin.register Exposition do
     h2 "Lista de exposiciones"
     br
     column "Nombre", :name
-    column "Comenzada el", :initialized_at
-    column "Termina el", :ends_at
+    column "Fecha de comienzo", :initialized_at
+    column "Fecha de finalización", :ends_at
+    column "Deadline catálogo", :deadline_catalogs
+    column "Deadline credenciales", :deadline_credentials
+    column "Deadline serv. adicionales", :deadline_aditional_services
+    column "Deadline infraestructura", :deadline_infrastructures
     column "Activo", :active, :class => 'text-right'
     column "Acciones" do |exposition|
       span do 
@@ -44,6 +48,10 @@ ActiveAdmin.register Exposition do
       f.input :name, :label => "Nombre"
       f.input :initialized_at, :label => "Fecha de comienzo", :as => :datepicker, :datepicker_options => { :min_date => Date.today }
       f.input :ends_at, :label => "Fecha de finalización", :as => :datepicker, :datepicker_options => { :min_date => Date.today }
+      f.input :deadline_catalogs, :label => "Deadline fotos e información catálogo", :as => :datepicker, :datepicker_options => { :min_date => Date.today }
+      f.input :deadline_credentials, :label => "Deadline carga de credenciales", :as => :datepicker, :datepicker_options => { :min_date => Date.today }
+      f.input :deadline_aditional_services, :label => "Deadline servicios adicionales", :as => :datepicker, :datepicker_options => { :min_date => Date.today }
+      f.input :deadline_infrastructures, :label => "Deadline infraestructura", :as => :datepicker, :datepicker_options => { :min_date => Date.today }
     end
     f.actions
   end
