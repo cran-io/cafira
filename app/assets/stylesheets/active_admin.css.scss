@@ -27,7 +27,9 @@ $skinBorderWindowColor: #ACACAC!default;
 	color:#ACACAC;
 }
 
-#wrapper table.index_table th{
+#wrapper table.index_table th,
+#wrapper table.index_table th.sorted-desc,
+#wrapper table.index_table th.sorted-asc{
 	background-color:#F38E00;
 	color:white;
     border-bottom: 3px solid #F38E00;
@@ -37,6 +39,7 @@ $skinBorderWindowColor: #ACACAC!default;
 #wrapper table.index_table th a{
 	color:white;	
 }
+
 
 .text-right{
 	text-align:center;
