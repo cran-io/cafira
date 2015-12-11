@@ -42,13 +42,13 @@ ActiveAdmin.register Credential do
       end
       li do
         span do
-          'Infraestructura'
+          link_to 'Infraestructura', edit_home_infrastruct_path(owner), :method => :get
         end
       end
     end
   end
 
-  sidebar "Acciones del expositor", :priority => 0, :only => [:show, :edit] do
+  sidebar "Acciones del expositor", :priority => 0, :only => [:show, :edit, :new] do
     ul do
       li do
         span do
@@ -67,12 +67,12 @@ ActiveAdmin.register Credential do
       end
       li do
         span do
-          'Catálogo'
+          link_to 'Catálogo', edit_home_catalogo_path(resource.expositor), :method => :get
         end
       end
       li do
         span do
-          'Infraestructura'
+          link_to 'Infraestructura', edit_home_infrastruct_path(resource.expositor), :method => :get
         end
       end
     end

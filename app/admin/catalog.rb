@@ -40,7 +40,7 @@ ActiveAdmin.register Catalog do
       end
       li do
         span do
-          'Infraestructura'
+          link_to 'Infraestructura', edit_home_infrastruct_path(resource.expositor), :method => :get
         end
       end
     end
