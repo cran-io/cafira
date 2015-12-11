@@ -12,6 +12,8 @@ ActiveAdmin.register Expositor do
       create! do
         ExpositionExpositor.create(:exposition_id => Rails.cache.read(:exposition_id), :expositor_id => resource.id)
         resource.aditional_service = AditionalService.new
+        resource.catalog = Catalog.new
+        binding.pry
         home_expositors_path(:exposition_id => Rails.cache.read(:exposition_id))
       end
     end
@@ -45,7 +47,7 @@ ActiveAdmin.register Expositor do
       end
       li do
         span do
-          'Catálogo'
+          link_to 'Catálogo', edit_home_catalogo_path(resource), :method => :get
         end
       end
       li do
@@ -77,7 +79,9 @@ ActiveAdmin.register Expositor do
       f.input :password, :label => "Contraseña"
       f.input :password_confirmation, :label => "Confirmación contraseña"
     end
-    f.actions
+    f.actions do
+      f.action(:submit)
+    end
   end
 
   show do

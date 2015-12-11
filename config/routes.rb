@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   namespace :home do
     scope 'expositors/:expositor_id/' do
       resource :aditional_service, :as => 'services'
+      resource :catalog, :as => 'catalogo'
     end
   end
   root 'home/expositions#index'

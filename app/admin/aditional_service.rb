@@ -8,7 +8,10 @@ ActiveAdmin.register AditionalService do
     end
 
     def update
-      update! { edit_home_services_path(resource.expositor) }
+      update! do 
+        flash[:message] = "Servicios adicionales actualizados correctamente"
+        edit_home_services_path(resource.expositor) 
+      end
     end
   end
   
@@ -31,7 +34,7 @@ ActiveAdmin.register AditionalService do
       end
       li do
         span do
-          'Catálogo'
+          link_to 'Catálogo', edit_home_catalogo_path(resource.expositor), :method => :get
         end
       end
       li do
@@ -48,12 +51,15 @@ ActiveAdmin.register AditionalService do
       f.input :energia_cantidad, :label => "Energía cantidad"
       f.input :estacionamiento, :label => "Estacionamiento"
       f.input :estacionamiento_cantidad, :label => "Cantidad (estacionamiento)" 
-      f.input :nylon, :label => "nylon"
+      f.input :nylon, :label => "Nylon"
       f.input :nylon_cantidad, :label => "Cantidad (nylon)"
       f.input :cuotas_sociales, :label => "Cuotas sociales"
       f.input :cuotas_sociales_cantidad, :label => "Cantidad (cuotas sociales)"
       f.input :catalogo_extra, :label => "Catálogo extra"
     end
-    f.actions
+    f.actions do
+      f.action(:submit)
+    end
+
   end
 end
