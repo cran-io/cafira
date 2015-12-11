@@ -9,7 +9,7 @@ ActiveAdmin.register AditionalService do
 
     def update
       update! do 
-        flash[:message] = "Servicios adicionales actualizados correctamente"
+        flash[:message] = "Servicios adicionales actualizados correctamente."
         edit_home_services_path(resource.expositor) 
       end
     end

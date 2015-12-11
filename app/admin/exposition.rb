@@ -45,9 +45,7 @@ ActiveAdmin.register Exposition do
       f.input :initialized_at, :label => "Fecha de comienzo", :as => :datepicker, :datepicker_options => { :min_date => Date.today }
       f.input :ends_at, :label => "Fecha de finalización", :as => :datepicker, :datepicker_options => { :min_date => Date.today }
     end
-    f.actions do
-      f.actions(:submit)
-    end
+    f.actions
   end
 
   show do
