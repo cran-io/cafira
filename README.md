@@ -16,6 +16,7 @@ $ rake db:create && rake db:migrate
 #### Crontab:
 ```
 @weekly sh /home/path/to/cron_script/weekly_status.sh > /home/path/to/cron_log/cron_task.log 2>&1
+```
 =======
 
 =======
