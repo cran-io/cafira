@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     scope 'expositors/:expositor_id/' do
       resource :aditional_service, :as => 'services'
       resource :catalog, :as => 'catalogo'
+      resource :infrastructure, :as => 'infrastruct'
     end
   end
   root 'home/expositions#index'
