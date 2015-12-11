@@ -1,4 +1,4 @@
 class Infrastructure < ActiveRecord::Base
   belongs_to :expositor
-  has_many :blueprint_files
+  has_many :blueprint_files, :dependent => :destroy
 end

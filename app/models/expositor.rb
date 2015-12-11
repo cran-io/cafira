@@ -1,11 +1,11 @@
 class Expositor < User
   has_many :expositions, :through => :exposition_expositors
-  has_many :exposition_expositors
-  has_many :credentials
-  has_one :catalog
-  has_one :aditional_service
-  has_one :infrastructure
-
+  has_many :exposition_expositors, :dependent => :destroy
+  has_many :credentials, :dependent => :destroy
+  has_one :catalog, :dependent => :destroy
+  has_one :aditional_service, :dependent => :destroy
+  has_one :infrastructure, :dependent => :destroy
+  
   def self.near_deadline
     aSetofExpositors = Set.new
     aSetofExpositors.merge(self.joins(:expositions).where("expositions.deadline_catalogs - ? <= ? AND expositors.catalog.completed =?",7.days, Date.today,false))
@@ -14,5 +14,5 @@ class Expositor < User
     aSetofExpositors.merge(self.joins(:expositions).where("expositions.deadline_infrastructures - ? <= ? AND expositors.infrastructure.completed =?",7.days, Date.Today,false))
     aSetofExpositors
   end
-
+  
 end
