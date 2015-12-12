@@ -1,6 +1,6 @@
 namespace :deadline_alerts do
   desc "Send mail notification when exposition's deadlines are not done yet"
-  task :send_weekly_email => :environment do
+  task :send_alert_emails => :environment do
     DeadlineAlerts.send
   end
 end

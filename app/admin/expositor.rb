@@ -4,11 +4,11 @@ ActiveAdmin.register Expositor do
 
   controller do
     def index
-      Rails.cache.write('exposition_id', params[:exposition_id])      
+      Rails.cache.write('exposition_id', params[:exposition_id])
       index!
     end
 
-    def create      
+    def create
       create! do
         ExpositionExpositor.create(:exposition_id => Rails.cache.read(:exposition_id), :expositor_id => resource.id)
         resource.aditional_service = AditionalService.new
@@ -22,15 +22,17 @@ ActiveAdmin.register Expositor do
         end
         home_expositors_path(:exposition_id => Rails.cache.read(:exposition_id))
       end
+      #if it was correctly created it sends a signup mail
+      #ExpositorMailer.signup_mail(resource,params[:expositor][:password]).deliver if Expositor.exists?(:id => resource.id)
     end
-    
+
     def scoped_collection
       if params[:exposition_id]
         @expositors = Exposition.find(params[:exposition_id]).expositors
       else
         @expositors = Expositor.all
       end
-    end 
+    end
   end
 
   sidebar "Acciones del expositor", :priority => 0, :only => [:show, :edit] do
@@ -65,7 +67,7 @@ ActiveAdmin.register Expositor do
 
   index :download_links => [:csv] do
     if params[:exposition_id]
-      h2 "Expositors en \"" + Exposition.find(params[:exposition_id]).name + "\"" 
+      h2 "Expositors en \"" + Exposition.find(params[:exposition_id]).name + "\""
     else
       h2 "Expositors"
     end

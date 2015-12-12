@@ -6,12 +6,13 @@ class Expositor < User
   has_one :aditional_service, :dependent => :destroy
   has_one :infrastructure, :dependent => :destroy
 
+  #returns a Set of all expositors with uncompleted tasks and without much time to complete them
   def self.near_deadline
     aSetofExpositors = Set.new
-    aSetofExpositors.merge(self.joins(:expositions).where("expositions.deadline_catalogs - ? <= ? AND expositors.catalog.completed =?",7.days, Date.today,false))
-    aSetofExpositors.merge(self.joins(:expositions).where("expositions.deadline_credentials - ? <= ? AND expositors.credentials.any? =?",7.days, Date.Today,false))
-    aSetofExpositors.merge(self.joins(:expositions).where("expositions.deadline_aditional_servicies - ? <= ? AND expositors.aditional_service.completed =?",7.days, Date.Today,false))
-    aSetofExpositors.merge(self.joins(:expositions).where("expositions.deadline_infrastructures - ? <= ? AND expositors.infrastructure.completed =?",7.days, Date.Today,false))
+    aSetofExpositors.merge(self.joins(:catalog).where("catalogs.completed = ?",false).joins(:expositions).where("expositions.deadline_catalogs - ? <= ?",2.days, Date.today))
+    aSetofExpositors.merge(self.joins(:credentials).where(:credentials => {:id => nil}).joins(:expositions).where("expositions.deadline_credentials - ? <= ?",2.days, Date.today))
+    aSetofExpositors.merge(self.joins(:aditional_service).where("aditional_services.completed =?",false).joins(:expositions).where("expositions.deadline_aditional_services - ? <= ?",2.days, Date.today))
+    aSetofExpositors.merge(self.joins(:infrastructure).where("infrastructures.completed =?",false).joins(:expositions).where("expositions.deadline_infrastructures - ? <= ?",2.days, Date.today))
     aSetofExpositors
   end
 
