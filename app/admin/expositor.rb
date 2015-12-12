@@ -33,6 +33,15 @@ ActiveAdmin.register Expositor do
     end 
   end
 
+  #old expositors selection
+  action_item only: :index do
+    link_to 'Agregar expositores existentes', old_expositors_home_expositors_path
+  end
+  
+  collection_action :old_expositors, :method => :get do
+    @expositors = Expositor.all
+  end
+
   sidebar "Acciones del expositor", :priority => 0, :only => [:show, :edit] do
     ul do
       li do
