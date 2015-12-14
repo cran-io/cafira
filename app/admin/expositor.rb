@@ -23,7 +23,6 @@ ActiveAdmin.register Expositor do
     redirect_to home_expositors_path(:exposition_id => Rails.cache.read(:exposition_id))
   end
   
-  #old expositors selection
   action_item :only => :index, if: proc { params[:type].nil? } do
     link_to 'Agregar expositores a esta exposición', home_expositors_path(:type => 'all_expositors', :exposition_id => params[:exposition_id])
   end
@@ -89,10 +88,10 @@ ActiveAdmin.register Expositor do
 
   index :download_links => [:csv] do
     if exposition_id
-      h2 "Expositors en \"" + Exposition.find(params[:exposition_id]).name + "\"" 
+      h2 "Expositores en \"" + Exposition.find(params[:exposition_id]).name + "\"" 
       selectable_column
     else
-      h2 "Expositors"
+      h2 "Expositores"
     end
     column "Nombre", :name
     column "Cuit", :cuit
@@ -128,6 +127,6 @@ ActiveAdmin.register Expositor do
 
   filter :name, :label => "Nombre"
   filter :cuit, :label => "Cuit"
-  filter :email, :label => "Email"
+  filter :email, :label => "E-mail"
 
 end
