@@ -15,6 +15,7 @@ gem 'activeadmin', '1.0.0.pre1'
 gem 'activeadmin-translate'
 gem 'devise'
 gem 'active_admin_theme'
+gem 'cancan'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem "paperclip", "~> 4.3"
 

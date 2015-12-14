@@ -69,6 +69,7 @@ GEM
       sass (~> 3.4)
       thor (~> 0.19)
     builder (3.2.2)
+    cancan (1.6.10)
     climate_control (0.0.3)
       activesupport (>= 3.0)
     cocaine (0.5.8)
@@ -263,6 +264,7 @@ DEPENDENCIES
   active_admin_theme
   activeadmin (= 1.0.0.pre1)
   activeadmin-translate
+  cancan
   coffee-rails (~> 4.1.0)
   database_cleaner
   devise

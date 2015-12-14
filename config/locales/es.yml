@@ -54,6 +54,8 @@ es:
         other: "Servicios adicionales"
   active_admin:
     powered_by: "Desarrollado por cran.io"
+    access_denied:
+      message: "Acceso denegado"
     batch_actions:
       action_label: "%{title}"
       labels:
