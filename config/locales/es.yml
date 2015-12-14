@@ -54,6 +54,11 @@ es:
         other: "Servicios adicionales"
   active_admin:
     powered_by: "Desarrollado por cran.io"
+    batch_actions:
+      action_label: "%{title}"
+      labels:
+        add_expositors_to_exposition: "Agregar expositores a esta exposición"
+        delete_from_exposition: "Quitar expositores de esta exposición"
   helpers:
     page_entries_info:
       more_pages:

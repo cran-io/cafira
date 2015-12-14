@@ -1,11 +1,46 @@
 ActiveAdmin.register Expositor do
-  menu false
   permit_params :name, :email, :cuit, :password, :password_confirmation
+  menu false
+
+  config.clear_action_items!
+  batch_action :destroy, false
+
+  batch_action :delete_from_exposition, if: proc{ params[:type] != 'all_expositors' } do |ids|
+    ids.each do |id|
+      exposition_expositors = ExpositionExpositor.where(:exposition_id => Rails.cache.read(:exposition_id), :expositor_id => id)
+      exposition_expositors.delete_all
+    end
+    redirect_to home_expositors_path(:exposition_id => Rails.cache.read(:exposition_id))
+  end
+  
+  batch_action :add_expositors_to_exposition, if: proc{ params[:type] == 'all_expositors' } do |ids|
+    if Rails.cache.read(:exposition_id)
+      exposition_id = Rails.cache.read(:exposition_id)
+      ids.each do |id|
+        ExpositionExpositor.create(:exposition_id => exposition_id, :expositor_id => id) if ExpositionExpositor.find_by_exposition_id_and_expositor_id(exposition_id, id).nil?
+      end
+    end
+    redirect_to home_expositors_path
+  end
+  
+  #old expositors selection
+  action_item :only => :index, if: proc { params[:type].nil? } do
+    link_to 'Agregar expositores a esta exposición', home_expositors_path(:type => 'all_expositors', :exposition_id => params[:exposition_id])
+  end
+  
+  action_item :only => :index, if: proc{ params[:type] == 'all_expositors' } do
+    link_to 'Ver expositores de esta exposición', home_expositors_path(:exposition_id => params[:exposition_id])
+  end
 
   controller do
     def index
-      Rails.cache.write('exposition_id', params[:exposition_id])      
-      index!
+      if params[:exposition_id]
+        Rails.cache.write('exposition_id', params[:exposition_id])      
+        @exposition_id = params[:exposition_id]
+        index!
+      else
+        redirect_to home_expositions_path
+      end
     end
 
     def create      
@@ -26,20 +61,16 @@ ActiveAdmin.register Expositor do
     
     def scoped_collection
       if params[:exposition_id]
-        @expositors = Exposition.find(params[:exposition_id]).expositors
+        if params[:type] == 'all_expositors'
+          expositors_ids = ExpositionExpositor.where(:exposition_id => params[:exposition_id]).map(&:expositor_id)
+          @expositors = Expositor.where.not(:id => expositors_ids)
+        else
+          @expositors = Exposition.find(params[:exposition_id]).expositors
+        end
       else
         @expositors = Expositor.all
       end
     end 
-  end
-
-  #old expositors selection
-  action_item only: :index do
-    link_to 'Agregar expositores existentes', old_expositors_home_expositors_path
-  end
-  
-  collection_action :old_expositors, :method => :get do
-    @expositors = Expositor.all
   end
 
   sidebar "Acciones del expositor", :priority => 0, :only => [:show, :edit] do
@@ -73,8 +104,9 @@ ActiveAdmin.register Expositor do
   end
 
   index :download_links => [:csv] do
-    if params[:exposition_id]
+    if exposition_id
       h2 "Expositors en \"" + Exposition.find(params[:exposition_id]).name + "\"" 
+      selectable_column
     else
       h2 "Expositors"
     end
