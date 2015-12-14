@@ -6,6 +6,7 @@ ActiveAdmin.register Credential do
   controller do
     def index
       @owner = Expositor.find(params[:expositor_id])
+      @credential_qty = @owner.credentials.any?
       index!
     end
 
@@ -78,8 +79,12 @@ ActiveAdmin.register Credential do
     end
   end
 
-  index :download_links => [:csv] do
+  index :download_links => [:csv] do |je|
     h2 "Credenciales"
+    status = credential_qty ? 'yes' : 'no'
+    div :class => "status_tag #{status} completed_status_tag"  do
+      status ? "Sección completa" : "Hay campos incompletos";
+    end
     br
     selectable_column
     column "Nombre", :name

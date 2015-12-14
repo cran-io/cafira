@@ -48,6 +48,10 @@ ActiveAdmin.register Catalog do
 
   form :html => { :enctype => "multipart/form-data" } do |f|
     f.inputs 'Editar Catálogo' do
+      status = f.object.completed ? 'yes' : 'no'
+      div :class => "status_tag #{status} completed_status_tag"  do
+        f.object.completed ? "Sección completa" : "Hay campos incompletos";
+      end
       f.input :stand_number, :label => "Número de stand"
       f.input :twitter
       f.input :facebook

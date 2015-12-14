@@ -48,6 +48,10 @@ ActiveAdmin.register AditionalService do
 
   form do |f|
     f.inputs "Servicio adicional" do
+      status = f.object.completed ? 'yes' : 'no'
+      div :class => "status_tag #{status} completed_status_tag"  do
+        f.object.completed ? "Sección completa" : "Hay campos incompletos";
+      end
       f.input :energia, :label => "Energía"
       f.input :energia_cantidad, :label => "Energía cantidad"
       f.input :estacionamiento, :label => "Estacionamiento"

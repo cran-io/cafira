@@ -48,6 +48,10 @@ ActiveAdmin.register Infrastructure do
 
   form :html => { :enctype => "multipart/form-data" } do |f|
     f.inputs 'Editar Catálogo' do
+      status = f.object.completed ? 'yes' : 'no' 
+      div :class => "status_tag #{status} completed_status_tag"  do
+        f.object.completed ? "Sección completa" : "Hay campos incompletos";
+      end
       f.input :alfombra
       f.input :tarima
       f.input :paneles
