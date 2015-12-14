@@ -1,7 +1,8 @@
 ActiveAdmin.register AditionalService do
   menu false
   permit_params :energia, :energia_cantidad, :estacionamiento, :estacionamiento_cantidad, :nylon, :nylon_cantidad, :cuotas_sociales, :cuotas_sociales_cantidad, :catalogo_extra
-  
+  config.batch_actions = false
+    
   controller do
     def edit
       @aditional_service = Expositor.find(params[:expositor_id]).aditional_service

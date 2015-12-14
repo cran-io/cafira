@@ -81,6 +81,7 @@ ActiveAdmin.register Credential do
   index :download_links => [:csv] do
     h2 "Credenciales"
     br
+    selectable_column
     column "Nombre", :name
     column "ART", :art, :class => "text-right"
     column "Armador", :armador, :class => 'text-right'

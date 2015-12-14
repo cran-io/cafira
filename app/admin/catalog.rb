@@ -1,7 +1,7 @@
 ActiveAdmin.register Catalog do
   menu false
   permit_params :stand_number, :twitter, :facebook, :type, :catalog_images_attributes => [:attachment, :attachment_file_name, :attachment_content_type, :attachment_file_size, :attachment_updated_at, :id]
-
+  config.batch_actions = false
 
   controller do
     def edit

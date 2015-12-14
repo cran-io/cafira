@@ -1,6 +1,8 @@
 ActiveAdmin.register Infrastructure do
   menu false
+  config.batch_actions = false
   permit_params :alfombra, :tarima, :paneles, :blueprint_files_attributes => [:attachment, :attachment_file_name, :attachment_content_type, :attachment_file_size, :attachment_updated_at, :id]
+  
   controller do
     def edit
       @infrastructure = Expositor.find(params[:expositor_id]).infrastructure
