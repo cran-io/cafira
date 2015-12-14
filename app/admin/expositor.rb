@@ -42,6 +42,13 @@ ActiveAdmin.register Expositor do
       end
     end
 
+    def update
+      update! do
+        flash[:message] = "Datos del expositor actualizados correctamente."
+        edit_home_expositor_path(resource)
+      end
+    end
+
     def scoped_collection
       if params[:exposition_id]
         if params[:type] == 'all_expositors'
