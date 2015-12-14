@@ -1,5 +1,5 @@
 ActiveAdmin.register Expositor do
-  permit_params :name, :email, :cuit, :password, :password_confirmation
+  permit_params :name, :email, :cuit
   menu false
 
   config.clear_action_items!
@@ -20,7 +20,7 @@ ActiveAdmin.register Expositor do
         ExpositionExpositor.create(:exposition_id => exposition_id, :expositor_id => id) if ExpositionExpositor.find_by_exposition_id_and_expositor_id(exposition_id, id).nil?
       end
     end
-    redirect_to home_expositors_path
+    redirect_to home_expositors_path(:exposition_id => Rails.cache.read(:exposition_id))
   end
   
   #old expositors selection
@@ -43,22 +43,6 @@ ActiveAdmin.register Expositor do
       end
     end
 
-    def create      
-      create! do
-        ExpositionExpositor.create(:exposition_id => Rails.cache.read(:exposition_id), :expositor_id => resource.id)
-        resource.aditional_service = AditionalService.new
-        resource.infrastructure    = Infrastructure.new
-        resource.catalog           = Catalog.new
-        4.times do |i|
-          resource.catalog.catalog_images << CatalogImage.new( :priority => (i.zero? ? 'principal' : 'secundaria') )
-        end
-        2.times do |i|
-          resource.infrastructure.blueprint_files << BlueprintFile.new
-        end
-        home_expositors_path(:exposition_id => Rails.cache.read(:exposition_id))
-      end
-    end
-    
     def scoped_collection
       if params[:exposition_id]
         if params[:type] == 'all_expositors'
@@ -119,11 +103,9 @@ ActiveAdmin.register Expositor do
   form do |f|
     f.semantic_errors
     f.inputs 'Expositor' do
-      f.input :name, :label => "Nombre"
-      f.input :email, :label => "E-mail"
+      f.input :name, :label => "Nombre", :input_html => { :disabled => true }
+      f.input :email, :label => "E-mail", :input_html => { :disabled => true }
       f.input :cuit, :label => "Cuit"
-      f.input :password, :label => "Contraseña"
-      f.input :password_confirmation, :label => "Confirmación contraseña"
     end
     f.actions do
       f.action(:submit)

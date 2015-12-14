@@ -7,8 +7,22 @@ ActiveAdmin.register User do
     def update
       update!{ home_users_path }
     end
-    def create
-      create!{ home_users_path }
+
+    def create      
+      create! do
+        if resource.type == 'Expositor'
+          resource.aditional_service = AditionalService.new
+          resource.infrastructure    = Infrastructure.new
+          resource.catalog           = Catalog.new
+          4.times do |i|
+            resource.catalog.catalog_images << CatalogImage.new( :priority => (i.zero? ? 'principal' : 'secundaria') )
+          end
+          2.times do |i|
+            resource.infrastructure.blueprint_files << BlueprintFile.new
+          end
+        end
+       home_users_path
+      end
     end
   end
   index :download_links => [:csv] do
