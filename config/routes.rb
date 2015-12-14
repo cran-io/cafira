@@ -9,8 +9,7 @@ Rails.application.routes.draw do
       resource :infrastructure, :as => 'infrastruct'
     end
   end
-  root 'home/expositions#index'
-
+  root 'home/dashboard#index'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

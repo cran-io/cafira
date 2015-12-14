@@ -2,8 +2,13 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    if user.type == 'AdminUser'
+    user ||= User.new
+    case user.type
+    when 'AdminUser'
       can :manage, :all
+    when 'Expositor'
+      can :manage, Expositor, :id => user.id 
+      can :manage, [Catalog, Credential, AditionalService, Infrastructure], :expositor_id => user.id
     end
   end
 end
