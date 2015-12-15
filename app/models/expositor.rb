@@ -16,4 +16,8 @@ class Expositor < User
     aSetofExpositors
   end
 
+  def name_and_email
+    (name || "") + " (" + email + ")"
+  end
+
 end
