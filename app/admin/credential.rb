@@ -79,7 +79,7 @@ ActiveAdmin.register Credential do
     end
   end
 
-  index :download_links => [:csv] do |je|
+  index :download_links => [:csv] do
     h2 "Credenciales"
     status = credential_qty ? 'yes' : 'no'
     div :class => "status_tag #{status} completed_status_tag"  do
