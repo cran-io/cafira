@@ -60,14 +60,14 @@ ActiveAdmin.register Infrastructure do
         unless ff.object.attachment_file_name.nil?
           case ff.object.state
           when true
-            status = 'APROBADO'            
+            status = '(APROBADO)'            
           when false
-            status = 'NO APROBADO'
+            status = '(NO APROBADO)'
           else
-            status = 'PENDIENTE A REVISIÓN'
+            status = '(PENDIENTE A REVISIÓN)'
           end
         end
-        ff.input :attachment, :label => "Plano (#{status})", :as => :file, :require => false, :hint => ff.object.attachment.present? ? ff.object.attachment_file_name : content_tag(:span, "No hay un plano subido aún")
+        ff.input :attachment, :label => "Plano #{status}", :as => :file, :require => false, :hint => ff.object.attachment.present? ? ff.object.attachment_file_name : content_tag(:span, "No hay un plano subido aún")
       end
     end
     f.actions do
