@@ -48,7 +48,7 @@ ActiveAdmin.register User do
     f.inputs (params[:action] == 'edit' ? "Editar usuario" : "Crear usuario") do
       f.input :name, :label => "Nombre"
       f.input :email, :label => "E-mail"
-      f.input :type, :label => "Tipo de usuario", :collection => [["Administrador", "AdminUser"], ["Expositor", "Expositor"]]
+      f.input :type, :label => "Tipo de usuario", :collection => [["Administrador", "AdminUser"], ["Expositor", "Expositor"], ["Arquitecto", "Architect"]]
       f.input :password, :label => "Contraseña"
       f.input :password_confirmation, :label => "Confirmar contraseña"
     end

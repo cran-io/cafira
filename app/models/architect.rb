@@ -1,0 +1,2 @@
+class Architect < User
+end
