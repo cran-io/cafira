@@ -56,7 +56,18 @@ ActiveAdmin.register Infrastructure do
       f.input :tarima
       f.input :paneles
       f.has_many :blueprint_files, :heading => "Subir planos", :new_record => false, :html => { :enctype => "multipart/form-data" } do |ff| 
-        ff.input :attachment, :label => "Plano", :as => :file, :require => false, :hint => ff.object.attachment.present? ? ff.object.attachment_file_name : content_tag(:span, "No hay un plano subido aún")
+        status = ''
+        unless ff.object.attachment_file_name.nil?
+          case ff.object.state
+          when true
+            status = 'APROBADO'            
+          when false
+            status = 'NO APROBADO'
+          else
+            status = 'PENDIENTE A REVISIÓN'
+          end
+        end
+        ff.input :attachment, :label => "Plano (#{status})", :as => :file, :require => false, :hint => ff.object.attachment.present? ? ff.object.attachment_file_name : content_tag(:span, "No hay un plano subido aún")
       end
     end
     f.actions do

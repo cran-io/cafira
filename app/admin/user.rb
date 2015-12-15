@@ -1,5 +1,5 @@
 ActiveAdmin.register User do
-  permit_params :email, :type, :password, :password_confirmation
+  permit_params :email, :name, :type, :password, :password_confirmation
   controller do
     def show
       redirect_to edit_home_user_path(resource)
@@ -28,6 +28,7 @@ ActiveAdmin.register User do
   index :download_links => [:csv] do
     selectable_column
     column "E-mail", :email
+    column "Nombre", :name
     column "Tipo", :type
     column "Última sesión", :current_sign_in_at
     column "Creado el", :created_at
@@ -45,6 +46,7 @@ ActiveAdmin.register User do
   filter :type, :label => "Tipo de usuario"
   form do |f|
     f.inputs (params[:action] == 'edit' ? "Editar usuario" : "Crear usuario") do
+      f.input :name, :label => "Nombre"
       f.input :email, :label => "E-mail"
       f.input :type, :label => "Tipo de usuario", :collection => [["Administrador", "AdminUser"], ["Expositor", "Expositor"]]
       f.input :password, :label => "Contraseña"
