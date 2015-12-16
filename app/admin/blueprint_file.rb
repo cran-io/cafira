@@ -21,12 +21,28 @@ ActiveAdmin.register BlueprintFile do
       redirect_to home_blueprint_files_path
   end
 
+  member_action :approve, method: :post do
+    resource.update_attribute(:state, true)
+    redirect_to home_blueprint_files_path
+  end
+
+  member_action :disapprove, method: :post do
+    resource.update_attribute(:state, false)
+    resource.infrastructure.update_attribute(:completed, false)
+    redirect_to home_blueprint_files_path
+  end
+
+  member_action :pending, method: :post do
+    resource.update_attribute(:state, nil)
+    redirect_to home_blueprint_files_path
+  end
+
 
   index do 
     selectable_column
-    column "Expositor" do |bp_file|
-      bp_file.infrastructure.expositor.name_and_email
-    end
+    column "Plano" do |bp_file|
+      link_to((bp_file.attachment_file_name || ""), bp_file.attachment.url)
+    end 
     column "Estado", :state do |bp_file|
       case bp_file.state
       when true
@@ -37,25 +53,28 @@ ActiveAdmin.register BlueprintFile do
         status_tag 'Pendiente', :orange
       end
     end
-    column "Nombre de archivo", :attachment_file_name 
+    column "Expositor" do |bp_file|
+      bp_file.infrastructure.expositor.name_and_email
+    end
     column "Último upload", :attachment_updated_at
     column "Acciones" do |bp_file|
       span do
-        'Aprobar'
+        link_to 'Aprobar', approve_home_blueprint_file_path(bp_file), :method => :post
       end
       span do 
         ' | '
       end
       span do
-        'Desaprobar'
+        link_to 'Desaprobar', disapprove_home_blueprint_file_path(bp_file), :method => :post
       end
       span do 
         ' | '
       end
       span do
-        'Poner pendiente'
+        link_to 'Poner pendiente', pending_home_blueprint_file_path(bp_file), :method => :post
       end
     end
   end
+
   filter :bp_state_eq, :as => :select, :label => "Estado", :collection => [['Aprobado', 2], ['Desaprobado', 1], ['Pendiente a aprobación', 0]]
 end
