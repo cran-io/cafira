@@ -1,7 +1,8 @@
 ActiveAdmin.register BlueprintFile do
-  
+  actions :all, :except => [:new, :create]
+
   batch_action :destroy, false
-  
+
   batch_action :approve_blueprint_files do |ids|
     BlueprintFile.where(:id => ids).update_all(:state => true)
     redirect_to home_blueprint_files_path
