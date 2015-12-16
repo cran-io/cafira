@@ -29,7 +29,6 @@ group :development, :test do
 end
 
 group :test do
-	gem 'shoulda-matchers', github: 'thoughtbot/shoulda-matchers'
 	gem 'database_cleaner'
 	gem 'simplecov', :require => false
 end
