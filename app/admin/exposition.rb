@@ -18,10 +18,48 @@ ActiveAdmin.register Exposition do
     column "Nombre", :name
     column "Fecha de comienzo", :initialized_at
     column "Fecha de finalización", :ends_at
-    column "Deadline catálogo", :deadline_catalogs
-    column "Deadline credenciales", :deadline_credentials
-    column "Deadline serv. adicionales", :deadline_aditional_services
-    column "Deadline infraestructura", :deadline_infrastructures
+    column "Deadlines" do |exposition|
+      div do
+        span do
+          strong do
+            "Deadline catálogo: "
+          end
+        end
+        span do
+          exposition.deadline_catalogs
+        end
+      end
+      div do
+        span do
+          strong do
+            "Deadline credenciales: "
+          end
+        end
+        span do
+          exposition.deadline_credentials
+        end
+      end
+      div do
+        span do
+          strong do
+            "Deadline serv. adicionales: "
+          end
+        end
+        span do
+            exposition.deadline_aditional_services
+        end
+      end
+      div do
+        span do
+          strong do
+            "Deadline infraestructura: "
+          end
+        end
+        span do
+          exposition.deadline_infrastructures
+        end
+      end
+    end
     column "Activo", :active, :class => 'text-right'
     column "Acciones" do |exposition|
       span do 

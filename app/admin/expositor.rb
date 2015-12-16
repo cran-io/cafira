@@ -93,7 +93,7 @@ ActiveAdmin.register Expositor do
     end
   end
 
-  index :download_links => [:csv] do
+  index :download_links => false do
     if exposition_id
       h2 "Expositores en \"" + Exposition.find(params[:exposition_id]).name + "\"" 
       selectable_column
