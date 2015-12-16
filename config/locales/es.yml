@@ -52,6 +52,9 @@ es:
       aditional_service:
         one: "Servicio adicional"
         other: "Servicios adicionales"
+      blueprint_file:
+        one: "Plano"
+        other: "Planos"
   active_admin:
     powered_by: "Desarrollado por cran.io"
     access_denied:
@@ -61,6 +64,9 @@ es:
       labels:
         add_expositors_to_exposition: "Agregar expositores a esta exposición"
         delete_from_exposition: "Quitar expositores de esta exposición"
+        approve_blueprint_files: "Aprobar planos seleccionados"
+        disapprove_blueprint_files: "Desaprobar planos seleccionados"
+        pending_blueprint_files: "Poner planos seleccionados en pendiente"
   helpers:
     page_entries_info:
       more_pages:
