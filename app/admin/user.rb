@@ -8,7 +8,7 @@ ActiveAdmin.register User do
       update!{ home_users_path }
     end
 
-    def create      
+    def create
       create! do
         if resource.type == 'Expositor'
           resource.aditional_service = AditionalService.new
@@ -23,6 +23,8 @@ ActiveAdmin.register User do
         end
        home_users_path
       end
+      #if it was correctly created it sends a signup mail
+      ExpositorMailer.signup_mail(resource,params[:user][:password]).deliver if Expositor.exists?(:id => resource.id)
     end
   end
   index :download_links => [:csv] do
@@ -33,10 +35,10 @@ ActiveAdmin.register User do
     column "Última sesión", :current_sign_in_at
     column "Creado el", :created_at
     column "Acciones" do |exposition|
-      span do 
+      span do
         link_to 'Editar', edit_home_user_path(exposition), :method => :get
       end
-      span do 
+      span do
         link_to 'Eliminar', home_user_path(exposition), :method => :delete, :data => { :confirm => '¿Estás seguro de eliminar este usuario?' }
       end
     end
