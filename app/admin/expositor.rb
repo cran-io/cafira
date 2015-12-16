@@ -1,7 +1,7 @@
 ActiveAdmin.register Expositor do
   permit_params :name, :email, :cuit
   menu false
-  actions :all, :except => [:new, :create]
+  actions :all, :except => [:new, :create, :destroy]
   config.clear_action_items!
   batch_action :destroy, false
 
@@ -103,6 +103,7 @@ ActiveAdmin.register Expositor do
     column "Nombre", :name
     column "Cuit", :cuit
     column "E-mail", :email
+    actions
   end
 
   form do |f|
