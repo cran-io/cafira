@@ -1,6 +1,6 @@
 ActiveAdmin.register AditionalService do
   menu false
-  permit_params :energia, :energia_cantidad, :estacionamiento, :estacionamiento_cantidad, :nylon, :nylon_cantidad, :cuotas_sociales, :cuotas_sociales_cantidad, :catalogo_extra
+  permit_params :energia, :energia_cantidad, :estacionamiento, :estacionamiento_cantidad, :nylon, :nylon_cantidad, :catalogo_extra, :catalogo_extra_cantidad
   config.batch_actions = false
     
   controller do
@@ -58,9 +58,8 @@ ActiveAdmin.register AditionalService do
       f.input :estacionamiento_cantidad, :label => "Cantidad (estacionamiento)" 
       f.input :nylon, :label => "Nylon"
       f.input :nylon_cantidad, :label => "Cantidad (nylon)"
-      f.input :cuotas_sociales, :label => "Cuotas sociales"
-      f.input :cuotas_sociales_cantidad, :label => "Cantidad (cuotas sociales)"
-      f.input :catalogo_extra, :label => "Catálogo extra"
+      f.input :catalogo_extra, :label => "Página de catálogo adicional"
+      f.input :catalogo_extra_cantidad, :label => "Cantidad (adicional)"
     end
     f.actions do
       f.action(:submit)
