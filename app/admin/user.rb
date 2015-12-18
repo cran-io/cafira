@@ -14,8 +14,14 @@ ActiveAdmin.register User do
           resource.aditional_service = AditionalService.new
           resource.infrastructure    = Infrastructure.new
           resource.catalog           = Catalog.new
-          4.times do |i|
-            resource.catalog.catalog_images << CatalogImage.new( :priority => (i.zero? ? 'principal' : 'secundaria') )
+          5.times do |i|
+            if i == 0
+              resource.catalog.catalog_images << CatalogImage.new( :priority => 'logo' )
+            elsif i == 1
+              resource.catalog.catalog_images << CatalogImage.new( :priority => 'primaria' )
+            else
+              resource.catalog.catalog_images << CatalogImage.new( :priority => 'secundaria' )
+            end
           end
           2.times do |i|
             resource.infrastructure.blueprint_files << BlueprintFile.new

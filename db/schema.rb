@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151217160143) do
+ActiveRecord::Schema.define(version: 20151218200334) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,7 +37,6 @@ ActiveRecord::Schema.define(version: 20151217160143) do
     t.boolean  "estacionamiento"
     t.integer  "estacionamiento_cantidad"
     t.boolean  "nylon"
-    t.integer  "nylon_cantidad"
     t.boolean  "cuotas_sociales"
     t.integer  "catalogo_extra_cantidad"
     t.boolean  "catalogo_extra"
@@ -57,6 +56,7 @@ ActiveRecord::Schema.define(version: 20151217160143) do
     t.integer  "infrastructure_id"
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
+    t.text     "comment"
   end
 
   create_table "catalog_images", force: :cascade do |t|
@@ -76,9 +76,19 @@ ActiveRecord::Schema.define(version: 20151217160143) do
     t.string   "facebook"
     t.string   "type"
     t.integer  "expositor_id"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
-    t.boolean  "completed",    default: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.boolean  "completed",              default: false
+    t.text     "description"
+    t.string   "phone_number"
+    t.string   "aditional_phone_number"
+    t.string   "email"
+    t.string   "aditional_email"
+    t.string   "website"
+    t.string   "address"
+    t.string   "city"
+    t.string   "province"
+    t.string   "zip_code"
   end
 
   create_table "credentials", force: :cascade do |t|

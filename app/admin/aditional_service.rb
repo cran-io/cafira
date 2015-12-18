@@ -53,11 +53,10 @@ ActiveAdmin.register AditionalService do
         f.object.completed ? "Sección completa" : "Hay campos incompletos";
       end
       f.input :energia, :label => "Energía"
-      f.input :energia_cantidad, :label => "Energía cantidad"
+      f.input :energia_cantidad, :label => "Energía cantidad", :input_html => { :step =>"0.5", :min => "0" }
       f.input :estacionamiento, :label => "Estacionamiento"
       f.input :estacionamiento_cantidad, :label => "Cantidad (estacionamiento)" 
       f.input :nylon, :label => "Nylon"
-      f.input :nylon_cantidad, :label => "Cantidad (nylon)"
       f.input :catalogo_extra, :label => "Página de catálogo adicional"
       f.input :catalogo_extra_cantidad, :label => "Cantidad (adicional)"
     end

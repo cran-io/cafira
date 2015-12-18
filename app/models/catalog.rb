@@ -9,8 +9,10 @@ class Catalog < ActiveRecord::Base
     status = true
     catalog_images.each do |catalog_image|
       status = false if catalog_image.attachment_file_name.nil?
-  	end
-  	status = false if (self.stand_number.nil? || self.twitter.nil? || self.facebook.nil?) || (self.stand_number.empty? || self.twitter.empty? || self.facebook.empty?)
+    end
+    [:twitter, :facebook, :description, :phone_number, :aditional_phone_number, :email, :aditional_email, :website, :address, :city, :province, :zip_code].each do |attribute|
+      status = false if self[attribute].nil? || self[attribute].empty?
+    end
     self.completed = status
     nil
   end
