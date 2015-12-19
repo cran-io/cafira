@@ -1,6 +1,8 @@
 ActiveAdmin.register BlueprintFile do
   actions :all, :except => [:new, :create]
 
+  config.batch_actions = false
+
   batch_action :destroy, false
 
   batch_action :approve_blueprint_files do |ids|
@@ -10,7 +12,7 @@ ActiveAdmin.register BlueprintFile do
 
   batch_action :disapprove_blueprint_files do |ids|
     ids.each do |id|
-      bp_file = BlueprintFile.find(id)
+      bp_file = BlueprintFile.fin(did)
       bp_file.update_attribute(:state, false)
       bp_file.infrastructure.update_attribute(:completed, false)
     end
@@ -18,23 +20,23 @@ ActiveAdmin.register BlueprintFile do
   end
 
   batch_action :pending_blueprint_files do |ids|
-      BlueprintFile.where(:id => ids).update_all(:state => nil)
-      redirect_to home_blueprint_files_path
+    BlueprintFile.where(:id => ids).update_all(:state => nil)
+    redirect_to home_blueprint_files_path
   end
 
   member_action :approve, method: :post do
-    resource.update_attribute(:state, true)
+    resource.update_attributes(:state => true, :comment => nil)
     redirect_to home_blueprint_files_path
-  end
+   end
 
   member_action :disapprove, method: :post do
-    resource.update_attribute(:state, false)
+    resource.update_attributes(:state => false, :comment => params[:justification])
     resource.infrastructure.update_attribute(:completed, false)
-    redirect_to home_blueprint_files_path
+    render :json => { :url => home_blueprint_files_path }
   end
 
   member_action :pending, method: :post do
-    resource.update_attribute(:state, nil)
+    resource.update_attributes(:state => nil, :comment => nil)
     redirect_to home_blueprint_files_path
   end
 
@@ -66,7 +68,7 @@ ActiveAdmin.register BlueprintFile do
         ' | '
       end
       span do
-        link_to 'Desaprobar', disapprove_home_blueprint_file_path(bp_file), :method => :post
+        link_to 'Desaprobar', 'javascript:void(0);', :method => :post, :class => "dissaprove_blueprint_file", :data => { :path => disapprove_home_blueprint_file_path(bp_file)}
       end
       span do 
         ' | '
