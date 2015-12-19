@@ -4,7 +4,7 @@ class AditionalService < ActiveRecord::Base
   private
   def verify_fields
     status = true
-    if (energia == true && energia_cantidad.nil?) || (estacionamiento == true && estacionamiento_cantidad.nil?) || (nylon == true && nylon_cantidad.nil?) || (catalogo_extra == true && catalogo_extra_cantidad.nil?)
+    if (energia == true && energia_cantidad.nil?) || (estacionamiento == true && estacionamiento_cantidad.nil?) || (catalogo_extra == true && catalogo_extra_cantidad.nil?)
     	status = false
   	end
   	self.completed = status
