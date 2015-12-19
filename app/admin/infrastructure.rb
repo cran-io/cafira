@@ -71,8 +71,12 @@ ActiveAdmin.register Infrastructure do
             label  = 'label-orange'
           end
         end
-        if !ff.object.state || ff.object.state.nil?
-          ff.input :attachment, :label => "Plano <span class='#{label}'>#{status}</span>".html_safe, :as => :file, :require => false, :hint => ff.object.attachment.present? ? ff.object.attachment_file_name : content_tag(:span, "No hay un plano subido aún")
+        if ff.object.state.nil?
+          ff.input :attachment, :label => "Plano <span class='#{label}'>#{status}</span>".html_safe, :as => :file, :require => false, 
+          :hint => ff.object.attachment.present? ? ff.object.attachment_file_name : content_tag(:span, "No hay un plano subido aún")
+        elsif !ff.object.state
+          ff.input :attachment, :label => "Plano <span class='#{label}'>#{status}</span>".html_safe, :as => :file, :require => false, 
+          :hint => ff.object.attachment.present? ? "Justificación: " + ff.object.comment : content_tag(:span, "No hay un plano subido aún")
         else
           ff.input :attachment_file_name, :label => "Plano <span class='#{label}'>#{status}</span>".html_safe, :input_html => { :disabled => true }
         end
