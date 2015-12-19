@@ -23,6 +23,10 @@ $skinBorderWindowColor: #ACACAC!default;
 @import "wigu/active_admin_theme";
 @import "active_admin/translate";
 
+@import "vex";
+@import "vex-theme-os";
+
+
 #wrapper .flashes .flash{
 	color:#ACACAC;
 }
@@ -91,4 +95,8 @@ span a{
 }
 input[type=text]:disabled {
 	background-color:#FFE8E8!important;
+}
+
+.vex-dialog-button-primary {
+	background-color:#F38E00!important;
 }
