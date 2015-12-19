@@ -49,7 +49,7 @@ ActiveAdmin.register Credential do
     end
   end
 
-  sidebar "Acciones del expositor", :priority => 0, :only => [:show, :edit, :newq] do
+  sidebar "Acciones del expositor", :priority => 0, :only => [:show, :edit, :new] do
     ul do
       li do
         span do
@@ -106,7 +106,8 @@ ActiveAdmin.register Credential do
       f.input :es_expositor, :label => "Expositor"
       f.input :personal_stand, :label => "Personal Stand"
       f.input :foto_video, :label => "Foto/Video"
-      f.input :fecha_alta, :as => :datepicker
+      f.input :fecha_alta, :as => :datepicker, :input_html => { :disabled => true, :value => "#{f.object.fecha_alta.nil? ? Date.today : f.object.fecha_alta}" }
+      f.input :fecha_alta, :as => :hidden, :input_html => { :value => f.object.fecha_alta.nil? ? Date.today : f.object.fecha_alta }
     end
     f.actions  
   end
