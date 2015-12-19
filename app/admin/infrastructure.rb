@@ -1,7 +1,7 @@
 ActiveAdmin.register Infrastructure do
   menu false
   config.batch_actions = false
-  permit_params :alfombra, :tarima, :paneles, :blueprint_files_attributes => [:attachment, :attachment_file_name, :attachment_content_type, :attachment_file_size, :attachment_updated_at, :id]
+  permit_params :alfombra, :alfombra_tipo, :tarima, :paneles, :blueprint_files_attributes => [:attachment, :attachment_file_name, :attachment_content_type, :attachment_file_size, :attachment_updated_at, :id]
   
   controller do
     def edit
@@ -53,6 +53,7 @@ ActiveAdmin.register Infrastructure do
         f.object.completed ? "Sección completa" : "Hay campos incompletos";
       end
       f.input :alfombra
+      f.input :alfombra_tipo, :label => "Tipo de alfombra", :as => :select, :collection => [["Estándar","estandar"],["Otra", "otra"]], :include_blank => false, :allow_blank => false, :hint => "comunicarse con el organizador para saber disponibilidad."
       f.input :tarima
       f.input :paneles
       f.has_many :blueprint_files, :heading => "Subir planos", :new_record => false, :html => { :enctype => "multipart/form-data" } do |ff| 
