@@ -3,3 +3,4 @@
 #= require fields_management.js
 #= require vex.combined.min
 #= require modal_management.js
+#= require ugly_button_management.js
