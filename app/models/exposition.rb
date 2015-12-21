@@ -1,9 +1,9 @@
 class Exposition < ActiveRecord::Base
   has_many :expositors, :through => :exposition_expositors
-  has_many :exposition_expositors
+  has_many :exposition_expositors, :dependent => :destroy
   has_many :exposition_files, :dependent => :destroy
   accepts_nested_attributes_for :exposition_files
-  
+
   validates :name, :presence => true, :length => { :in => 2..50 }
   validates :initialized_at, :presence => true, :on => :create
   validates :ends_at, :presence => true, :on => :create

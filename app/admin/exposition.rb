@@ -13,9 +13,11 @@ ActiveAdmin.register Exposition do
         resource.exposition_files = exposition_files
       end
     end
+
     def update
       update!{ home_expositions_path }
     end
+    
     def create
       create! { home_expositions_path }
     end
@@ -74,11 +76,17 @@ ActiveAdmin.register Exposition do
       span do 
         link_to 'Ver', {:controller => 'home/expositors', :action => 'index', :exposition_id => exposition.id}, :method => :get
       end
-      span do 
+      span do
         "|"
       end
       span do 
         link_to 'Editar', edit_home_exposition_path(exposition), :method => :get
+      end
+      span do 
+        "|"
+      end
+      span do
+        link_to "Eliminar", home_exposition_path(exposition.id), :method => :delete
       end
       span do 
         "|"
