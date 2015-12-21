@@ -49,6 +49,16 @@ ActiveAdmin.register Expositor do
       end
     end
 
+    def edit
+      edit! do
+        exposition = Rails.cache.read(:exposition_id)
+        exposition = Exposition.find(exposition)
+        @manual_url = exposition.exposition_files.find_by_file_type("manual").attachment.url
+        @plan_url = exposition.exposition_files.find_by_file_type("plan_tiempos").attachment.url
+        @bylaw_url = exposition.exposition_files.find_by_file_type("reglamento").attachment.url
+      end
+    end
+    
     def scoped_collection
       if params[:exposition_id]
         if params[:type] == 'all_expositors'
@@ -92,6 +102,26 @@ ActiveAdmin.register Expositor do
       end
     end
   end
+  
+  sidebar "Descargas", :priority => 1, :only => [:show, :edit] do
+    ul do
+      li do
+        span do
+          link_to("Manual", manual_url)
+        end
+      end
+      li do
+        span do
+          link_to("Plan de tiempos", plan_url)
+        end
+      end
+      li do
+        span do
+          link_to("Reglamento técnico", bylaw_url)
+        end
+      end
+    end
+  end
 
   index :download_links => false do
     if exposition_id
@@ -103,7 +133,11 @@ ActiveAdmin.register Expositor do
     column "Nombre", :name
     column "Cuit", :cuit
     column "E-mail", :email
-    actions
+    column "Acciones" do |expositor|
+      span do
+        link_to "Editar", edit_home_expositor_path(expositor)
+      end
+    end
   end
 
   form do |f|

@@ -4,6 +4,8 @@ ActiveAdmin.register Credential do
   menu :if => proc{ false }
   
   controller do
+    before_action :set_files
+
     def index
       @owner = Expositor.find(params[:expositor_id])
       @credential_qty = @owner.credentials.any?
@@ -16,6 +18,15 @@ ActiveAdmin.register Credential do
     
     def create
       create!{ home_expositor_credentials_path }
+    end
+    
+    private
+    def set_files
+      exposition = Rails.cache.read(:exposition_id)
+      exposition = Exposition.find(exposition)
+      @manual_url = exposition.exposition_files.find_by_file_type("manual").attachment.url
+      @plan_url = exposition.exposition_files.find_by_file_type("plan_tiempos").attachment.url
+      @bylaw_url = exposition.exposition_files.find_by_file_type("reglamento").attachment.url
     end
   end
 
@@ -74,6 +85,26 @@ ActiveAdmin.register Credential do
       li do
         span do
           link_to 'Infraestructura', edit_home_infrastruct_path(resource.expositor), :method => :get
+        end
+      end
+    end
+  end
+  
+  sidebar "Descargas", :priority => 1 do
+    ul do
+      li do
+        span do
+          link_to("Manual", manual_url)
+        end
+      end
+      li do
+        span do
+          link_to("Plan de tiempos", plan_url)
+        end
+      end
+      li do
+        span do
+          link_to("Reglamento técnico", bylaw_url)
         end
       end
     end

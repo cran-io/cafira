@@ -6,6 +6,11 @@ ActiveAdmin.register AditionalService do
   controller do
     def edit
       @aditional_service = Expositor.find(params[:expositor_id]).aditional_service
+      exposition = Rails.cache.read(:exposition_id)
+      exposition = Exposition.find(exposition)
+      @manual_url = exposition.exposition_files.find_by_file_type("manual").attachment.url
+      @plan_url = exposition.exposition_files.find_by_file_type("plan_tiempos").attachment.url
+      @bylaw_url = exposition.exposition_files.find_by_file_type("reglamento").attachment.url
     end
 
     def update
@@ -46,6 +51,26 @@ ActiveAdmin.register AditionalService do
     end
   end
 
+   sidebar "Descargas", :priority => 1 do
+    ul do
+      li do
+        span do
+          link_to("Manual", manual_url)
+        end
+      end
+      li do
+        span do
+          link_to("Plan de tiempos", plan_url)
+        end
+      end
+      li do
+        span do
+          link_to("Reglamento técnico", bylaw_url)
+        end
+      end
+    end
+  end
+  
   form do |f|
     f.inputs "Servicio adicional" do
       status = f.object.completed ? 'yes' : 'no'
