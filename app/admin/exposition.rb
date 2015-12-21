@@ -1,23 +1,23 @@
 ActiveAdmin.register Exposition do
   menu label: "Exposiciones"
-  permit_params :ends_at, :initialized_at, :name, :active, :deadline_catalogs, :deadline_credentials, :deadline_infrastructures, :deadline_aditional_services, :exposition_files_attributes => [:attachment, :attachment_file_name, :attachment_content_type, :attachment_file_size, :attachment_updated_at, :id]
+  permit_params :ends_at, :initialized_at, :name, :active, :deadline_catalogs, :deadline_credentials, :deadline_infrastructures, :deadline_aditional_services, :exposition_files_attributes => [:file_type, :attachment, :attachment_file_name, :attachment_content_type, :attachment_file_size, :attachment_updated_at, :id]
   config.batch_actions = false
   
   controller do
     def new
       new! do
+        exposition_files = Array.new
         ['reglamento', 'manual', 'plan_tiempos'].each do |type|
-          resource.exposition_files << ExpositionFile.new(:file_type => type)
+          exposition_files.push(ExpositionFile.new(:file_type => type))
         end
+        resource.exposition_files = exposition_files
       end
     end
     def update
       update!{ home_expositions_path }
     end
     def create
-      create!{ 
-        home_expositions_path 
-      }
+      create! { home_expositions_path }
     end
   end
 
@@ -90,6 +90,9 @@ ActiveAdmin.register Exposition do
   end
 
   form do |f|
+    div do
+      params[:action]
+    end
     f.semantic_errors
     f.inputs 'Datos de la exposición' do
       f.input :name, :label => "Nombre"
@@ -110,9 +113,7 @@ ActiveAdmin.register Exposition do
         end
         ff.input :attachment, :label => "#{label}", :as => :file, :require => false, 
         :hint => ff.object.attachment.present? ? ff.object.attachment_file_name : content_tag(:span, "No hay un #{label} subido aún")
-        ff.actions do
-          link_to "Delete",root_path, method: "delete", class: "button" 
-        end
+        ff.input :file_type, :input_html => { :value => ff.object.file_type }, :as => :hidden
       end
     end
     f.actions
