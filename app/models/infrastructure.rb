@@ -20,7 +20,7 @@ class Infrastructure < ActiveRecord::Base
         end
       end
     end
-    status = true if blueprint_files.where(:state => nil).where(:attachment_file_name => nil).count == 2
+    status = true if blueprint_files.where(:state => nil).where("attachment_file_name is not null").count == 2
     self.completed = status
     nil
   end
