@@ -1,7 +1,11 @@
 ActiveAdmin.register Catalog do
-  menu false
   permit_params :stand_number, :twitter, :facebook, :type, :description, :phone_number, :aditional_phone_number, :email, :aditional_email, :website, :address, :city, :province, :zip_code, :catalog_images_attributes => [:attachment, :attachment_file_name, :attachment_content_type, :attachment_file_size, :attachment_updated_at, :id]
   config.batch_actions = false
+  actions :all, :except => [:new, :create]
+  
+  
+  member_action :download_catalog, :method => :get do
+  end
 
   controller do
     def edit
@@ -21,7 +25,7 @@ ActiveAdmin.register Catalog do
     end
   end
 
-  sidebar "Acciones del expositor", :priority => 0 do
+  sidebar "Acciones del expositor", :priority => 0, :only => :edit do
     ul do
       li do
         span do
@@ -51,7 +55,7 @@ ActiveAdmin.register Catalog do
     end
   end
 
-  sidebar "Descargas", :priority => 1 do
+  sidebar "Descargas", :priority => 1, :only => :edit do
     ul do
       li do
         span do
@@ -68,6 +72,141 @@ ActiveAdmin.register Catalog do
           link_to("Reglamento técnico", bylaw_url)
         end
       end
+    end
+  end
+
+  index do
+    column "Expositor" do |catalog|
+      catalog.expositor.name
+    end
+    column "Stand", :stand_number
+    column "Completo", :completed, :class => 'text-right'
+    column "Internet" do |catalog|
+      div do
+        span do
+          strong do
+            "Email: "
+          end
+        end
+        span do
+            catalog.email || '-'
+        end
+      end
+      div do
+        span do
+          strong do
+            "Email adicional: "
+          end
+        end
+        span do
+            catalog.aditional_email || '-'
+        end
+      end
+      div do
+        span do
+          strong do
+            "Página web: "
+          end
+        end
+        span do
+          catalog.website || '-'
+        end
+      end
+      div do
+        span do
+          strong do
+            "Facebook: "
+          end
+        end
+        span do
+          catalog.facebook || '-'
+        end
+      end
+      div do
+        span do
+          strong do
+            "Twitter: "
+          end
+        end
+        span do
+            catalog.twitter || '-'
+        end
+      end
+    end
+    column "Teléfonos" do |catalog|
+      div do
+        span do
+          strong do
+            "Tel. 1: "
+          end
+        end
+        span do
+            catalog.phone_number || '-'
+        end
+      end
+      div do
+        span do
+          strong do
+            "Teĺ. 2: "
+          end
+        end
+        span do
+            catalog.aditional_phone_number || '-'
+        end
+      end
+    end
+    column "Location" do |catalog|
+      div do
+        span do
+          strong do
+            "Ciudad: "
+          end
+        end
+        span do
+            catalog.city || '-'
+        end
+      end
+      div do
+        span do
+          strong do
+            "Provincia: "
+          end
+        end
+        span do
+            catalog.province || '-'
+        end
+      end
+      div do
+        span do
+          strong do
+            "Código postal: "
+          end
+        end
+        span do
+            catalog.zip_code || '-'
+        end
+      end
+    end
+    column "Imágenes" do |catalog|
+      catalog.catalog_images.each do |image|
+        div do
+          span do
+            strong do
+              "#{image.priority.camelize}: "
+            end
+          end
+          span do
+              link_to((image.attachment_file_name || ""), image.attachment.url)
+          end
+        end
+      end
+    end
+    column "Acciones" do |catalog|
+      div do
+        span do
+            link_to "Descargar", download_catalog_home_catalog_path(catalog)
+        end
+      end if catalog.completed?
     end
   end
 
@@ -103,5 +242,10 @@ ActiveAdmin.register Catalog do
       f.action(:submit)
     end
   end
-
+  filter :completed, :label => "Completado", :collection => [["Si", true], ["No", false]]
+  filter :stand_number, :label => "Nro stand"
+  filter :email
+  filter :twitter
+  filter :facebook
+  filter :address, :label => "Dirección"
 end
