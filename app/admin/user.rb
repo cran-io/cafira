@@ -14,14 +14,8 @@ ActiveAdmin.register User do
           resource.aditional_service = AditionalService.new
           resource.infrastructure    = Infrastructure.new
           resource.catalog           = Catalog.new
-          5.times do |i|
-            if i == 0
-              resource.catalog.catalog_images << CatalogImage.new( :priority => 'logo' )
-            elsif i == 1
-              resource.catalog.catalog_images << CatalogImage.new( :priority => 'primaria' )
-            else
-              resource.catalog.catalog_images << CatalogImage.new( :priority => 'secundaria' )
-            end
+          ['logo', 'primaria', 'secundaria', 'secundaria', 'secundaria'].each do |priority|
+            resource.catalog.catalog_images << CatalogImage.new( :priority => priority )
           end
           2.times do |i|
             resource.infrastructure.blueprint_files << BlueprintFile.new
@@ -29,10 +23,10 @@ ActiveAdmin.register User do
         end
        home_users_path
       end
-      #if it was correctly created it sends a signup mail
-      ExpositorMailer.signup_mail(resource,params[:user][:password]).deliver if Expositor.exists?(:id => resource.id)
+      ExpositorMailer.signup_mail(resource, params[:user][:password]).deliver if Expositor.exists?(:id => resource.id)
     end
   end
+
   index :download_links => [:csv] do
     selectable_column
     column "E-mail", :email
@@ -50,14 +44,19 @@ ActiveAdmin.register User do
     end
   end
 
-  filter :email, :label => "E-mail"
-  filter :type, :label => "Tipo de usuario"
   form do |f|
     f.inputs (params[:action] == 'edit' ? "Editar usuario" : "Crear usuario") do
       f.input :name, :label => "Nombre"
       f.input :email, :label => "E-mail"
       if f.object.id.nil?
-        f.input :type, :label => "Tipo de usuario", :as => :select, :collection => [["Administrador", "AdminUser"], ["Expositor", "Expositor"], ["Arquitecto", "Architect"]], include_blank: false, allow_blank: false
+        f.input :type, :label => "Tipo de usuario", :as => :select, :include_blank => false, :allow_blank => false,
+        :collection => [
+          ["Administrador", "AdminUser"], 
+          ["Expositor", "Expositor"], 
+          ["Arquitecto", "Architect"],
+          ["Organizador", "Organizer"],
+          ["Diseñador", "Designer"]
+        ]
       end
       f.input :password, :label => "Contraseña"
       f.input :password_confirmation, :label => "Confirmar contraseña"
@@ -65,4 +64,6 @@ ActiveAdmin.register User do
     f.actions
   end
 
+  filter :email, :label => "E-mail"
+  filter :type, :label => "Tipo de usuario"
 end
