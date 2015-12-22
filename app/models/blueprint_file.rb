@@ -9,18 +9,4 @@ class BlueprintFile < ActiveRecord::Base
      in: 0..5.megabytes
     }
 
-    ransacker :bp_state,
-    formatter: -> (state) {
-      case state.to_i
-      when 2
-        true
-      when 1
-        false
-      when 0
-        nil
-      else
-      end
-    } do |parent|
-      parent.table[:state]
-    end
 end

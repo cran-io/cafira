@@ -94,5 +94,5 @@ ActiveAdmin.register BlueprintFile do
     end
   end
 
-  filter :bp_state_eq, :as => :select, :label => "Estado", :collection => [['Aprobado', 2], ['Desaprobado', 1], ['Pendiente a aprobación', 0]]
-end
+  filter :state, :as => :select, :label => "Estado", :collection => [['Desaprobado', 0], ['Aprobado', 1], ['Pre aprobado', 2], ['Pendiente a aprobación', 3]]
+end 
