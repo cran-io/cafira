@@ -1,6 +1,6 @@
 $(function() {
 	vex.defaultOptions.className = 'vex-theme-os';
-	$('.dissaprove_blueprint_file').click(function() {
+	$('.dissaprove_blueprint_file, .pre_approve_blueprint_file').click(function() {
 		var url = $(this).data('path');
 		initializeJustificationModal(url);
 	});

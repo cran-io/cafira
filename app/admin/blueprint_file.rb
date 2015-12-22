@@ -6,41 +6,47 @@ ActiveAdmin.register BlueprintFile do
   batch_action :destroy, false
 
   batch_action :approve_blueprint_files do |ids|
-    BlueprintFile.where(:id => ids).update_all(:state => true)
+    BlueprintFile.where(:id => ids).update_all(:state => 1)
     redirect_to home_blueprint_files_path
   end
 
   batch_action :disapprove_blueprint_files do |ids|
     ids.each do |id|
       bp_file = BlueprintFile.fin(did)
-      bp_file.update_attribute(:state, false)
-      bp_file.infrastructure.update_attribute(:completed, false)
+      bp_file.update_attribute(:state, 0)
+      bp_file.infrastructure.update_attribute(:completed, 0)
     end
     redirect_to home_blueprint_files_path
   end
 
   batch_action :pending_blueprint_files do |ids|
-    BlueprintFile.where(:id => ids).update_all(:state => nil)
+    BlueprintFile.where(:id => ids).update_all(:state => 3)
+    redirect_to home_blueprint_files_path
+  end
+
+  member_action :pending, method: :post do
+    resource.update_attributes(:state => 3, :comment => nil)
     redirect_to home_blueprint_files_path
   end
 
   member_action :approve, method: :post do
-    resource.update_attributes(:state => true, :comment => nil)
+    resource.update_attributes(:state => 1, :comment => nil)
     redirect_to home_blueprint_files_path
-   end
+  end
 
   member_action :disapprove, method: :post do
-    resource.update_attributes(:state => false, :comment => params[:justification])
+    resource.update_attributes(:state => 0, :comment => params[:justification])
     resource.infrastructure.update_attribute(:completed, false)
-    ExpositorMailer.dissaproved_blueprint_file(resource.infrastructure.expositor, params[:justification]).deliver
+    ExpositorMailer.blueprint_file_mail(resource.infrastructure.expositor, params[:justification], 'disapproved').deliver_now
     render :json => { :url => home_blueprint_files_path }
   end
 
-  member_action :pending, method: :post do
-    resource.update_attributes(:state => nil, :comment => nil)
-    redirect_to home_blueprint_files_path
-  end
 
+  member_action :pre_approve, method: :post do
+    resource.update_attributes(:state => 2, :comment => params[:justification])
+    ExpositorMailer.blueprint_file_mail(resource.infrastructure.expositor, params[:justification], 'pre_approved').deliver_now
+    render :json => { :url => home_blueprint_files_path }
+  end
 
   index do 
     selectable_column
@@ -49,10 +55,12 @@ ActiveAdmin.register BlueprintFile do
     end 
     column "Estado", :state do |bp_file|
       case bp_file.state
-      when true
-        status_tag 'Aprobado', :yes
-      when false
+      when 0
         status_tag 'Desaprobado', :red
+      when 1
+        status_tag 'Aprobado', :yes
+      when 2
+        status_tag 'Pre aprobación', :grey 
       else
         status_tag 'Pendiente', :orange
       end
@@ -75,7 +83,13 @@ ActiveAdmin.register BlueprintFile do
         ' | '
       end
       span do
-        link_to 'Poner pendiente', pending_home_blueprint_file_path(bp_file), :method => :post
+        link_to 'Pre aprobar', 'javascript:void(0);', :method => :post, :class => "pre_approve_blueprint_file", :data => { :path => pre_approve_home_blueprint_file_path(bp_file)}
+      end
+      span do 
+        ' | '
+      end
+      span do
+        link_to 'Pendiente', pending_home_blueprint_file_path(bp_file), :method => :post
       end
     end
   end
