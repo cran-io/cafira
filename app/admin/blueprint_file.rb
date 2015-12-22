@@ -32,6 +32,7 @@ ActiveAdmin.register BlueprintFile do
   member_action :disapprove, method: :post do
     resource.update_attributes(:state => false, :comment => params[:justification])
     resource.infrastructure.update_attribute(:completed, false)
+    ExpositorMailer.dissaproved_blueprint_file(resource.infrastructure.expositor, params[:justification]).deliver
     render :json => { :url => home_blueprint_files_path }
   end
 
