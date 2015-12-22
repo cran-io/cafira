@@ -11,6 +11,8 @@ class ApplicationController < ActionController::Base
       redirect_to edit_home_expositor_path(current_user)
     when 'Architect'
       redirect_to home_blueprint_files_path
+    when 'Designer'
+      redirect_to home_catalogs_path
     else
       redirect_to new_user_session_path(current_user)
     end
@@ -24,6 +26,8 @@ class ApplicationController < ActionController::Base
       edit_home_expositor_path(resource)
     when 'Architect'
       home_blueprint_files_path
+    when 'Designer'
+      home_catalogs_path
     else
       new_user_session_path(resource)
     end
