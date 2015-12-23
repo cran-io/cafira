@@ -13,6 +13,8 @@ class ApplicationController < ActionController::Base
       redirect_to home_blueprint_files_path
     when 'Designer'
       redirect_to home_catalogs_path
+    when 'Organizer'
+      redirect_to home_infrastructures_path
     else
       redirect_to new_user_session_path(current_user)
     end
@@ -28,6 +30,8 @@ class ApplicationController < ActionController::Base
       home_blueprint_files_path
     when 'Designer'
       home_catalogs_path
+    when 'Organizer'
+      home_infrastructures_path
     else
       new_user_session_path(resource)
     end

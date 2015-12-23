@@ -13,6 +13,9 @@ class Ability
       can :manage, [BlueprintFile, Infrastructure]
     when 'Designer'
       can :manage, [Catalog, CatalogImage]
+    when 'Organizer'
+      can :manage, Infrastructure
     end
+
   end
 end
