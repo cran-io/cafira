@@ -2,7 +2,7 @@ ActiveAdmin.register Infrastructure do
   config.batch_actions = false
   permit_params :alfombra, :alfombra_tipo, :tarima, :paneles, :blueprint_files_attributes => [:attachment, :attachment_file_name, :attachment_content_type, :attachment_file_size, :attachment_updated_at, :id]
   actions :all, :except => [:new, :create]
-  menu false if proc {current_user.type = 'Expositor'}
+  menu :if  => proc {current_user.type != 'Expositor' && (current_user.type == 'Organizer' || current_user.type == 'AdminUser') }
 
   member_action :download_infrastructure, :method => :get do
     tmpfile = resource.download_infrastructure
