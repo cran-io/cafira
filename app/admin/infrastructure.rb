@@ -152,5 +152,10 @@ ActiveAdmin.register Infrastructure do
     end
   end
 
+
+  filter :tarima, :collection => [['Si', true],['No', false]]
+  filter :paneles, :collection => [['Si', true],['No', false]]
+  filter :alfombra, :collection => [['Si', true],['No', false]]
+  filter :alfombra_tipo, :as => :select, :collection => [['Estándar', 'estandar'],['Otra','otra']]
 end
   
