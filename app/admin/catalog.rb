@@ -5,6 +5,9 @@ ActiveAdmin.register Catalog do
   
   
   member_action :download_catalog, :method => :get do
+    tmpfile = resource.download_catalog
+    send_file(tmpfile, :filename => "#{resource.expositor.name}_datos_catalogo.zip", :type => "application/zip")
+    tmpfile.close
   end
 
   controller do
@@ -18,7 +21,7 @@ ActiveAdmin.register Catalog do
     end
 
     def update
-      update! do 
+      update! do
         flash[:message] = "Catálogo actualizado correctamente."
         edit_home_catalogo_path(resource.expositor) 
       end
@@ -75,7 +78,7 @@ ActiveAdmin.register Catalog do
     end
   end
 
-  index do
+  index :download_links => false do
     column "Expositor" do |catalog|
       catalog.expositor.name
     end
@@ -155,7 +158,7 @@ ActiveAdmin.register Catalog do
         end
       end
     end
-    column "Location" do |catalog|
+    column "Locación" do |catalog|
       div do
         span do
           strong do

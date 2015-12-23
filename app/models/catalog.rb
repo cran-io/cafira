@@ -12,12 +12,11 @@ class Catalog < ActiveRecord::Base
     Zip::File.open(temp_file.path, Zip::File::CREATE) do |zip|
       zip.add('datos_catalogo.xlsx', catalog_data.path)
       catalog_images.each_with_index do |catalog_image, index|
-        zip.add(index.to_s + catalog_image.attachment_file_name, catalog_image.attachment.path)
+        zip.add("#{index}_#{catalog_image.priority}_#{catalog_image.attachment_file_name}" , catalog_image.attachment.path)
       end
     end
     temp_file
   end
-
 
   private
   
