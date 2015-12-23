@@ -2,7 +2,7 @@ ActiveAdmin.register Catalog do
   permit_params :stand_number, :twitter, :facebook, :type, :description, :phone_number, :aditional_phone_number, :email, :aditional_email, :website, :address, :city, :province, :zip_code, :catalog_images_attributes => [:attachment, :attachment_file_name, :attachment_content_type, :attachment_file_size, :attachment_updated_at, :id]
   config.batch_actions = false
   actions :all, :except => [:new, :create]
-  
+  menu false if proc {current_user.type = 'Expositor'}
   
   member_action :download_catalog, :method => :get do
     tmpfile = resource.download_catalog

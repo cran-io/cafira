@@ -1,8 +1,15 @@
 ActiveAdmin.register Infrastructure do
-  menu false
   config.batch_actions = false
   permit_params :alfombra, :alfombra_tipo, :tarima, :paneles, :blueprint_files_attributes => [:attachment, :attachment_file_name, :attachment_content_type, :attachment_file_size, :attachment_updated_at, :id]
-  
+  actions :all, :except => [:new, :create]
+  menu false if proc {current_user.type = 'Expositor'}
+
+  member_action :download_infrastructure, :method => :get do
+    tmpfile = resource.download_infrastructure
+    send_file(tmpfile, :filename => "#{resource.expositor.name}_datos_infraestructura.zip", :type => "application/zip")
+    tmpfile.close
+  end
+
   controller do
     def edit
       @infrastructure = Expositor.find(params[:expositor_id]).infrastructure
@@ -21,7 +28,7 @@ ActiveAdmin.register Infrastructure do
     end
   end
 
-  sidebar "Acciones del expositor", :priority => 0 do
+  sidebar "Acciones del expositor", :priority => 0, :only => :edit do
     ul do
       li do
         span do
@@ -51,7 +58,7 @@ ActiveAdmin.register Infrastructure do
     end
   end
 
-  sidebar "Descargas", :priority => 1 do
+  sidebar "Descargas", :priority => 1, :only => :edit do
     ul do
       li do
         span do
@@ -70,6 +77,40 @@ ActiveAdmin.register Infrastructure do
       end
     end
   end
+  
+  index :download_links => false do 
+    column "Completo", :completed
+    column "Expositor" do |infrastructure|
+      infrastructure.expositor.name_and_email
+    end
+    column :tarima
+    column :paneles
+    column :alfombra
+    column "Tipo de alfombra", :alfombra_tipo do |infrastructure|
+      infrastructure.alfombra_tipo? ? infrastructure.alfombra_tipo.camelize : "-" 
+    end
+    column "Planos" do |infrastructure|
+      infrastructure.blueprint_files.each_with_index do |bp_file, index|
+        div do
+          span do
+            strong do
+              "Plano #{index + 1}: "
+            end
+          end
+          span do
+              link_to((bp_file.attachment_file_name || ""), bp_file.attachment.url)
+          end
+        end
+      end
+    end
+    column "Acciones" do |infrastructure|
+      div do
+        span do
+            link_to "Descargar", download_infrastructure_home_infrastructure_path(infrastructure)
+        end
+      end if infrastructure.completed?
+    end
+  end
 
   form :html => { :enctype => "multipart/form-data" } do |f|
     f.inputs 'Editar Catálogo' do
@@ -83,27 +124,26 @@ ActiveAdmin.register Infrastructure do
       f.input :paneles
       f.has_many :blueprint_files, :heading => "Subir planos", :new_record => false, :html => { :enctype => "multipart/form-data" } do |ff| 
         label = status = ''
-        unless ff.object.attachment_file_name.nil?
-          case ff.object.state
-          when true
-            status = '(APROBADO)'
-            label  = 'label-green'
-          when false
-            status = '(NO APROBADO). Debe volver a subir el plano.'
-            label  = 'label-red'
-          else
-            status = '(PENDIENTE A REVISIÓN)'
-            label  = 'label-orange'
-          end
-        end
-        if ff.object.state.nil?
+        case ff.object.state
+        when 0
+          status = '(NO APROBADO). Debe volver a subir el plano.'
+          label  = 'label-red'
           ff.input :attachment, :label => "Plano <span class='#{label}'>#{status}</span>".html_safe, :as => :file, :require => false, 
-          :hint => ff.object.attachment.present? ? ff.object.attachment_file_name : content_tag(:span, "No hay un plano subido aún")
-        elsif !ff.object.state
+          :hint => ff.object.attachment.present? ? "Justificación: " + ff.object.comment : content_tag(:span, "No hay un plano subido aún")
+        when 1
+          status = '(APROBADO)'
+          label  = 'label-green'
+          ff.input :attachment_file_name, :label => "Plano <span class='#{label}'>#{status}</span>".html_safe, :input_html => { :disabled => true }
+        when 2
+          status = '(PRE APROBADO)'
+          label  = 'label-grey'
           ff.input :attachment, :label => "Plano <span class='#{label}'>#{status}</span>".html_safe, :as => :file, :require => false, 
           :hint => ff.object.attachment.present? ? "Justificación: " + ff.object.comment : content_tag(:span, "No hay un plano subido aún")
         else
-          ff.input :attachment_file_name, :label => "Plano <span class='#{label}'>#{status}</span>".html_safe, :input_html => { :disabled => true }
+          status = '(PENDIENTE A REVISIÓN)'
+          label  = 'label-orange'
+          ff.input :attachment, :label => "Plano <span class='#{label}'>#{status}</span>".html_safe, :as => :file, :require => false, 
+          :hint => ff.object.attachment.present? ? ff.object.attachment_file_name : content_tag(:span, "No hay un plano subido aún")
         end
       end
     end
