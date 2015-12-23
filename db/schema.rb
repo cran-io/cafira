@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151222194152) do
+ActiveRecord::Schema.define(version: 20151223184838) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,14 +32,14 @@ ActiveRecord::Schema.define(version: 20151222194152) do
   add_index "active_admin_comments", ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id", using: :btree
 
   create_table "aditional_services", force: :cascade do |t|
-    t.boolean  "energia"
+    t.boolean  "energia",                  default: false
     t.integer  "energia_cantidad"
-    t.boolean  "estacionamiento"
+    t.boolean  "estacionamiento",          default: false
     t.integer  "estacionamiento_cantidad"
-    t.boolean  "nylon"
-    t.boolean  "cuotas_sociales"
+    t.boolean  "nylon",                    default: false
+    t.boolean  "cuotas_sociales",          default: false
     t.integer  "catalogo_extra_cantidad"
-    t.boolean  "catalogo_extra"
+    t.boolean  "catalogo_extra",           default: false
     t.integer  "coutas_sociales_cantidad"
     t.integer  "expositor_id"
     t.datetime "created_at",                               null: false
@@ -93,14 +93,14 @@ ActiveRecord::Schema.define(version: 20151222194152) do
 
   create_table "credentials", force: :cascade do |t|
     t.string   "name"
-    t.boolean  "armador"
-    t.boolean  "personal_stand"
-    t.boolean  "foto_video"
+    t.boolean  "armador",        default: false
+    t.boolean  "personal_stand", default: false
+    t.boolean  "foto_video",     default: false
     t.integer  "expositor_id"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
-    t.boolean  "art"
-    t.boolean  "es_expositor"
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.boolean  "art",            default: false
+    t.boolean  "es_expositor",   default: false
     t.date     "fecha_alta"
   end
 
@@ -136,14 +136,14 @@ ActiveRecord::Schema.define(version: 20151222194152) do
   end
 
   create_table "infrastructures", force: :cascade do |t|
-    t.boolean  "tarima"
-    t.boolean  "paneles"
+    t.boolean  "tarima",        default: false
+    t.boolean  "paneles",       default: false
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
     t.integer  "expositor_id"
     t.boolean  "completed",     default: false
     t.string   "alfombra_tipo"
-    t.boolean  "alfombra"
+    t.boolean  "alfombra",      default: false
   end
 
   create_table "users", force: :cascade do |t|
