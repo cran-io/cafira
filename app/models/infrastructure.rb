@@ -9,13 +9,13 @@ class Infrastructure < ActiveRecord::Base
     status = true
     blueprint_files.each do |blueprint_file|
       if blueprint_file.attachment_file_name.nil?
-        status = false 
+        status = 0
       elsif blueprint_file.attachment_file_name_changed?
-        if blueprint_file.state == false
-          blueprint_file.state = nil
+        if blueprint_file.state == 0 || blueprint_file.state == 2
+          blueprint_file.state = 3
         end
       else
-        if blueprint_file.state == false
+        if blueprint_file.state == 0
           status = false
         end
       end
