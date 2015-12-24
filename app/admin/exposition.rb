@@ -141,6 +141,36 @@ ActiveAdmin.register Exposition do
     end
   end
 
+  csv do
+    column "Nombre" do |exposition|
+      exposition.name
+    end
+    column "Expositores anotados" do |exposition|
+      exposition.expositors.count
+    end
+    column "Activo" do |exposition|
+      exposition.active? ? "Si" : "No"
+    end
+    column "Inicia el" do |exposition|
+      exposition.initialized_at
+    end
+    column "Termina el" do |exposition|
+      exposition.ends_at
+    end
+    column "Deadline catálogo" do |exposition|
+      exposition.deadline_catalogs
+    end
+    column "Deadline credenciales" do |exposition|
+      exposition.deadline_credentials
+    end
+    column "Deadline serv. adicionales" do |exposition|
+      exposition.deadline_aditional_services
+    end
+    column "Deadline infraestructura" do |exposition|
+      exposition.deadline_infrastructures
+    end
+  end
+
   #CONTROLLER ACTIONS
   member_action :activate, method: :post do
     if resource.active?

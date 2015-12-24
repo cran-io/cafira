@@ -66,6 +66,24 @@ ActiveAdmin.register User do
     f.actions
   end
 
+  csv do
+    column "E-mail" do |user|
+      user.email
+    end
+    column "Nombre" do |user|
+      user.name
+    end
+    column "Tipo" do |user|
+      user.translated_type
+    end
+    column "Última sesión" do |user|
+      user.current_sign_in_at
+    end
+    column "Creado el" do |user|
+      user.created_at
+    end
+  end
+
   filter :email, :label => "E-mail"
   filter :type, :label => "Tipo de usuario"
 end
