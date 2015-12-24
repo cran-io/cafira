@@ -37,7 +37,7 @@ ActiveAdmin.register Exposition do
           end
         end
         span do
-          exposition.deadline_catalogs
+          exposition.deadline_catalogs || "-"
         end
       end
       div do
@@ -47,7 +47,7 @@ ActiveAdmin.register Exposition do
           end
         end
         span do
-          exposition.deadline_credentials
+          exposition.deadline_credentials || "-"
         end
       end
       div do
@@ -57,7 +57,7 @@ ActiveAdmin.register Exposition do
           end
         end
         span do
-            exposition.deadline_aditional_services
+            exposition.deadline_aditional_services || "-"
         end
       end
       div do
@@ -67,7 +67,7 @@ ActiveAdmin.register Exposition do
           end
         end
         span do
-          exposition.deadline_infrastructures
+          exposition.deadline_infrastructures || "-"
         end
       end
     end

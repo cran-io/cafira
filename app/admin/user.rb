@@ -31,15 +31,17 @@ ActiveAdmin.register User do
     selectable_column
     column "E-mail", :email
     column "Nombre", :name
-    column "Tipo", :type
+    column "Tipo" do |user|
+      user.translated_type
+    end
     column "Última sesión", :current_sign_in_at
     column "Creado el", :created_at
-    column "Acciones" do |exposition|
+    column "Acciones" do |user|
       span do
-        link_to 'Editar', edit_home_user_path(exposition), :method => :get
+        link_to 'Editar', edit_home_user_path(user), :method => :get
       end
       span do
-        link_to 'Eliminar', home_user_path(exposition), :method => :delete, :data => { :confirm => '¿Estás seguro de eliminar este usuario?' }
+        link_to 'Eliminar', home_user_path(user), :method => :delete, :data => { :confirm => '¿Estás seguro de eliminar este usuario?' }
       end
     end
   end

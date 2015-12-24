@@ -49,10 +49,10 @@ ActiveAdmin.register BlueprintFile do
     render :json => { :url => home_blueprint_files_path }
   end
 
-  index do 
+  index :download_links => false do 
     selectable_column
-    column "Plano" do |bp_file|
-      link_to((bp_file.attachment_file_name || ""), bp_file.attachment.url)
+    column "Plano", :class => "empty-label" do |bp_file|
+      bp_file.attachment.present? ? link_to((bp_file.attachment_file_name || ""), bp_file.attachment.url) : 'No subido aún'
     end 
     column "Estado", :state do |bp_file|
       case bp_file.state

@@ -98,7 +98,7 @@ ActiveAdmin.register Infrastructure do
             end
           end
           span do
-              link_to((bp_file.attachment_file_name || ""), bp_file.attachment.url)
+              bp_file.attachment.present? ? link_to((bp_file.attachment_file_name || ""), bp_file.attachment.url) : "-"
           end
         end
       end

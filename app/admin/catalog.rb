@@ -82,7 +82,9 @@ ActiveAdmin.register Catalog do
     column "Expositor" do |catalog|
       catalog.expositor.name
     end
-    column "Stand", :stand_number
+    column "Stand" do |catalog|
+      catalog.stand_number? ? catalog.stand_number : "-"
+    end
     column "Completo", :completed, :class => 'text-right'
     column "Internet" do |catalog|
       div do
@@ -199,7 +201,7 @@ ActiveAdmin.register Catalog do
             end
           end
           span do
-              link_to((image.attachment_file_name || ""), image.attachment.url)
+              image.attachment.present? ? link_to((image.attachment_file_name || ""), image.attachment.url) : "-"
           end
         end
       end
