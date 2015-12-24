@@ -108,7 +108,7 @@ ActiveAdmin.register Infrastructure do
         span do
             link_to "Descargar", download_infrastructure_home_infrastructure_path(infrastructure)
         end
-      end if infrastructure.completed?
+      end
     end
   end
 

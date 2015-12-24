@@ -12,7 +12,7 @@ class Infrastructure < ActiveRecord::Base
     Zip::File.open(temp_file.path, Zip::File::CREATE) do |zip|
       zip.add('datos_infraestructura.xlsx', catalog_data.path)
       blueprint_files.each_with_index do |bp_file, index|
-        zip.add("#{bp_file.attachment_file_name}_#{index + 1}" , bp_file.attachment.path)
+        zip.add("#{bp_file.attachment_file_name}_#{index + 1}" , bp_file.attachment.path) if bp_file.attachment.present?
       end
     end
     temp_file

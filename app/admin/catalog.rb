@@ -209,7 +209,7 @@ ActiveAdmin.register Catalog do
         span do
             link_to "Descargar", download_catalog_home_catalog_path(catalog)
         end
-      end if catalog.completed?
+      end
     end
   end
 

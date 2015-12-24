@@ -98,9 +98,6 @@ ActiveAdmin.register Exposition do
   end
 
   form do |f|
-    div do
-      params[:action]
-    end
     f.semantic_errors
     f.inputs 'Datos de la exposición' do
       f.input :name, :label => "Nombre"
