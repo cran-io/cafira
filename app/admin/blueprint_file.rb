@@ -38,14 +38,14 @@ ActiveAdmin.register BlueprintFile do
   member_action :disapprove, method: :post do
     resource.update_attributes(:state => 0, :comment => params[:justification])
     resource.infrastructure.update_attribute(:completed, false)
-    ExpositorMailer.blueprint_file_mail(resource.infrastructure.expositor, params[:justification], 'disapproved').deliver_now
+    ExpositorMailer.blueprint_file_mail(resource.infrastructure.expositor, params[:justification], 'disapproved').deliver_later(wait: 10)
     render :json => { :url => home_blueprint_files_path }
   end
 
 
   member_action :pre_approve, method: :post do
     resource.update_attributes(:state => 2, :comment => params[:justification])
-    ExpositorMailer.blueprint_file_mail(resource.infrastructure.expositor, params[:justification], 'pre_approved').deliver_now
+    ExpositorMailer.blueprint_file_mail(resource.infrastructure.expositor, params[:justification], 'pre_approved').deliver_later(wait: 10)
     render :json => { :url => home_blueprint_files_path }
   end
 
