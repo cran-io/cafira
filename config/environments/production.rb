@@ -78,7 +78,7 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   #mail configuration
-  config.action_mailer.default_url_options = { :host => '45.55.139.215' }
+  config.action_mailer.default_url_options = { :host => 'intranetcafira.com' }
   ActionMailer::Base.smtp_settings = {
     :port           => 587,
     :address        => 'smtp.mandrillapp.com',
