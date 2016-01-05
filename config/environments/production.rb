@@ -78,14 +78,14 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   #mail configuration
-  # config.action_mailer.default_url_options = { :host => 'localhost:3000' }
-  # ActionMailer::Base.smtp_settings = {
-  #   :port           => 587,
-  #   :address        => 'smtp.mandrillapp.com',
-  #   :user_name      => 'info@cran.io',
-  #   :password       => 'I5RPvtYJ5B0p4FHllUVRFg',
-  #   :domain         => 'cafira.com',
-  #   :authentication => :plain,
-  #   :enable_starttls_auto => true
-  #}
+  config.action_mailer.default_url_options = { :host => 'intranetcafira.com' }
+  ActionMailer::Base.smtp_settings = {
+    :port           => 587,
+    :address        => 'smtp.mandrillapp.com',
+    :user_name      => 'info@cran.io',
+    :password       => 'I5RPvtYJ5B0p4FHllUVRFg',
+    :domain         => 'cafira.com',
+    :authentication => :plain,
+    :enable_starttls_auto => true
+  }
 end
