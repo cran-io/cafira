@@ -34,16 +34,34 @@ class Catalog < ActiveRecord::Base
     tmpfile
   end
   
+  private
   def verify_fields
     status = true
     catalog_images.each do |catalog_image|
-      status = false if catalog_image.attachment_file_name.nil?
+      if catalog_image.attachment_file_name.nil?
+        status = false
+      end
+      if catalog_image.attachment_file_name_changed?
+        if !catalog_image.attachment.queued_for_write[:original].nil? && not_valid_dimensions(catalog_image.attachment.queued_for_write[:original])
+          status = false
+        end
+      else
+        if !catalog_image.attachment_file_name.nil? &&  not_valid_dimensions(catalog_image.attachment)
+          status = false
+        end
+      end
+
     end
     [:twitter, :facebook, :description, :phone_number, :aditional_phone_number, :email, :aditional_email, :website, :address, :city, :province, :zip_code].each do |attribute|
       status = false if self[attribute].nil? || self[attribute].empty?
     end
     self.completed = status
     nil
+  end
+
+  def not_valid_dimensions image
+    dimensions = Paperclip::Geometry.from_file(image)
+    true if dimensions.width < 800 || dimensions.height < 800
   end
 
 end
