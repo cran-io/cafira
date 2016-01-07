@@ -40,3 +40,7 @@ group :test do
 	gem 'database_cleaner'
 	gem 'simplecov', :require => false
 end
+
+group :production do
+  gem 'exception_notification'
+end

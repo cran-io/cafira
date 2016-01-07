@@ -88,4 +88,12 @@ Rails.application.configure do
     :authentication => :plain,
     :enable_starttls_auto => true
   }
+
+  config.middleware.use ExceptionNotification::Rack,
+  :email => {
+    :email_prefix => "[CafirApp] ",
+    :sender_address => %{"Cafira Errors" <errors@niidea.com>},
+    :exception_recipients => %w{miguel@cran.io jota@cran.io}
+  }
+  
 end
