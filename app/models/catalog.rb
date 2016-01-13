@@ -50,7 +50,6 @@ class Catalog < ActiveRecord::Base
           status = false
         end
       end
-
     end
     [:twitter, :facebook, :description, :phone_number, :aditional_phone_number, :email, :aditional_email, :website, :address, :city, :province, :zip_code].each do |attribute|
       status = false if self[attribute].nil? || self[attribute].empty?
@@ -61,7 +60,7 @@ class Catalog < ActiveRecord::Base
 
   def not_valid_dimensions image
     dimensions = Paperclip::Geometry.from_file(image)
-    true if dimensions.width < 800 || dimensions.height < 800
+    true if dimensions.width < 600 || dimensions.height < 600
   end
 
 end
