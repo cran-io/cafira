@@ -1,9 +1,11 @@
 ActiveAdmin.register AditionalService do
   menu false
-  permit_params :energia, :energia_cantidad, :estacionamiento, :estacionamiento_cantidad, :nylon, :nylon_cantidad, :catalogo_extra, :catalogo_extra_cantidad
+  permit_params :energia, :energia_cantidad, :estacionamiento, :estacionamiento_cantidad, :nylon, :nylon_cantidad, :catalogo_extra
   config.batch_actions = false
     
   controller do
+    after_action :set_aditional_catalog, :only => :update
+
     def edit
       @aditional_service = Expositor.find(params[:expositor_id]).aditional_service
       exposition = Rails.cache.read(:exposition_id)
@@ -17,6 +19,21 @@ ActiveAdmin.register AditionalService do
       update! do 
         flash[:message] = "Servicios adicionales actualizados correctamente."
         edit_home_services_path(resource.expositor) 
+      end
+    end
+  
+    private
+    def set_aditional_catalog
+      catalog = resource.expositor.catalog
+      if resource.catalogo_extra?
+        unless catalog.catalog_images.where("priority ILIKE ?", "%_adicional").any?
+          catalog.update_columns(:completed => false)
+          ['primaria_adicional', 'secundaria_adicional', 'secundaria_adicional', 'secundaria_adicional'].each do |priority|
+            catalog.catalog_images << CatalogImage.new( :priority => priority )
+          end
+        end
+      else
+        catalog.catalog_images.where("priority ILIKE ?", "%_adicional").delete_all
       end
     end
   end
@@ -83,7 +100,6 @@ ActiveAdmin.register AditionalService do
       f.input :estacionamiento_cantidad, :label => "Cantidad (estacionamiento)" 
       f.input :nylon, :label => "Nylon"
       f.input :catalogo_extra, :label => "Página de catálogo adicional"
-      f.input :catalogo_extra_cantidad, :label => "Cantidad (adicional)"
     end
     f.actions do
       f.action(:submit)
