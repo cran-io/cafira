@@ -12,15 +12,39 @@ ActiveAdmin.register MassiveMail do
     end
     
     def create
-      create! do 
-        flash[:message] = "Mail creado correctamente."
-        home_massive_mails_path
+      list_id = 'c6a14e89c9';
+      recipients = {
+        list_id: list_id,
+        :segment_text => ""
+      }
+      settings = {
+        :subject_line => params[:massive_mail][:subject],
+        :title => "Cafira#{ MassiveMail.last ? (MassiveMail.last.id + 1) : '1' }",
+        :from_name => "Cafira",
+        :reply_to => "jota@cran.io",
+        :to_name => "*|FNAME|*",
+        :template_id => 116
+      }
+      body = {
+        type: "regular",
+        recipients: recipients,
+        settings: settings
+      }
+      
+      begin
+        campaign = GIBBON.campaigns.create(body: body)
+        params[:massive_mail][:campaign] = campaign["id"]
+        create! do
+          flash[:message] = "Mail creado correctamente." 
+          home_massive_mails_path
+        end
+      rescue Gibbon::MailChimpError => e
+        flash[:message] = "No se pudo crear el mail: #{e.message} - #{e.raw_body}"
       end
     end
   end
   
   member_action :massive_send, :method => :post do
-    redirect_to root_path
   end
 
   index :download_links => false do
@@ -39,7 +63,7 @@ ActiveAdmin.register MassiveMail do
         ' | '
       end
       span do
-        link_to 'Eliminar', home_massive_mail_path(massive_mail), :method => :deleteexpo
+        link_to 'Eliminar', home_massive_mail_path(massive_mail), :method => :delete
       end
       span do 
         ' | '
@@ -56,8 +80,6 @@ ActiveAdmin.register MassiveMail do
       f.input :attachment, :label => "Archivo adjunto", :as => :file, :require => false, :hint => f.object.attachment.present? ? image_tag(f.object.attachment.url, :style => "width:200px") : content_tag(:span, "No hay imagen subida aún")
       f.input :body, :label => "Cuerpo"
     end
-    f.actions do
-      f.action(:submit)
-    end
+    f.actions
   end
 end
