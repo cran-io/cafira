@@ -5,13 +5,7 @@ ActiveAdmin.register Credential do
   
   controller do
     before_action :set_files
-
-    def index
-      @owner = Expositor.find(params[:expositor_id])
-      @credential_qty = @owner.credentials.any?
-      index!
-    end
-
+    before_action :set_common_variables, :only => :index
     def update
       update!{ home_expositor_credentials_path }
     end
@@ -21,6 +15,11 @@ ActiveAdmin.register Credential do
     end
     
     private
+    def set_common_variables
+      @owner = Expositor.find(params[:expositor_id])
+      @credential_qty = @owner.credentials.any?
+    end
+
     def set_files
       exposition = Rails.cache.read(:exposition_id)
       exposition = Exposition.find(exposition)
@@ -166,6 +165,30 @@ ActiveAdmin.register Credential do
       row "Fecha de alta" do
         resource.fecha_alta
       end
+    end
+  end
+
+  csv do
+    column "Nombre" do |credential|
+      credential.name
+    end
+    column "ART" do |credential|
+      credential.art? ? "Si" : "No"
+    end
+    column "Armador" do |credential|
+      credential.armador? ? "Si" : "No"
+    end
+    column "Expositor" do |credential|
+      credential.es_expositor? ? "Si" : "No"
+    end
+    column "Personal Stand" do |credential|
+      credential.personal_stand? ? "Si" : "No"
+    end
+    column "Foto/Video" do |credential|
+      credential.foto_video? ? "Si" : "No"
+    end
+    column "Fecha de alta" do |credential|
+      credential.fecha_alta
     end
   end
 
