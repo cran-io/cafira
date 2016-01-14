@@ -1,7 +1,7 @@
 ActiveAdmin.register MassiveMail do
   config.filters = false
   config.batch_actions = false
-  permit_params :subject, :body, :attachment, :attachment_file_name, :attachment_content_type, :attachment_file_size, :attachment_updated_at, :id
+  permit_params :campaign, :subject, :body, :attachment, :attachment_file_name, :attachment_content_type, :attachment_file_size, :attachment_updated_at, :id
 
   controller do 
     def update
@@ -22,18 +22,28 @@ ActiveAdmin.register MassiveMail do
         :title => "Cafira#{ MassiveMail.last ? (MassiveMail.last.id + 1) : '1' }",
         :from_name => "Cafira",
         :reply_to => "jota@cran.io",
-        :to_name => "*|FNAME|*",
-        :template_id => 116
+        :to_name => "*|FNAME|*"
       }
+
       body = {
-        type: "regular",
-        recipients: recipients,
-        settings: settings
+        :type => "regular",
+        :recipients => recipients,
+        :settings => settings,
       }
       
       begin
         campaign = GIBBON.campaigns.create(body: body)
         params[:massive_mail][:campaign] = campaign["id"]
+        body = { 
+          :template => {
+            :id => 53273,
+            :sections => {
+              "eventmessage" => params[:massive_mail][:body]
+            }
+          }
+        }
+        #why am i doing this instead of setting the template info on create? because mailchimp API is bullshit! and doesnt allow me to do it :(. This seems to work fine :)
+        GIBBON.campaigns(campaign["id"]).content.upsert(:body => body)
         create! do
           flash[:message] = "Mail creado correctamente." 
           home_massive_mails_path
@@ -45,6 +55,13 @@ ActiveAdmin.register MassiveMail do
   end
   
   member_action :massive_send, :method => :post do
+    begin
+      GIBBON.campaigns(resource.campaign).actions.send.create
+      flash[:message] = "Mails enviados satisfactoriamente."
+    rescue Gibbon::MailChimpError => e
+      flash[:message] = "Hubo un error al envíar el e-mail a la lista."
+    end
+    redirect_to home_massive_mails_path
   end
 
   index :download_links => false do
