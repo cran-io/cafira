@@ -34,18 +34,24 @@ ActiveAdmin.register MassiveMail do
       begin
         campaign = GIBBON.campaigns.create(body: body)
         params[:massive_mail][:campaign] = campaign["id"]
-        body = { 
-          :template => {
-            :id => 53273,
-            :sections => {
-              "eventmessage" => params[:massive_mail][:body]
+        create! do
+          image = resource.attachment.present? ? "<img src='http://intranetcafira.com/#{resource.attachment.url}'>" : ""
+          body = { 
+            :template => {
+              :id => 53273,
+              :sections => {
+                "body_text" => params[:massive_mail][:body],
+                "image" => image
+              }
             }
           }
-        }
-        #why am i doing this instead of setting the template info on create? because mailchimp API is bullshit! and doesnt allow me to do it :(. This seems to work fine :)
-        GIBBON.campaigns(campaign["id"]).content.upsert(:body => body)
-        create! do
-          flash[:message] = "Mail creado correctamente." 
+          #why am i doing this instead of setting the template info on create? because mailchimp API is bullshit! and doesnt allow me to do it :(. This seems to work fine :)
+          begin
+            GIBBON.campaigns(campaign["id"]).content.upsert(:body => body)
+            flash[:message] = "Mail creado correctamente." 
+          rescue
+            flash[:message] = "Creado correctamente, pero no updateado correctamente."  
+          end
           home_massive_mails_path
         end
       rescue Gibbon::MailChimpError => e
