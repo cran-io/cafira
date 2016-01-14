@@ -41,7 +41,11 @@ ActiveAdmin.register Expositor do
         redirect_to home_expositions_path
       end
     end
-
+    
+    def show
+      redirect_to edit_home_expositor_path
+    end
+    
     def update
       update! do
         flash[:message] = "Datos del expositor actualizados correctamente."
