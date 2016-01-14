@@ -4,13 +4,7 @@ ActiveAdmin.register MassiveMail do
   permit_params :campaign, :subject, :body, :attachment, :attachment_file_name, :attachment_content_type, :attachment_file_size, :attachment_updated_at, :id
 
   controller do 
-    def update
-      update! do
-        flash[:message] = "Mail actualizado correctamente."
-        home_massive_mails_path 
-      end
-    end
-    
+
     def create
       list_id = 'c6a14e89c9';
       recipients = {
@@ -58,6 +52,40 @@ ActiveAdmin.register MassiveMail do
         flash[:message] = "No se pudo crear el mail: #{e.message} - #{e.raw_body}"
       end
     end
+
+    def update
+      update! do
+        image = resource.attachment.present? ? "<img src='http://intranetcafira.com/#{resource.attachment.url}'>" : ""
+        body = { 
+          :template => {
+            :id => 53273,
+            :sections => {
+              "body_text" => params[:massive_mail][:body],
+              "image" => image
+            }
+          }
+        }
+        begin
+          GIBBON.campaigns(resource.campaign).content.upsert(:body => body) 
+          flash[:message] = "Mail actualizado correctamente."
+        rescue
+          flash[:message] = "Hubo un error al actualizar el mail."  
+        end
+        home_massive_mails_path 
+      end
+    end
+
+    def destroy
+      begin
+        GIBBON.campaigns(resource.campaign).delete
+        resource.delete
+        flash[:message] = "Mail eliminado correctamente."
+      rescue
+        flash[:message] = "Hubo un error al eliminar el mail."  
+      end
+      redirect_to home_massive_mails_path
+    end
+
   end
   
   member_action :massive_send, :method => :post do
