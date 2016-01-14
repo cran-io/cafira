@@ -197,7 +197,7 @@ ActiveAdmin.register Catalog do
         div do
           span do
             strong do
-              "#{image.priority.camelize}: "
+              "#{image.priority.humanize}: "
             end
           end
           span do
