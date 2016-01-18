@@ -1,7 +1,7 @@
 ActiveAdmin.register BlueprintFile do
   actions :all, :except => [:new, :create]
   menu :if  => proc {current_user.type != 'Expositor' && (current_user.type == 'Architect' || current_user.type == 'AdminUser') }
-
+  menu priority: 5
   config.batch_actions = false
 
   batch_action :destroy, false

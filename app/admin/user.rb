@@ -1,5 +1,6 @@
 ActiveAdmin.register User do
   permit_params :email, :name, :type, :password, :password_confirmation
+  menu priority: 6
   controller do
     def show
       redirect_to edit_home_user_path(resource)

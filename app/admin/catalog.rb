@@ -3,7 +3,7 @@ ActiveAdmin.register Catalog do
   config.batch_actions = false
   actions :all, :except => [:new, :create]
   menu :if  => proc {current_user.type != 'Expositor' && (current_user.type == 'Designer' || current_user.type == 'AdminUser') }
-
+  menu priority: 3
   member_action :download_catalog, :method => :get do
     tmpfile = resource.download_catalog
     send_file(tmpfile, :filename => "#{resource.expositor.name}_datos_catalogo.zip", :type => "application/zip")

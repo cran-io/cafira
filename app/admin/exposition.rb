@@ -1,5 +1,6 @@
 ActiveAdmin.register Exposition do
   menu label: "Exposiciones"
+  menu priority: 2
   permit_params :ends_at, :initialized_at, :name, :active, :deadline_catalogs, :deadline_credentials, :deadline_infrastructures, :deadline_aditional_services, :exposition_files_attributes => [:file_type, :attachment, :attachment_file_name, :attachment_content_type, :attachment_file_size, :attachment_updated_at, :id]
   config.batch_actions = false
   

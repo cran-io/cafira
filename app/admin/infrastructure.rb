@@ -3,7 +3,7 @@ ActiveAdmin.register Infrastructure do
   permit_params :alfombra, :alfombra_tipo, :tarima, :paneles, :blueprint_files_attributes => [:attachment, :attachment_file_name, :attachment_content_type, :attachment_file_size, :attachment_updated_at, :id]
   actions :all, :except => [:new, :create]
   menu :if  => proc {current_user.type != 'Expositor' && (current_user.type == 'Organizer' || current_user.type == 'AdminUser') }
-
+  menu priority: 4
   member_action :download_infrastructure, :method => :get do
     tmpfile = resource.download_infrastructure
     send_file(tmpfile, :filename => "#{resource.expositor.name}_datos_infraestructura.zip", :type => "application/zip")
