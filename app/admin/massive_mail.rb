@@ -6,7 +6,7 @@ ActiveAdmin.register MassiveMail do
   controller do 
 
     def create
-      list_id = 'c6a14e89c9';
+      list_id = '22bd0f58af';
       recipients = {
         list_id: list_id,
         :segment_text => ""
@@ -15,7 +15,7 @@ ActiveAdmin.register MassiveMail do
         :subject_line => params[:massive_mail][:subject],
         :title => "Cafira#{ MassiveMail.last ? (MassiveMail.last.id + 1) : '1' }",
         :from_name => "Cafira",
-        :reply_to => "jota@cran.io",
+        :reply_to => "info1@cafira.com",
         :to_name => "*|FNAME|*"
       }
 
@@ -29,17 +29,18 @@ ActiveAdmin.register MassiveMail do
         campaign = GIBBON.campaigns.create(body: body)
         params[:massive_mail][:campaign] = campaign["id"]
         create! do
-          image = resource.attachment.present? ? "<img src='http://intranetcafira.com/#{resource.attachment.url}'>" : ""
+          image = resource.attachment.present? ? "<img src='http://intranetcafira.com#{resource.attachment.url}'>" : ""
           body = { 
             :template => {
-              :id => 53273,
+              :id => 50381,
               :sections => {
                 "body_text" => params[:massive_mail][:body],
                 "image" => image
               }
             }
           }
-          #why am i doing this instead of setting the template info on create? because mailchimp API is bullshit! and doesnt allow me to do it :(. This seems to work fine :)
+
+          #why am i doing this instead of setting the template info on create? because mailchimp API is bullshit (or maybe gibbon)! and doesnt allow me to do it :(. This seems to work fine :)
           begin
             GIBBON.campaigns(campaign["id"]).content.upsert(:body => body)
             flash[:message] = "Mail creado correctamente." 
@@ -114,7 +115,7 @@ ActiveAdmin.register MassiveMail do
         ' | '
       end
       span do
-        link_to 'Eliminar', home_massive_mail_path(massive_mail), :method => :delete
+        link_to 'Eliminar', home_massive_mail_path(massive_mail), :method => :delete, :data => {:confirm => "¿Está seguro que desea eliminar este email?"}
       end
       span do 
         ' | '
