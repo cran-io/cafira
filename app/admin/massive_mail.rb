@@ -2,7 +2,7 @@ ActiveAdmin.register MassiveMail do
   config.filters = false
   config.batch_actions = false
   permit_params :campaign, :subject, :body, :attachment, :attachment_file_name, :attachment_content_type, :attachment_file_size, :attachment_updated_at, :id
-  menu priority: 7
+  menu priority: 10
   controller do 
 
     def create
