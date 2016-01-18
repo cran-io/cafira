@@ -55,6 +55,9 @@ es:
       blueprint_file:
         one: "Plano"
         other: "Planos"
+      massive_mail:
+        one: "Mail"
+        other: "Mails"
   active_admin:
     powered_by: "Desarrollado por cran.io"
     access_denied:
