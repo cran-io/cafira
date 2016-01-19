@@ -22,6 +22,7 @@ gem "paperclip", "~> 4.3"
 gem 'rubyzip'
 gem 'delayed_job_active_record'
 gem 'gibbon'
+gem 'ckeditor', github: 'galetahub/ckeditor'
 
 group :development, :test do
 	gem 'rspec-rails'
