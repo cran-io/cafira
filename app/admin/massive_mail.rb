@@ -78,8 +78,8 @@ ActiveAdmin.register MassiveMail do
 
     def destroy
       begin
-        GIBBON.campaigns(resource.campaign).delete
         resource.delete
+        GIBBON.campaigns(resource.campaign).delay(run_at: 2.days.from_now).delete
         flash[:message] = "Mail eliminado correctamente."
       rescue
         flash[:message] = "Hubo un error al eliminar el mail."  
@@ -92,6 +92,7 @@ ActiveAdmin.register MassiveMail do
   member_action :massive_send, :method => :post do
     begin
       GIBBON.campaigns(resource.campaign).actions.send.create
+      resource.update_attribute(:sent, true)
       flash[:message] = "Mails enviados satisfactoriamente."
     rescue Gibbon::MailChimpError => e
       flash[:message] = "Hubo un error al envíar el e-mail a la lista."
@@ -108,20 +109,32 @@ ActiveAdmin.register MassiveMail do
       massive_mail.attachment.present? ? link_to((massive_mail.attachment_file_name || ""), massive_mail.attachment.url) : 'No hay adjunto'
     end
     column "Acciones" do |massive_mail|
-      span do
-        link_to 'Editar',  edit_home_massive_mail_path(massive_mail), :method => :get
-      end
-      span do 
-        ' | '
-      end
-      span do
-        link_to 'Eliminar', home_massive_mail_path(massive_mail), :method => :delete, :data => {:confirm => "¿Está seguro que desea eliminar este email?"}
-      end
-      span do 
-        ' | '
-      end
-      span do
-        link_to 'Enviar', massive_send_home_massive_mail_path(massive_mail) , :method => :post, :data => { :confirm => "Esto hará que se envíe este mail de manera masiva a toda su lista de contactos. ¿Está seguro?" }
+      if not massive_mail.sent?
+        span do
+          link_to 'Editar',  edit_home_massive_mail_path(massive_mail), :method => :get
+        end
+        span do 
+          ' | '
+        end
+        span do
+          link_to 'Eliminar', home_massive_mail_path(massive_mail), :method => :delete, :data => {:confirm => "¿Está seguro que desea eliminar este email?"}
+        end
+        span do 
+          ' | '
+        end
+        span do
+          link_to 'Enviar', massive_send_home_massive_mail_path(massive_mail) , :method => :post, :data => { :confirm => "Esto hará que se envíe este mail de manera masiva a toda su lista de contactos. ¿Está seguro?" }
+        end
+      else
+        span :class => "sent-mail" do
+          ' Mail enviado ☑'
+        end
+        span do
+          ' | '
+        end
+        span do
+          link_to 'Eliminar', home_massive_mail_path(massive_mail), :method => :delete, :data => {:confirm => "¿Está seguro que desea eliminar este email?"}
+        end
       end
     end
   end
