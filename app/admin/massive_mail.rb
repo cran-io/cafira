@@ -102,7 +102,7 @@ ActiveAdmin.register MassiveMail do
   index :download_links => false do
     column "Asunto", :subject
     column "Cuerpo", :body do |massive_mail|
-      "#{massive_mail.body[0..200]}..."
+      "#{massive_mail.body}".html_safe
     end
     column "Archivo adjunto" do |massive_mail|
       massive_mail.attachment.present? ? link_to((massive_mail.attachment_file_name || ""), massive_mail.attachment.url) : 'No hay adjunto'
@@ -130,7 +130,7 @@ ActiveAdmin.register MassiveMail do
     f.inputs "Mail masivo" do
       f.input :subject, :label => "Asunto"
       f.input :attachment, :label => "Archivo adjunto", :as => :file, :require => false, :hint => f.object.attachment.present? ? image_tag(f.object.attachment.url, :style => "width:200px") : content_tag(:span, "No hay imagen subida aún")
-      f.input :body, :label => "Cuerpo"
+      f.input :body, :label => "Cuerpo", :input_html => { :class => "ckeditor" }
     end
     f.actions
   end

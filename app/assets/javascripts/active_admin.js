@@ -5,3 +5,4 @@
 //= require modal_management.js
 //= require ugly_button_management.js
 //= require ckeditor/init.js
+//= require ckeditor/config.js
