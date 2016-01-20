@@ -59,7 +59,7 @@ ActiveAdmin.register MassiveMail do
         image = resource.attachment.present? ? "<img src='http://intranetcafira.com/#{resource.attachment.url}'>" : ""
         body = { 
           :template => {
-            :id => 53273,
+            :id => 50381,
             :sections => {
               "body_text" => params[:massive_mail][:body],
               "image" => image
