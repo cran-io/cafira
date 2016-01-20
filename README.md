@@ -257,6 +257,7 @@ Hay dos servicios principales de emails transaccionales:
 +  Emails que se envían cuando se crea un expositor.
 +  Emails que se envían una vez por día a los expositores que no esten cumpliendo con el plan de tiempos brindado por CAFIRA.
 +  Emails que se envían cuando un arquitecto pre aprueba o desaprueba un plano subido por el expositor. 
+
 ###Configuración 
 #### Crontab:
 ```
