@@ -19,40 +19,40 @@ Cafira es una aplicación web desarrollada en Ruby on Rails, para la "Cámara Ar
 
 
 ###Diagrama Entidad-Relación
-![erm](http://i.imgur.com/wESt9wn.png)
+![erm](http://i.imgur.com/HMO6Fxd.png)
 
 ###Schema
 
 ```
 aditional_services
-	boolean  "energia"
-	integer  "energia_cantidad"
-	boolean  "estacionamiento"
-	integer  "estacionamiento_cantidad"
-	boolean  "nylon"
-	integer  "nylon_cantidad"
-	boolean  "cuotas_sociales"
-	integer  "catalogo_extra_cantidad"
-	boolean  "catalogo_extra"
-	integer  "coutas_sociales_cantidad"
-	integer  "expositor_id"
-	datetime "created_at", null: false
-	datetime "updated_at", null: false
-	boolean  "completed", default: false
+    boolean  "energia"
+    integer  "energia_cantidad"
+    boolean  "estacionamiento"
+    integer  "estacionamiento_cantidad"
+    boolean  "nylon"
+    boolean  "cuotas_sociales"
+    integer  "catalogo_extra_cantidad"
+    boolean  "catalogo_extra"
+    integer  "coutas_sociales_cantidad"
+    integer  "expositor_id"
+    datetime "created_at"
+    datetime "updated_at"
+    boolean  "completed"
 
 blueprint_files
-	boolean  "state"
-	string   "attachment_file_name"
-	string   "attachment_content_type"
-	integer  "attachment_file_size"
-	datetime "attachment_updated_at"
-	integer  "infrastructure_id"
-	datetime "created_at", null: false
-	datetime "updated_at", null: false
+    integer  "state"
+    string   "attachment_file_name"
+    string   "attachment_content_type"
+    integer  "attachment_file_size"
+    datetime "attachment_updated_at"
+    integer  "infrastructure_id"
+    datetime "created_at"
+    datetime "updated_at"
+    text     "comment"
 
 catalog_images
-    datetime "created_at", null: false
-    datetime "updated_at", null: false
+    datetime "created_at"
+    datetime "updated_at"
     string   "attachment_file_name"
     string   "attachment_content_type"
     integer  "attachment_file_size"
@@ -66,18 +66,28 @@ catalogs
     string   "facebook"
     string   "type"
     integer  "expositor_id"
-    datetime "created_at", null: false
-    datetime "updated_at", null: false
-    boolean  "completed", default: false
+    datetime "created_at"
+    datetime "updated_at"
+    boolean  "completed"
+    text     "description"
+    string   "phone_number"
+    string   "aditional_phone_number"
+    string   "email"
+    string   "aditional_email"
+    string   "website"
+    string   "address"
+    string   "city"
+    string   "province"
+    string   "zip_code"
 
 credentials
     string   "name"
     boolean  "armador"
-    boolean  "personal_stand"
+    boolean  "personal_stand
     boolean  "foto_video"
     integer  "expositor_id"
-    datetime "created_at", null: false
-    datetime "updated_at", null: false
+    datetime "created_at"
+    datetime "updated_at"
     boolean  "art"
     boolean  "es_expositor"
     date     "fecha_alta"
@@ -85,42 +95,65 @@ credentials
 exposition_expositors
     integer  "exposition_id"
     integer  "expositor_id"
-    datetime "created_at",    null: false
-    datetime "updated_at",    null: false
+    datetime "created_at"
+    datetime "updated_at"
+
+exposition_files
+    string   "file_type"
+    string   "attachment_file_name"
+    string   "attachment_content_type"
+    integer  "attachment_file_size"
+    datetime "attachment_updated_at"
+    integer  "exposition_id"
+    datetime "created_at"
+    datetime "updated_at"
 
 expositions
     string   "name"
-    boolean  "active", default: false
+    boolean  "active"
     date     "initialized_at"
-    date     "ends_at"
-    datetime "created_at", null: false
-    datetime "updated_at", null: false
+    dates_at"
+    datetime "created_at"
+    datetime "updated_at"
     date     "deadline_catalogs"
     date     "deadline_credentials"
     date     "deadline_aditional_services"
     date     "deadline_infrastructures"
 
 infrastructures
-    string   "alfombra"
     boolean  "tarima"
     boolean  "paneles"
-    datetime "created_at", null: false
-    datetime "updated_at", null: false
+    datetime "created_at"
+    datetime "updated_at"
     integer  "expositor_id"
-    boolean  "completed", default: false
+    boolean  "completed"
+    string   "alfombra_tipo"
+    boolean  "alfombra"
 
- users
+massive_mails
+    string   "subject"
+    text     "body"
+    string   "attachment_file_name"
+    string   "attachment_content_type"
+    integer  "attachment_file_size"
+    datetime "attachment_updated_at"
+    datetime "created_at"
+    datetime "updated_at"
+    string   "campaign"
+    boolean  "sent"
+
+users
     string   "type"
     string   "name"
     string   "cuit"
-    datetime "created_at", null: false
-    datetime "updated_at", null: false
-    string   "email", default: "", null: false
-    string   "encrypted_password", default: "", null: false
+    datetime "created_at"
+    datetime "updated_at"
+    string   "email" 
+    string   "encrypted_password" 
     string   "reset_password_token"
     datetime "reset_password_sent_at"
     datetime "remember_created_at"
-    integer  "sign_in_count", default: 0,  null: false
+    integer  "sign_in_count" 0,
     datetime "current_sign_in_at"
     datetime "last_sign_in_at"
     inet     "current_sign_in_ip"
@@ -130,7 +163,7 @@ infrastructures
 
 
 ###Diagrama de clases
-![clases](http://i.imgur.com/xHbMlVx.png)
+![clases](http://i.imgur.com/3theC6u.png)
 
 
 ##Deploy
@@ -143,7 +176,7 @@ $ rake db:create && rake db:migrate
 ```
 
 ###Setup con docker
-To use [Docker](http://www.docker.com) (se requiere [docker-compose](https://docs.docker.com/compose/))
+Para usar [Docker](http://www.docker.com) (se requiere [docker-compose](https://docs.docker.com/compose/))
 ```sh
 git clone https://github.com/cran-io/cafira.git
 cd cafira
@@ -197,14 +230,16 @@ Un administrador puede:
 
 __Expositores__
 
-Un expositor tiene acceso solamente a sus formularios. Estos, como se habló, persisten entre exposiciones con la posibilidad de editarlos según sea necesario.
+Un expositor tiene acceso solamente a sus formularios. Estos persisten entre exposiciones con la posibilidad de editarlos según sea necesario.
 Cada formulario aparte de los campos de texto, numéricos y upload de imágenes y planos, tienen un status de "completo" o "incompleto" el cual sigue un criterio trivial de estar completo si todos sus campos están completos, o incompleto si falta alguno. En caso de que uno de los formularios esté "incompleto" ese expositor recibirá un e-mail 7 días antes de su deadline (que se establece cuando se crea la exposición) avisando que tiene que completar el formulario correspondiente, y ese email se repetirá cada 48 horas, acumulando los avisos de los demás formularios incompletos según sus deadlines.
 A tener en cuenta: 
 + Las imágenes (1 primaria y 3 secundarias) del catálogo deben ser jpg, jpeg o png y de alta calidad, sino se rechaza el upload (con un aviso en pantalla) y el formulario de catálogo se contempla como “incompleto”.
++ En caso de activar el checkbox de de "catálogo adicional" en la sección de servicios adicionales, se agregaran 4 imagenes adicionales al catálogo.
 + Los planos de infraestructura deben ser jpg, jpeg, png o pdf. Cada uno tiene un status, que puede ser: 
     + _En revisión_: cuando un usuario del tipo arquitecto aún no lo aprobó/desaprobó.
     + _Aprobado_: plano ya aprobado por el arquitecto.
     + _Desaprobado_: plano desaprobado por el arquitecto.
+    + _Pre-aprobado_: plano pre aprobado por el arquitecto.
 En caso que un plano sea desaprobado, el formulario de infraestructura se contempla como “incompleto”, debiendo volver a completarlo subiendo un plano nuevo.
 
 + Para que la sección de credenciales se contemple como “completa”, se debe haber creado al menos una credencial.
@@ -212,16 +247,24 @@ En caso que un plano sea desaprobado, el formulario de infraestructura se contem
 
 __Arquitectos__
 
-Tienen acceso solo a una lista de expositores (nombre, email) con sus respectivos planos. Pueden descargarlos, y aprobarlos/desaprobarlos.
+Tienen acceso a una lista de expositores (nombre, email) con sus respectivos planos. Pueden descargarlos, y aprobarlos/desaprobarlos (sección Planos). 
+Tienen acceso a una lista de infraestructuras para descargar
 
-##E-mails:
+#Emails
+##Emails transaccionales:
 ###Descripción
-Los e-mails se envían una vez por día a los expositores que no esten cumpliendo con el plan de tiempos brindado por CAFIRA. 
-###Configuración
+Hay dos servicios principales de emails transaccionales:
++  Emails que se envían cuando se crea un expositor.
++  Emails que se envían una vez por día a los expositores que no esten cumpliendo con el plan de tiempos brindado por CAFIRA.
++  Emails que se envían cuando un arquitecto pre aprueba o desaprueba un plano subido por el expositor. 
+###Configuración 
 #### Crontab:
 ```
-@weekly sh /home/path/to/cron_script/weekly_status.sh > /home/path/to/cron_log/cron_task.log 2>&1
+0 0 * * * cd /home/deploy/cafira/current && /home/deploy/.rbenv/shims/rake RAILS_ENV=production deadline_alerts:send_alert_emails
 ```
+##Emails masivos:
+###Descripción
+Los mails masivos se crean y envían desde la sección Mails de la aplicación. Se permite crear el email, especificando el asunto, el cuerpo (permitiendo formato HTML) y un archivo adjunto. Una vez creado, el contenido del email se puede actualizar siempre y cuando no se haya enviado. Una vez enviado, este no se puede volver a enviar, y se cataloga como un email "enviado". 
 
 
 
