@@ -240,8 +240,7 @@ ActiveAdmin.register Catalog do
       f.has_many :catalog_images, :heading => "Subir imágenes", :new_record => false, :html => { :enctype => "multipart/form-data" } do |ff| 
         ff.input :priority, :label => "Tipo de imagen", :input_html => { :disabled => true, :value => "#{ff.object.priority.humanize}" }
         if ff.object.attachment.present? && !!(ff.object.attachment.content_type =~ (/^image\/(jpg|jpeg|png)$/))
-          dimensions = Paperclip::Geometry.from_file(ff.object.attachment)
-          image_size_error = "<span class='label-red'>(Tamaño de imagen inválida, mínimo 600px x 600px)</span>" if dimensions.width < 600 || dimensions.height < 600
+          image_size_error = "<span class='label-red'>(Tamaño de imagen inválida, mínimo 600px x 600px)</span>" if ff.object.valid_image? == false
         end 
         ff.input :attachment, :label => "Imagen #{image_size_error}".html_safe, :as => :file, :require => false, :hint => ff.object.attachment.present? ? image_tag(ff.object.attachment.url, :style => "width:200px") : content_tag(:span, "No hay imagen subida aún")
       end

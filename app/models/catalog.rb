@@ -38,18 +38,22 @@ class Catalog < ActiveRecord::Base
   def verify_fields
     status = true
     catalog_images.each do |catalog_image|
+      catalog_image.valid_image = true
       if catalog_image.attachment_file_name.nil?
         status = false
       end
       if catalog_image.attachment_file_name_changed?
         if !catalog_image.attachment.queued_for_write[:original].nil? && not_valid_dimensions(catalog_image.attachment.queued_for_write[:original])
           status = false
+          catalog_image.valid_image = false
         end
       else
-        if !catalog_image.attachment_file_name.nil? &&  not_valid_dimensions(catalog_image.attachment)
+        if !catalog_image.attachment_file_name.nil? && not_valid_dimensions(catalog_image.attachment)
           status = false
+          catalog_image.valid_image = false
         end
       end
+      catalog_image.save
     end
     [:twitter, :facebook, :description, :phone_number, :aditional_phone_number, :email, :aditional_email, :website, :address, :city, :province, :zip_code].each do |attribute|
       status = false if self[attribute].nil? || self[attribute].empty?
