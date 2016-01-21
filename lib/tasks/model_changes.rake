@@ -9,4 +9,14 @@ namespace :models do
       end
     end
   end
+  task :add_catalog_image_status => :environment do
+    CatalogImage.all.each do |catalog_image|
+      if catalog_image.attachment.present?
+        dimensions = Paperclip::Geometry.from_file(catalog_image.attachment)
+        catalog_image.valid_image = !(dimensions.width < 600 || dimensions.height < 600)
+        catalog_image.save
+        p "#{dimensions} #{catalog_image.valid_image}"
+      end
+    end
+  end
 end

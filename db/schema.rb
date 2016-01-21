@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160119205051) do
+ActiveRecord::Schema.define(version: 20160121140248) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,6 +68,7 @@ ActiveRecord::Schema.define(version: 20160119205051) do
     t.datetime "attachment_updated_at"
     t.string   "priority"
     t.integer  "catalog_id"
+    t.boolean  "valid_image"
   end
 
   create_table "catalogs", force: :cascade do |t|
