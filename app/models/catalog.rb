@@ -55,9 +55,6 @@ class Catalog < ActiveRecord::Base
       end
       catalog_image.save
     end
-    [:twitter, :facebook, :description, :phone_number, :aditional_phone_number, :email, :aditional_email, :website, :address, :city, :province, :zip_code].each do |attribute|
-      status = false if self[attribute].nil? || self[attribute].empty?
-    end
     self.completed = status
     nil
   end

@@ -19,4 +19,24 @@ namespace :models do
       end
     end
   end
+  task :set_completed_catalogs => :environment do
+    Catalog.all.each do |catalog|
+      status = true
+      catalog.catalog_images.each do |catalog_image|
+        if catalog_image.attachment_file_name.nil? || AttachmentDimensions.not_valid_dimensions(catalog_image.attachment)
+          status = false
+        end
+      end
+      catalog.update_columns(:completed => status)
+      p "catalog class: #{status}"
+    end
+  end
+end
+
+module AttachmentDimensions
+  def not_valid_dimensions image
+    dimensions = Paperclip::Geometry.from_file(image)
+    true if dimensions.width < 600 || dimensions.height < 600
+  end
+  module_function :not_valid_dimensions
 end
