@@ -151,7 +151,7 @@ ActiveAdmin.register Infrastructure do
     end
   end
 
-
+  filter :completed, :label => "Completado", :collection => [['Si', true], ['No', false]]
   filter :tarima, :collection => [['Si', true],['No', false]]
   filter :paneles, :collection => [['Si', true],['No', false]]
   filter :alfombra, :collection => [['Si', true],['No', false]]
