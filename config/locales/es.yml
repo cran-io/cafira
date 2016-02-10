@@ -70,6 +70,9 @@ es:
         approve_blueprint_files: "Aprobar planos seleccionados"
         disapprove_blueprint_files: "Desaprobar planos seleccionados"
         pending_blueprint_files: "Poner planos seleccionados en pendiente"
+        approve_catalogs: "Aprobar catálogos seleccionados"
+        disapprove_catalogs: "Desaprobar catálogos seleccionados"
+        pending_catalogs: "Poner catálogos seleccionados en pendiente"
   helpers:
     page_entries_info:
       more_pages:
