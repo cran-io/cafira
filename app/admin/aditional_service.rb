@@ -95,6 +95,7 @@ ActiveAdmin.register AditionalService do
   end
   
   index :download_links => [:csv] do
+    column "Completo", :completed
     column "Expositor" do |aditional_service|
       aditional_service.expositor.name_and_email
     end
@@ -130,6 +131,9 @@ ActiveAdmin.register AditionalService do
   end
 
   csv do
+    column "Completo" do |aditional_service|
+      aditional_service.completed?  ? "Si" : "No"
+    end
     column "Expositor" do |aditional_service|
       aditional_service.expositor.name_and_email
     end
@@ -153,6 +157,7 @@ ActiveAdmin.register AditionalService do
     end
   end
 
+  filter :completed, :label => "Completo", :collection => [["Si", true], ["No", false]]
   filter :energia, :label => "Energía", :collection => [["Si", true], ["No", false]]
   filter :estacionamiento, :label => "Estacionamiento", :collection => [["Si", true], ["No", false]]
   filter :nylon, :label => "Nylon", :collection => [["Si", true], ["No", false]]
