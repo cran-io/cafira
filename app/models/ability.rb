@@ -10,7 +10,7 @@ class Ability
       can :manage, Expositor, :id => user.id 
       can :manage, [Catalog, Credential, AditionalService, Infrastructure], :expositor_id => user.id
     when 'Architect'
-      can :manage, [BlueprintFile, Infrastructure]
+      can :manage, [BlueprintFile, Infrastructure, AditionalService]
     when 'Designer'
       can :manage, [Catalog, CatalogImage]
     when 'Organizer'

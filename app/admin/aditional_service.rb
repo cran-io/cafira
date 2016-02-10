@@ -1,6 +1,6 @@
 ActiveAdmin.register AditionalService do
   permit_params :energia, :energia_cantidad, :estacionamiento, :estacionamiento_cantidad, :nylon, :nylon_cantidad, :catalogo_extra
-  menu :if  => proc { current_user.type == 'AdminUser' }
+  menu :if  => proc {current_user.type != 'Expositor' && (current_user.type == 'Architect' || current_user.type == 'AdminUser') }
   config.batch_actions = false
   actions :all, :except => [:new, :create]
 
@@ -40,7 +40,7 @@ ActiveAdmin.register AditionalService do
     end
 
     def redirect_to_home
-      redirect_to root_path if current_user.type != 'AdminUser'
+      redirect_to root_path if current_user.type != 'AdminUser' && current_user.type != 'Architect'
     end
   end
   
