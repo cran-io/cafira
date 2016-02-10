@@ -1,7 +1,7 @@
 ActiveAdmin.register Infrastructure do
   config.batch_actions = false
   permit_params :alfombra, :alfombra_tipo, :tarima, :paneles, :blueprint_files_attributes => [:attachment, :attachment_file_name, :attachment_content_type, :attachment_file_size, :attachment_updated_at, :id]
-  actions :all, :except => [:new, :create]
+  actions :all, :except => [:new, :create, :show]
   menu :if  => proc {current_user.type != 'Expositor' && (current_user.type == 'Organizer' || current_user.type == 'AdminUser') }
   member_action :download_infrastructure, :method => :get do
     tmpfile = resource.download_infrastructure
@@ -10,6 +10,7 @@ ActiveAdmin.register Infrastructure do
   end
 
   controller do
+    before_action :redirect_to_home, :only => :index
     def edit
       @infrastructure = Expositor.find(params[:expositor_id]).infrastructure
       exposition = Rails.cache.read(:exposition_id)
@@ -24,6 +25,11 @@ ActiveAdmin.register Infrastructure do
         flash[:message] = "Datos de infraestructura actualizados correctamente."
         edit_home_infrastruct_path(resource.expositor) 
       end
+    end
+
+    private
+    def redirect_to_home
+      redirect_to root_path if current_user.type != 'AdminUser' && current_user.type != 'Designer'
     end
   end
 

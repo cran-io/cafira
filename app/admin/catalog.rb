@@ -1,7 +1,7 @@
 ActiveAdmin.register Catalog do
   permit_params :stand_number, :twitter, :facebook, :type, :description, :phone_number, :aditional_phone_number, :email, :aditional_email, :website, :address, :city, :province, :zip_code, :catalog_images_attributes => [:attachment, :attachment_file_name, :attachment_content_type, :attachment_file_size, :attachment_updated_at, :id]
   config.batch_actions = false
-  actions :all, :except => [:new, :create]
+  actions :all, :except => [:new, :create, :show]
   menu :if  => proc {current_user.type != 'Expositor' && (current_user.type == 'Designer' || current_user.type == 'AdminUser') }
   member_action :download_catalog, :method => :get do
     tmpfile = resource.download_catalog
@@ -10,6 +10,7 @@ ActiveAdmin.register Catalog do
   end
 
   controller do
+    before_action :redirect_to_home, :only => :index
     def edit
       @catalog = Expositor.find(params[:expositor_id]).catalog
       exposition = Rails.cache.read(:exposition_id)
@@ -24,6 +25,11 @@ ActiveAdmin.register Catalog do
         flash[:message] = "Catálogo actualizado correctamente."
         edit_home_catalogo_path(resource.expositor) 
       end
+    end
+
+    private
+    def redirect_to_home
+      redirect_to root_path if current_user.type != 'AdminUser' && current_user.type != 'Designer'
     end
   end
 
