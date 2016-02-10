@@ -77,9 +77,8 @@ ActiveRecord::Schema.define(version: 20160121140248) do
     t.string   "facebook"
     t.string   "type"
     t.integer  "expositor_id"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
-    t.boolean  "completed",              default: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
     t.text     "description"
     t.string   "phone_number"
     t.string   "aditional_phone_number"
@@ -90,6 +89,7 @@ ActiveRecord::Schema.define(version: 20160121140248) do
     t.string   "city"
     t.string   "province"
     t.string   "zip_code"
+    t.boolean  "completed"
   end
 
   create_table "credentials", force: :cascade do |t|
