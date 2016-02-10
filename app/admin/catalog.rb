@@ -107,8 +107,7 @@ ActiveAdmin.register Catalog do
     end
   end
 
-  index :download_links => false do
-    selectable_column
+  index :download_links => [:csv] do
     column "Expositor" do |catalog|
       catalog.expositor.name
     end
@@ -317,7 +316,48 @@ ActiveAdmin.register Catalog do
       f.action(:submit)
     end
   end
-  
+
+  csv do
+    column "Expositor" do |catalog|
+      catalog.expositor.name
+    end
+    column "Stand" do |catalog|
+      catalog.stand_number
+    end
+    column "Email" do |catalog|
+      catalog.email
+    end
+    column "Email adicional" do |catalog|
+      catalog.aditional_email
+    end
+    column "Teléfono" do |catalog|
+      catalog.phone_number
+    end
+    column "Teléfono adicional" do |catalog|
+      catalog.aditional_phone_number
+    end
+    column "Web" do |catalog|
+      catalog.website
+    end
+    column :twitter
+    column :facebook
+    column "Dirección" do |catalog|
+      catalog.address
+    end
+    column "Provincia" do |catalog|
+      catalog.province
+    end
+    column "Ciudad" do |catalog|
+      catalog.city
+    end
+    column "Código postal" do |catalog|
+      catalog.zip_code
+    end
+    column "Descripción" do |catalog|
+      catalog.description
+    end
+  end
+
   filter :completed, :label => "Completado", :collection => [["Si", true], ["No", false]]
   filter :state, :as => :select, :label => "Estado", :collection => [['Desaprobado', 0], ['Aprobado', 1], ['Pre aprobado', 2], ['Pendiente a aprobación', 3]]
   filter :stand_number, :label => "Nro stand"
