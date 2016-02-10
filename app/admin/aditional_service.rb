@@ -1,10 +1,12 @@
 ActiveAdmin.register AditionalService do
-  menu false
   permit_params :energia, :energia_cantidad, :estacionamiento, :estacionamiento_cantidad, :nylon, :nylon_cantidad, :catalogo_extra
+  menu :if  => proc { current_user.type == 'AdminUser' }
   config.batch_actions = false
-    
+  actions :all, :except => [:new, :create]
+
   controller do
     after_action :set_aditional_catalog, :only => :update
+    before_action :redirect_to_home, :only => :index
 
     def edit
       @aditional_service = Expositor.find(params[:expositor_id]).aditional_service
@@ -36,9 +38,13 @@ ActiveAdmin.register AditionalService do
         catalog.catalog_images.where("priority ILIKE ?", "%_adicional").delete_all
       end
     end
+
+    def redirect_to_home
+      redirect_to root_path if current_user.type != 'AdminUser'
+    end
   end
   
-  sidebar "Acciones del expositor", :priority => 0 do
+  sidebar "Acciones del expositor", :priority => 0, :only => :edit do
     ul do
       li do
         span do
@@ -68,7 +74,7 @@ ActiveAdmin.register AditionalService do
     end
   end
 
-   sidebar "Descargas", :priority => 1 do
+   sidebar "Descargas", :priority => 1, :only => :edit do
     ul do
       li do
         span do
@@ -88,6 +94,22 @@ ActiveAdmin.register AditionalService do
     end
   end
   
+  index :download_links => [:csv] do
+    column "Expositor" do |aditional_service|
+      aditional_service.expositor.name_and_email
+    end
+    column "Energía", :energia
+    column "Cantidad energía" do |aditional_service|
+      aditional_service.energia_cantidad.nil? ? '-' : aditional_service.energia_cantidad
+    end
+    column :estacionamiento
+    column "Cantidad de estacionamientos" do |aditional_service|
+      aditional_service.estacionamiento_cantidad.nil? ? '-' : aditional_service.estacionamiento_cantidad
+    end
+    column :nylon
+    column "Catálogo adicional", :catalogo_extra
+  end
+
   form do |f|
     f.inputs "Servicio adicional" do
       status = f.object.completed ? 'yes' : 'no'
@@ -106,4 +128,33 @@ ActiveAdmin.register AditionalService do
     end
 
   end
+
+  csv do
+    column "Expositor" do |aditional_service|
+      aditional_service.expositor.name_and_email
+    end
+    column "Energía" do |aditional_service|
+      aditional_service.energia? ? "Si" : "No"
+    end
+    column "Cantidad energía" do |aditional_service|
+      aditional_service.energia_cantidad
+    end
+    column "Estacionamiento" do |aditional_service|
+      aditional_service.estacionamiento? ? "Si" : "No"
+    end
+    column "Cantidad estacionamiento" do |aditional_service|
+      aditional_service.estacionamiento_cantidad
+    end
+    column "Nylon" do |aditional_service|
+      aditional_service.nylon? ? "Si" : "No"
+    end
+    column "Catálogo adicional" do |aditional_service|
+      aditional_service.catalogo_extra? ? "Si" : "No"
+    end
+  end
+
+  filter :energia, :label => "Energía", :collection => [["Si", true], ["No", false]]
+  filter :estacionamiento, :label => "Estacionamiento", :collection => [["Si", true], ["No", false]]
+  filter :nylon, :label => "Nylon", :collection => [["Si", true], ["No", false]]
+  filter :catalogo_extra, :label => "Catálogo adicional", :collection => [["Si", true], ["No", false]]
 end
