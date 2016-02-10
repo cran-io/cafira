@@ -317,7 +317,9 @@ ActiveAdmin.register Catalog do
       f.action(:submit)
     end
   end
+  
   filter :completed, :label => "Completado", :collection => [["Si", true], ["No", false]]
+  filter :state, :as => :select, :label => "Estado", :collection => [['Desaprobado', 0], ['Aprobado', 1], ['Pre aprobado', 2], ['Pendiente a aprobación', 3]]
   filter :stand_number, :label => "Nro stand"
   filter :email
   filter :twitter
