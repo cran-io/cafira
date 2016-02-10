@@ -5,7 +5,7 @@ ActiveAdmin.register Catalog do
   config.batch_actions = false
 
   member_action :pending, method: :post do
-    resource.update_columns(:state => 3, :comment => nil, :completed => true)
+    resource.update_columns(:state => 3, :comment => nil, :completed => false)
     redirect_to home_catalogs_path
   end
 
