@@ -1,8 +1,32 @@
 ActiveAdmin.register Catalog do
   permit_params :stand_number, :twitter, :facebook, :type, :description, :phone_number, :aditional_phone_number, :email, :aditional_email, :website, :address, :city, :province, :zip_code, :catalog_images_attributes => [:attachment, :attachment_file_name, :attachment_content_type, :attachment_file_size, :attachment_updated_at, :id]
-  config.batch_actions = false
   actions :all, :except => [:new, :create, :show]
   menu :if  => proc {current_user.type != 'Expositor' && (current_user.type == 'Designer' || current_user.type == 'AdminUser') }
+  config.batch_actions = false
+
+  member_action :pending, method: :post do
+    resource.update_columns(:state => 3, :comment => nil, :completed => true)
+    redirect_to home_catalogs_path
+  end
+
+  member_action :approve, method: :post do
+    resource.update_columns(:state => 1, :comment => nil, :completed => true)
+    redirect_to home_catalogs_path
+  end
+
+  member_action :disapprove, method: :post do
+    resource.update_columns(:state => 0, :comment => params[:justification], :completed => false)
+    ExpositorMailer.catalog_email(resource.expositor, params[:justification], 'disapproved').deliver_later(wait: 10)
+    render :json => { :url => home_catalogs_path }
+  end
+
+
+  member_action :pre_approve, method: :post do
+    resource.update_columns(:state => 2, :comment => params[:justification], :completed => false)
+    ExpositorMailer.catalog_email(resource.expositor, params[:justification], 'pre_approved').deliver_later(wait: 10)
+    render :json => { :url => home_catalogs_path }
+  end
+
   member_action :download_catalog, :method => :get do
     tmpfile = resource.download_catalog
     send_file(tmpfile, :filename => "#{resource.expositor.name}_datos_catalogo.zip", :type => "application/zip")
@@ -84,14 +108,34 @@ ActiveAdmin.register Catalog do
   end
 
   index :download_links => false do
+    selectable_column
     column "Expositor" do |catalog|
       catalog.expositor.name
     end
-    column "Stand" do |catalog|
-      catalog.stand_number? ? catalog.stand_number : "-"
-    end
     column "Completo", :completed, :class => 'text-right'
-    column "Internet" do |catalog|
+    column "Estado", :state do |catalog|
+      case catalog.state
+      when 0
+        status_tag 'Desaprobado', :red
+      when 1
+        status_tag 'Aprobado', :yes
+      when 2
+        status_tag 'Pre aprobación', :grey 
+      else
+        status_tag 'Pendiente', :orange
+      end
+    end
+    column "General" do |catalog|
+      div do
+        span do
+          strong do
+            "Stand: "
+          end
+        end
+        span do
+            catalog.stand_number || '-'
+        end
+      end
       div do
         span do
           strong do
@@ -143,28 +187,6 @@ ActiveAdmin.register Catalog do
         end
       end
     end
-    column "Teléfonos" do |catalog|
-      div do
-        span do
-          strong do
-            "Tel. 1: "
-          end
-        end
-        span do
-            catalog.phone_number || '-'
-        end
-      end
-      div do
-        span do
-          strong do
-            "Teĺ. 2: "
-          end
-        end
-        span do
-            catalog.aditional_phone_number || '-'
-        end
-      end
-    end
     column "Locación" do |catalog|
       div do
         span do
@@ -196,6 +218,26 @@ ActiveAdmin.register Catalog do
             catalog.zip_code || '-'
         end
       end
+      div do
+        span do
+          strong do
+            "Tel. 1: "
+          end
+        end
+        span do
+            catalog.phone_number || '-'
+        end
+      end
+      div do
+        span do
+          strong do
+            "Teĺ. 2: "
+          end
+        end
+        span do
+            catalog.aditional_phone_number || '-'
+        end
+      end
     end
     column "Imágenes" do |catalog|
       catalog.catalog_images.each do |image|
@@ -214,8 +256,31 @@ ActiveAdmin.register Catalog do
     column "Acciones" do |catalog|
       div do
         span do
-            link_to "Descargar", download_catalog_home_catalog_path(catalog)
+          link_to 'Aprobar', approve_home_catalog_path(catalog), :method => :post
         end
+        span do 
+          ' | '
+        end
+        span do
+          link_to 'Desaprobar', 'javascript:void(0);', :method => :post, :class => "disapprove_catalog", :data => { :path => disapprove_home_catalog_path(catalog)}
+        end
+        span do 
+          ' | '
+        end
+        span do
+          link_to 'Pre aprobar', 'javascript:void(0);', :method => :post, :class => "pre_approve_catalog", :data => { :path => pre_approve_home_catalog_path(catalog)}
+        end
+        span do 
+          ' | '
+        end
+        span do
+          link_to 'Pendiente', pending_home_catalog_path(catalog), :method => :post
+        end
+      end
+    end
+    column "Descargas" do |catalog|
+      span do
+          link_to "Descargar", download_catalog_home_catalog_path(catalog)
       end
     end
   end
@@ -244,11 +309,8 @@ ActiveAdmin.register Catalog do
       f.input :zip_code, :label => "Codigo postal"
       f.input :description, :label => "Descripción catálogo (200 caracteres máx)", :input_html => { :maxlength => "200" }
       f.has_many :catalog_images, :heading => "Subir imágenes", :new_record => false, :html => { :enctype => "multipart/form-data" } do |ff| 
-        ff.input :priority, :label => "Tipo de imagen", :input_html => { :disabled => true, :value => "#{ff.object.priority.humanize}" }
-        if ff.object.attachment.present? && !!(ff.object.attachment.content_type =~ (/^image\/(jpg|jpeg|png)$/))
-          image_size_error = "<span class='label-red'>(Tamaño de imagen inválida, mínimo 600px x 600px)</span>" if ff.object.valid_image? == false
-        end 
-        ff.input :attachment, :label => "Imagen #{image_size_error}".html_safe, :as => :file, :require => false, :hint => ff.object.attachment.present? ? image_tag(ff.object.attachment.url, :style => "width:200px") : content_tag(:span, "No hay imagen subida aún")
+        ff.input :priority, :label => "Tipo de imagen", :input_html => { :disabled => true, :value => "#{ff.object.priority.humanize}" } 
+        ff.input :attachment, :label => "Imagen".html_safe, :as => :file, :require => false, :hint => ff.object.attachment.present? ? image_tag(ff.object.attachment.url, :style => "width:200px") : content_tag(:span, "No hay imagen subida aún")
       end
     end
     f.actions do
