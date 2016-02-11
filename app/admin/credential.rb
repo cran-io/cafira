@@ -1,4 +1,4 @@
-ActiveAdmin.register Credential do
+ActiveAdmin.register Credential, :as => 'Credential' do
   belongs_to :expositor
   permit_params :name, :art, :armador, :es_expositor, :personal_stand, :foto_video, :fecha_alta
   menu :if => proc{ false }

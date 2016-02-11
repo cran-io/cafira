@@ -40,6 +40,9 @@ es:
       credential:
         one: "Credencial"
         other: "Credenciales"
+      admin_credential:
+        one: "Credencial"
+        other: "Credenciales"
       infrastructure:
         one: "Infraestructura"
         other: "Infraestructuras"
