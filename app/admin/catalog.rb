@@ -47,7 +47,7 @@ ActiveAdmin.register Catalog do
     def update
       update! do
         flash[:message] = "Catálogo actualizado correctamente."
-        edit_home_catalogo_path(resource.expositor) 
+        edit_home_catalogo_path(resource.expositor)
       end
     end
 
@@ -119,7 +119,7 @@ ActiveAdmin.register Catalog do
       when 1
         status_tag 'Aprobado', :yes
       when 2
-        status_tag 'Pre aprobación', :grey 
+        status_tag 'Pre aprobación', :grey
       else
         status_tag 'Pendiente', :orange
       end
@@ -257,19 +257,19 @@ ActiveAdmin.register Catalog do
         span do
           link_to 'Aprobar', approve_home_catalog_path(catalog), :method => :post
         end
-        span do 
+        span do
           ' | '
         end
         span do
           link_to 'Desaprobar', 'javascript:void(0);', :method => :post, :class => "disapprove_catalog", :data => { :path => disapprove_home_catalog_path(catalog)}
         end
-        span do 
+        span do
           ' | '
         end
         span do
           link_to 'Pre aprobar', 'javascript:void(0);', :method => :post, :class => "pre_approve_catalog", :data => { :path => pre_approve_home_catalog_path(catalog)}
         end
-        span do 
+        span do
           ' | '
         end
         span do
@@ -307,8 +307,8 @@ ActiveAdmin.register Catalog do
       f.input :province, :label => "Provincia"
       f.input :zip_code, :label => "Codigo postal"
       f.input :description, :label => "Descripción catálogo (200 caracteres máx)", :input_html => { :maxlength => "200" }
-      f.has_many :catalog_images, :heading => "Subir imágenes", :new_record => false, :html => { :enctype => "multipart/form-data" } do |ff| 
-        ff.input :priority, :label => "Tipo de imagen", :input_html => { :disabled => true, :value => "#{ff.object.priority.humanize}" } 
+      f.has_many :catalog_images, :heading => "Subir imágenes", :new_record => false, :html => { :enctype => "multipart/form-data" } do |ff|
+        ff.input :priority, :label => "Tipo de imagen", :input_html => { :disabled => true, :value => "#{ff.object.priority.humanize}" }
         ff.input :attachment, :label => "Imagen".html_safe, :as => :file, :require => false, :hint => ff.object.attachment.present? ? image_tag(ff.object.attachment.url, :style => "width:200px") : content_tag(:span, "No hay imagen subida aún")
       end
     end
@@ -352,9 +352,6 @@ ActiveAdmin.register Catalog do
     end
     column "Código postal" do |catalog|
       catalog.zip_code
-    end
-    column "Descripción" do |catalog|
-      catalog.description
     end
   end
 
