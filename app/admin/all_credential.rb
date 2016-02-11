@@ -1,9 +1,17 @@
 ActiveAdmin.register Credential, :as => 'admin_credential' do
   permit_params :name, :art, :armador, :es_expositor, :personal_stand, :foto_video, :fecha_alta
   menu :if => proc{ current_user.type == 'AdminUser' }
-  actions :all, :except => [:new, :create, :show]
+  actions :all, :except => [:new, :edit, :show, :create, :update]
   config.batch_actions = false
 
+  controller do
+    before_action :redirect_to_home, :only => :index
+    
+    private
+    def redirect_to_home
+      redirect_to root_path if current_user.type != 'AdminUser'
+    end
+  end
   index :download_links => [:csv] do
     h2 "Credenciales"
     column "Expositor" do |credential|
