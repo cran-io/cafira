@@ -24,9 +24,8 @@ class Catalog < ActiveRecord::Base
 
   private
   def generate_xslx
-    headers = ['Nro stand', 'Website', 'Twitter', 'Facebook', 'Tel 1', 'Tel 2', 'Email', 'Email adicional', 'Dirección', 'Ciudad', 'Provincia', 'Código postal', 'Tipo de catálogo', 'Descripción']
-    catalog_data  = [stand_number, website, twitter, facebook, phone_number, aditional_phone_number, email, aditional_email, address, city, province, zip_code, catalog_type, description]
-
+    headers = ['Nombre de fantasía', 'Nro stand', 'Website', 'Twitter', 'Facebook', 'Tel 1', 'Tel 2', 'Email', 'Email adicional', 'Dirección', 'Ciudad', 'Provincia', 'Código postal', 'Tipo de catálogo', 'Descripción']
+    catalog_data  = [fantasy_name, stand_number, website, twitter, facebook, phone_number, aditional_phone_number, email, aditional_email, address, city, province, zip_code, catalog_type, description]
     package = Axlsx::Package.new
     package.workbook.add_worksheet(:name => "Catálogo") do |sheet|
       sheet.add_row headers

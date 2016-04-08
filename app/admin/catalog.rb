@@ -1,5 +1,6 @@
 ActiveAdmin.register Catalog do
-  permit_params :stand_number, :twitter, :facebook, :type, :description, :phone_number, :aditional_phone_number, :email, :aditional_email, :website, :address, :city, :province, :zip_code, :catalog_type, :catalog_images_attributes => [:attachment, :attachment_file_name, :attachment_content_type, :attachment_file_size, :attachment_updated_at, :id]
+  permit_params :stand_number, :twitter, :facebook, :type, :description, :phone_number, :aditional_phone_number, :email, :aditional_email, :website, :address, :city, :province, :zip_code, :fantasy_name, :catalog_type, :catalog_images_attributes => [:attachment, :attachment_file_name, :attachment_content_type, :attachment_file_size, :attachment_updated_at, :id]
+
   actions :all, :except => [:new, :create, :show]
   menu :if  => proc {current_user.type != 'Expositor' && (current_user.type == 'Designer' || current_user.type == 'AdminUser') }
   config.batch_actions = false
@@ -125,6 +126,16 @@ ActiveAdmin.register Catalog do
       end
     end
     column "General" do |catalog|
+      div do
+        span do
+          strong do
+            "Nombre de fantasía: "
+          end
+        end
+        span do
+            catalog.fantasy_name || '-'
+        end
+      end
       div do
         span do
           strong do
@@ -300,6 +311,7 @@ ActiveAdmin.register Catalog do
       div :class => "status_tag #{status} completed_status_tag"  do
         f.object.completed ? "Sección completa" : "Hay campos incompletos";
       end
+      f.input :fantasy_name, :label => "Nombre de fantasía"
       if current_user.type == 'AdminUser'
         f.input :stand_number, :label => "Número de stand"
       else
@@ -332,8 +344,11 @@ ActiveAdmin.register Catalog do
     column "Expositor" do |catalog|
       catalog.expositor.name
     end
+    column "Nombre de fantasía" do |catalog|
+      catalog.fantasy_name
+    end
     column "Stand" do |catalog|
-      catalog.stand_number
+      catalog.fantasy_name
     end
     column "Tipo de catálogo" do |catalog|
       catalog.catalog_type
