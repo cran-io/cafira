@@ -6,9 +6,9 @@ class ExpositorMailer < ApplicationMailer
     mail(to: @expositor.email, subject: "ALTA DE SOCIO CAFIRA")
   end
 
-  def deadline_mail(expositor)
+  def deadline_mail(expositor, exposition)
     @expositor = expositor
-
+    @exposition = exposition
     mail(to: @expositor.email, subject: "PLAZO POR VENCER CAFIRA")
   end
 

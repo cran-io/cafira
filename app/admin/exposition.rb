@@ -1,9 +1,9 @@
 ActiveAdmin.register Exposition do
   menu label: "Exposiciones"
   menu priority: 2
-  permit_params :ends_at, :initialized_at, :name, :active, :deadline_catalogs, :deadline_credentials, :deadline_infrastructures, :deadline_aditional_services, :exposition_files_attributes => [:file_type, :attachment, :attachment_file_name, :attachment_content_type, :attachment_file_size, :attachment_updated_at, :id]
+  permit_params :ends_at, :initialized_at, :name, :active, :deadline_catalogs, :deadline_credentials, :deadline_infrastructures, :deadline_aditional_services, :days_to_notify_deadlines, :exposition_files_attributes => [:file_type, :attachment, :attachment_file_name, :attachment_content_type, :attachment_file_size, :attachment_updated_at, :id]
   config.batch_actions = false
-  
+
   controller do
     def new
       new! do
@@ -18,7 +18,7 @@ ActiveAdmin.register Exposition do
     def update
       update!{ home_expositions_path }
     end
-    
+
     def create
       create! { home_expositions_path }
     end
@@ -74,22 +74,22 @@ ActiveAdmin.register Exposition do
     end
     column "Activo", :active, :class => 'text-right'
     column "Acciones" do |exposition|
-      span do 
+      span do
         link_to 'Ver', {:controller => 'home/expositors', :action => 'index', :exposition_id => exposition.id}, :method => :get
       end
       span do
         "|"
       end
-      span do 
+      span do
         link_to 'Editar', edit_home_exposition_path(exposition), :method => :get
       end
-      span do 
+      span do
         "|"
       end
       span do
         link_to "Eliminar", home_exposition_path(exposition.id), :method => :delete
       end
-      span do 
+      span do
         "|"
       end
       span do
@@ -108,6 +108,7 @@ ActiveAdmin.register Exposition do
       f.input :deadline_credentials, :label => "Deadline carga de credenciales", :as => :datepicker, :datepicker_options => { :min_date => Date.today }
       f.input :deadline_aditional_services, :label => "Deadline servicios adicionales", :as => :datepicker, :datepicker_options => { :min_date => Date.today }
       f.input :deadline_infrastructures, :label => "Deadline infraestructura", :as => :datepicker, :datepicker_options => { :min_date => Date.today }
+      f.input :days_to_notify_deadlines, :label => "Dias de anticipacion para deadlines", :as => :number
       f.has_many :exposition_files, :heading => "Archivos", :allow_destroy => false, :new_record => false, :enctype => "multipart/form-data"  do |ff|
         case ff.object.file_type
         when 'reglamento'
@@ -117,7 +118,7 @@ ActiveAdmin.register Exposition do
         else
           label = 'Manual'
         end
-        ff.input :attachment, :label => "#{label}", :as => :file, :require => false, 
+        ff.input :attachment, :label => "#{label}", :as => :file, :require => false,
         :hint => ff.object.attachment.present? ? ff.object.attachment_file_name : content_tag(:span, "No hay un #{label} subido aún")
         ff.input :file_type, :input_html => { :value => ff.object.file_type }, :as => :hidden
       end
