@@ -18,12 +18,12 @@ ActiveAdmin.register AditionalService do
     end
 
     def update
-      update! do 
+      update! do
         flash[:message] = "Servicios adicionales actualizados correctamente."
-        edit_home_services_path(resource.expositor) 
+        edit_home_services_path(resource.expositor)
       end
     end
-  
+
     private
     def set_aditional_catalog
       catalog = resource.expositor.catalog
@@ -43,7 +43,7 @@ ActiveAdmin.register AditionalService do
       redirect_to root_path if current_user.type != 'AdminUser' && current_user.type != 'Architect'
     end
   end
-  
+
   sidebar "Acciones del expositor", :priority => 0, :only => :edit do
     ul do
       li do
@@ -93,7 +93,7 @@ ActiveAdmin.register AditionalService do
       end
     end
   end
-  
+
   index :download_links => [:csv] do
     column "Completo", :completed
     column "Expositor" do |aditional_service|
@@ -117,10 +117,10 @@ ActiveAdmin.register AditionalService do
       div :class => "status_tag #{status} completed_status_tag"  do
         f.object.completed ? "Sección completa" : "Hay campos incompletos";
       end
-      f.input :energia, :label => "Energía"
+      f.input :energia, :label => "Energía adicional"
       f.input :energia_cantidad, :label => "Energía cantidad", :input_html => { :step =>"0.5", :min => "0" }
-      f.input :estacionamiento, :label => "Estacionamiento"
-      f.input :estacionamiento_cantidad, :label => "Cantidad (estacionamiento)" 
+      f.input :estacionamiento, :label => "Estacionamiento adicional"
+      f.input :estacionamiento_cantidad, :label => "Cantidad (estacionamiento)"
       f.input :nylon, :label => "Nylon"
       f.input :catalogo_extra, :label => "Página de catálogo adicional"
     end
