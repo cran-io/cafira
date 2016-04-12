@@ -21,9 +21,9 @@ ActiveAdmin.register Infrastructure do
     end
 
     def update
-      update! do 
+      update! do
         flash[:message] = "Datos de infraestructura actualizados correctamente."
-        edit_home_infrastruct_path(resource.expositor) 
+        edit_home_infrastruct_path(resource.expositor)
       end
     end
 
@@ -82,8 +82,8 @@ ActiveAdmin.register Infrastructure do
       end
     end
   end
-  
-  index :download_links => false do 
+
+  index :download_links => false do
     column "Completo", :completed
     column "Expositor" do |infrastructure|
       infrastructure.expositor.name_and_email
@@ -92,7 +92,7 @@ ActiveAdmin.register Infrastructure do
     column :paneles
     column :alfombra
     column "Tipo de alfombra", :alfombra_tipo do |infrastructure|
-      infrastructure.alfombra_tipo? ? infrastructure.alfombra_tipo.camelize : "-" 
+      infrastructure.alfombra_tipo? ? infrastructure.alfombra_tipo.camelize : "-"
     end
     column "Planos" do |infrastructure|
       infrastructure.blueprint_files.each_with_index do |bp_file, index|
@@ -119,21 +119,21 @@ ActiveAdmin.register Infrastructure do
 
   form :html => { :enctype => "multipart/form-data" } do |f|
     f.inputs 'Editar Catálogo' do
-      status = f.object.completed ? 'yes' : 'no' 
+      status = f.object.completed ? 'yes' : 'no'
       div :class => "status_tag #{status} completed_status_tag"  do
         f.object.completed ? "Sección completa" : "Hay campos incompletos";
       end
-      f.input :alfombra
+      f.input :alfombra, :as => :select, :collection => [["Si",true],["No",false],["-",nil]], :include_blank => false, :allow_blank => false
       f.input :alfombra_tipo, :label => "Tipo de alfombra", :as => :select, :collection => [["Estándar","estandar"],["Otra", "otra"]], :include_blank => false, :allow_blank => false, :hint => "comunicarse con el organizador para saber disponibilidad."
-      f.input :tarima
-      f.input :paneles
-      f.has_many :blueprint_files, :heading => "Subir planos", :new_record => false, :html => { :enctype => "multipart/form-data" } do |ff| 
+      f.input :tarima, :as => :select, :collection => [["Si",true],["No",false],["-",nil]], :include_blank => false, :allow_blank => false
+      f.input :paneles, :as => :select, :collection => [["Si",true],["No",false],["-",nil]], :include_blank => false, :allow_blank => false
+      f.has_many :blueprint_files, :heading => "Subir planos", :new_record => false, :html => { :enctype => "multipart/form-data" } do |ff|
         label = status = ''
         case ff.object.state
         when 0
           status = '(NO APROBADO). Debe volver a subir el plano.'
           label  = 'label-red'
-          ff.input :attachment, :label => "Plano <span class='#{label}'>#{status}</span>".html_safe, :as => :file, :require => false, 
+          ff.input :attachment, :label => "Plano <span class='#{label}'>#{status}</span>".html_safe, :as => :file, :require => false,
           :hint => ff.object.attachment.present? ? "Justificación: " + ff.object.comment : content_tag(:span, "No hay un plano subido aún")
         when 1
           status = '(APROBADO)'
@@ -142,12 +142,12 @@ ActiveAdmin.register Infrastructure do
         when 2
           status = '(PRE APROBADO)'
           label  = 'label-grey'
-          ff.input :attachment, :label => "Plano <span class='#{label}'>#{status}</span>".html_safe, :as => :file, :require => false, 
+          ff.input :attachment, :label => "Plano <span class='#{label}'>#{status}</span>".html_safe, :as => :file, :require => false,
           :hint => ff.object.attachment.present? ? "Justificación: " + ff.object.comment : content_tag(:span, "No hay un plano subido aún")
         else
           status = '(PENDIENTE A REVISIÓN)'
           label  = 'label-orange'
-          ff.input :attachment, :label => "Plano <span class='#{label}'>#{status}</span>".html_safe, :as => :file, :require => false, 
+          ff.input :attachment, :label => "Plano <span class='#{label}'>#{status}</span>".html_safe, :as => :file, :require => false,
           :hint => ff.object.attachment.present? ? ff.object.attachment_file_name : content_tag(:span, "No hay un plano subido aún")
         end
       end
@@ -163,4 +163,3 @@ ActiveAdmin.register Infrastructure do
   filter :alfombra, :collection => [['Si', true],['No', false]]
   filter :alfombra_tipo, :as => :select, :collection => [['Estándar', 'estandar'],['Otra','otra']]
 end
-  

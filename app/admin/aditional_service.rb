@@ -117,9 +117,9 @@ ActiveAdmin.register AditionalService do
       div :class => "status_tag #{status} completed_status_tag"  do
         f.object.completed ? "Sección completa" : "Hay campos incompletos";
       end
-      f.input :energia, :label => "Energía adicional"
+      f.input :energia, :label => "Energía adicional", :as => :select, :collection => [["Si",true],["No",false],["-",nil]], :include_blank => false, :allow_blank => false
       f.input :energia_cantidad, :label => "Energía cantidad", :input_html => { :step =>"0.5", :min => "0" }
-      f.input :estacionamiento, :label => "Estacionamiento adicional"
+      f.input :estacionamiento, :label => "Estacionamiento adicional", :as => :select, :collection => [["Si",true],["No",false],["-",nil]], :include_blank => false, :allow_blank => false
       f.input :estacionamiento_cantidad, :label => "Cantidad (estacionamiento)"
       f.input :nylon, :label => "Nylon"
       f.input :catalogo_extra, :label => "Página de catálogo adicional"
