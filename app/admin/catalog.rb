@@ -1,5 +1,5 @@
 ActiveAdmin.register Catalog do
-  permit_params :stand_number, :twitter, :facebook, :type, :description, :phone_number, :aditional_phone_number, :email, :aditional_email, :website, :address, :city, :province, :zip_code, :catalog_images_attributes => [:attachment, :attachment_file_name, :attachment_content_type, :attachment_file_size, :attachment_updated_at, :id]
+  permit_params :stand_number, :twitter, :facebook, :type, :description, :phone_number, :aditional_phone_number, :email, :aditional_email, :website, :address, :city, :province, :zip_code, :fantasy_name, :catalog_images_attributes => [:attachment, :attachment_file_name, :attachment_content_type, :attachment_file_size, :attachment_updated_at, :id]
   actions :all, :except => [:new, :create, :show]
   menu :if  => proc {current_user.type != 'Expositor' && (current_user.type == 'Designer' || current_user.type == 'AdminUser') }
   config.batch_actions = false
@@ -133,6 +133,16 @@ ActiveAdmin.register Catalog do
         end
         span do
             catalog.stand_number || '-'
+        end
+      end
+      div do
+        span do
+          strong do
+            "Nombre de fantasía: "
+          end
+        end
+        span do
+            catalog.fantasy_name || '-'
         end
       end
       div do
@@ -295,6 +305,7 @@ ActiveAdmin.register Catalog do
       else
         f.input :stand_number, :label => "Número de stand", :input_html => { :disabled => true }
       end
+      f.input :fantasy_name, :label => "Nombre de fantasía"
       f.input :twitter
       f.input :facebook
       f.input :phone_number, :label => "Teléfono 1", :placeholder => "Formato: +54-11-4888-8888"
@@ -320,6 +331,9 @@ ActiveAdmin.register Catalog do
   csv do
     column "Expositor" do |catalog|
       catalog.expositor.name
+    end
+    column "Nombre de fantasía" do |catalog|
+      catalog.fantasy_name
     end
     column "Stand" do |catalog|
       catalog.stand_number
