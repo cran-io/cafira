@@ -336,7 +336,7 @@ ActiveAdmin.register Catalog do
       catalog.fantasy_name
     end
     column "Stand" do |catalog|
-      catalog.fantasy_name
+      catalog.stand_number
     end
     column "Email" do |catalog|
       catalog.email

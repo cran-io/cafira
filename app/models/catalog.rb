@@ -21,7 +21,7 @@ class Catalog < ActiveRecord::Base
   private
   
   def generate_xslx
-    headers = ['Nro stand','Nombre de fantasía' 'Website', 'Twitter', 'Facebook', 'Tel 1', 'Tel 2', 'Email', 'Email adicional', 'Dirección', 'Ciudad', 'Provincia', 'Código postal', 'Descripción']
+    headers = ['Nro stand','Nombre de fantasía', 'Website', 'Twitter', 'Facebook', 'Tel 1', 'Tel 2', 'Email', 'Email adicional', 'Dirección', 'Ciudad', 'Provincia', 'Código postal', 'Descripción']
     catalog_data  = [stand_number, fantasy_name, website, twitter, facebook, phone_number, aditional_phone_number, email, aditional_email, address, city, province, zip_code, description]
 
     package = Axlsx::Package.new
