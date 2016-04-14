@@ -24,7 +24,7 @@ ActiveAdmin.register User do
         end
        home_users_path
       end
-      ExpositorMailer.signup_mail(resource, params[:user][:password]).deliver if Expositor.exists?(:id => resource.id)
+      ExpositorMailer.signup_mail(resource, params[:user][:password]).deliver_later(wait: 10) if Expositor.exists?(:id => resource.id)
     end
   end
 
