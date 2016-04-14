@@ -5,19 +5,49 @@ class Expositor < User
   has_one :catalog, :dependent => :destroy
   has_one :aditional_service, :dependent => :destroy
   has_one :infrastructure, :dependent => :destroy
+  before_create :set_days_to_notify_deadlines, :unless => :days_to_notify_deadlines?
 
   #returns a Set of all expositors with uncompleted tasks and without much time to complete them
   def self.near_deadline(days_quantity)
-    aSetofExpositors = Set.new
-    aSetofExpositors.merge(self.joins(:catalog).where("catalogs.completed = ?",false).joins(:expositions).where("expositions.deadline_catalogs >= ? AND expositions.deadline_catalogs <= ? AND expositions.active = ?",Date.today,Date.today + days_quantity.days,true))
-    aSetofExpositors.merge(self.joins(:credentials).where(:credentials => {:id => nil}).joins(:expositions).where("expositions.deadline_credentials >= ? AND expositions.deadline_credentials <= ? AND expositions.active = ?",Date.today,Date.today + days_quantity.days,true))
-    aSetofExpositors.merge(self.joins(:aditional_service).where("aditional_services.completed =?",false).joins(:expositions).where("expositions.deadline_aditional_services >= ? AND expositions.deadline_aditional_services <= ? AND expositions.active = ",Date.today,Date.today + days_quantity.days,true))
-    aSetofExpositors.merge(self.joins(:infrastructure).where("infrastructures.completed =?",false).joins(:expositions).where("expositions.deadline_infrastructures >= ? AND expositions.deadline_infrastructures <= ? AND expositions.active = ?",Date.today,Date.today + days_quantity.days,true))
-    aSetofExpositors
+    expositors = Set.new
+    catalog_defaulters = self.joins(:catalog)
+      .where("catalogs.completed = ?", false)
+      .joins(:expositions)
+      .where("expositions.deadline_catalogs >= ? AND expositions.deadline_catalogs <= ? AND expositions.active = ?", Date.today, Date.today + days_quantity.days, true)
+
+    expositors.merge(catalog_defaulters) unless catalog_defaulters.empty?
+
+    credential_defaulters = self.joins(:credentials)
+      .where(:credentials => { :id => nil })
+      .joins(:expositions)
+      .where("expositions.deadline_credentials >= ? AND expositions.deadline_credentials <= ? AND expositions.active = ?", Date.today, Date.today + days_quantity.days, true) 
+      
+    expositors.merge(credential_defaulters) unless credential_defaulters.empty?
+
+    aditional_services_defaulters = self.joins(:aditional_service)
+      .where("aditional_services.completed =?", false)
+      .joins(:expositions)
+      .where("expositions.deadline_aditional_services >= ? AND expositions.deadline_aditional_services <= ? AND expositions.active = ? ", Date.today, Date.today + days_quantity.days, true)
+
+    expositors.merge(aditional_services_defaulters) unless credential_defaulters.empty?
+
+    infrastructure_defaulters = self.joins(:infrastructure)
+      .where("infrastructures.completed =?", false)
+      .joins(:expositions)
+      .where("expositions.deadline_infrastructures >= ? AND expositions.deadline_infrastructures <= ? AND expositions.active = ?", Date.today, Date.today + days_quantity.days, true)
+    
+    expositors.merge(infrastructure_defaulters) unless infrastructure_defaulters.empty?
+    expositors
   end
 
   def name_and_email
     (name || "") + " (" + email + ")"
+  end
+
+  private
+  
+  def set_days_to_notify_deadlines
+    self.days_to_notify_deadlines = 2
   end
 
 end
