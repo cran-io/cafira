@@ -121,8 +121,8 @@ ActiveAdmin.register AditionalService do
       f.input :energia_cantidad, :label => "Energía cantidad", :input_html => { :step =>"0.5", :min => "0" }
       f.input :estacionamiento, :label => "Estacionamiento adicional", :as => :select, :collection => [["Si",true],["No",false],["-",nil]], :include_blank => false, :allow_blank => false
       f.input :estacionamiento_cantidad, :label => "Cantidad (estacionamiento)"
-      f.input :nylon, :label => "Nylon"
-      f.input :catalogo_extra, :label => "Página de catálogo adicional"
+      f.input :nylon, :label => "Nylon", :as => :select, :collection => [["Si",true],["No",false],["-",nil]], :include_blank => false, :allow_blank => false
+      f.input :catalogo_extra, :label => "Página de catálogo adicional", :as => :select, :collection => [["Si",true],["No",false],["-",nil]], :include_blank => false, :allow_blank => false
     end
     f.actions do
       f.action(:submit)
