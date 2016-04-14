@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160210172328) do
+ActiveRecord::Schema.define(version: 20160411180752) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -77,8 +77,9 @@ ActiveRecord::Schema.define(version: 20160210172328) do
     t.string   "facebook"
     t.string   "type"
     t.integer  "expositor_id"
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.boolean  "completed",              default: false
     t.text     "description"
     t.string   "phone_number"
     t.string   "aditional_phone_number"
@@ -89,9 +90,9 @@ ActiveRecord::Schema.define(version: 20160210172328) do
     t.string   "city"
     t.string   "province"
     t.string   "zip_code"
-    t.boolean  "completed"
     t.text     "comment"
     t.integer  "state",                  default: 3
+    t.string   "fantasy_name"
   end
 
   create_table "credentials", force: :cascade do |t|
@@ -152,6 +153,7 @@ ActiveRecord::Schema.define(version: 20160210172328) do
     t.date     "deadline_credentials"
     t.date     "deadline_aditional_services"
     t.date     "deadline_infrastructures"
+    t.integer  "days_to_notify_deadlines"
   end
 
   create_table "infrastructures", force: :cascade do |t|
