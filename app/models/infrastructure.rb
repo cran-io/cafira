@@ -22,16 +22,16 @@ class Infrastructure < ActiveRecord::Base
   def generate_xslx
     headers = ['Tarima', 'Paneles', 'Alfombra', 'Alfombra Tipo']
     infrastructure_data  = [
-      (tarima == true ? 'SI' : 'NO'), 
-      (paneles == true ? 'SI' : 'NO'),
-      (alfombra == true ? 'SI' : 'NO'),
+      (tarima == true ? 'SI' :  tarima == false ? 'NO' : '-'),
+      (paneles == true ? 'SI' : paneles == false ? 'NO' : '-'),
+      (alfombra == true ? 'SI' : alfombra == false ? 'NO' : '-'),
       (alfombra_tipo.nil? ? '-' : alfombra_tipo.camelize)
     ]
 
     package = Axlsx::Package.new
     package.workbook.add_worksheet(:name => "Infraestructura") do |sheet|
-      sheet.add_row headers        
-      sheet.add_row infrastructure_data 
+      sheet.add_row headers
+      sheet.add_row infrastructure_data
     end
     tmpfile = Tempfile.new('infraestructura')
     package.serialize(tmpfile)
