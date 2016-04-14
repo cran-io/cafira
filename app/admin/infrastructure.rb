@@ -82,15 +82,21 @@ ActiveAdmin.register Infrastructure do
       end
     end
   end
-
   index :download_links => false do
     column "Completo", :completed
     column "Expositor" do |infrastructure|
       infrastructure.expositor.name_and_email
     end
-    column :tarima
-    column :paneles
-    column :alfombra
+
+    column :tarima do |infrastructure|
+      infrastructure.tarima.nil? ? '-' : infrastructure.tarima ? status_tag( "yes" ) : status_tag( "no" )
+    end
+    column :paneles do |infrastructure|
+      infrastructure.paneles.nil? ? '-' : infrastructure.paneles ? status_tag( "yes" ) : status_tag( "no" )
+    end
+    column :alfombra do |infrastructure|
+      infrastructure.alfombra.nil? ? '-' : infrastructure.alfombra ? status_tag( "yes" ) : status_tag( "no" )
+    end
     column "Tipo de alfombra", :alfombra_tipo do |infrastructure|
       infrastructure.alfombra_tipo? ? infrastructure.alfombra_tipo.camelize : "-"
     end

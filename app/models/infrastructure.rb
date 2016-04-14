@@ -22,9 +22,9 @@ class Infrastructure < ActiveRecord::Base
   def generate_xslx
     headers = ['Tarima', 'Paneles', 'Alfombra', 'Alfombra Tipo']
     infrastructure_data  = [
-      (tarima == true ? 'SI' :  tarima == false ? 'NO' : '-'),
-      (paneles == true ? 'SI' : paneles == false ? 'NO' : '-'),
-      (alfombra == true ? 'SI' : alfombra == false ? 'NO' : '-'),
+      (tarima == true ? 'SI' :  tarima == false ? 'NO' : ' '),
+      (paneles == true ? 'SI' : paneles == false ? 'NO' : ' '),
+      (alfombra == true ? 'SI' : alfombra == false ? 'NO' : ' '),
       (alfombra_tipo.nil? ? '-' : alfombra_tipo.camelize)
     ]
 

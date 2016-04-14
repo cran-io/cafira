@@ -99,16 +99,24 @@ ActiveAdmin.register AditionalService do
     column "Expositor" do |aditional_service|
       aditional_service.expositor.name_and_email
     end
-    column "Energía", :energia
+    column "Energía", :energia do |aditional_service|
+      aditional_service.energia.nil? ? '-' : aditional_service.energia ? status_tag( "yes" ) : status_tag( "no" )
+    end
     column "Cantidad energía" do |aditional_service|
       aditional_service.energia_cantidad.nil? ? '-' : aditional_service.energia_cantidad
     end
-    column :estacionamiento
+    column :estacionamiento  do |aditional_service|
+      aditional_service.estacionamiento.nil? ? '-' : aditional_service.estacionamiento ? status_tag( "yes" ) : status_tag( "no" )
+    end
     column "Cantidad de estacionamientos" do |aditional_service|
       aditional_service.estacionamiento_cantidad.nil? ? '-' : aditional_service.estacionamiento_cantidad
     end
-    column :nylon
-    column "Catálogo adicional", :catalogo_extra
+    column :nylon do |aditional_service|
+      aditional_service.nylon.nil? ? '-' : aditional_service.nylon ? status_tag( "yes" ) : status_tag( "no" )
+    end
+    column "Catálogo adicional", :catalogo_extra do |aditional_service|
+      aditional_service.catalogo_extra.nil? ? '-' : aditional_service.catalogo_extra ? status_tag( "yes" ) : status_tag( "no" )
+    end
   end
 
   form do |f|
@@ -138,22 +146,22 @@ ActiveAdmin.register AditionalService do
       aditional_service.expositor.name_and_email
     end
     column "Energía" do |aditional_service|
-      aditional_service.energia? ? "Si" : "No"
+      aditional_service.energia? ? "Si" : aditional_service.energia.nil? ? " " : "No"
     end
     column "Cantidad energía" do |aditional_service|
       aditional_service.energia_cantidad
     end
     column "Estacionamiento" do |aditional_service|
-      aditional_service.estacionamiento? ? "Si" : "No"
+      aditional_service.estacionamiento? ? "Si" : aditional_service.estacionamiento.nil? ? " " : "No"
     end
     column "Cantidad estacionamiento" do |aditional_service|
       aditional_service.estacionamiento_cantidad
     end
     column "Nylon" do |aditional_service|
-      aditional_service.nylon? ? "Si" : "No"
+      aditional_service.nylon? ? "Si" : aditional_service.nylon.nil? ? " " : "No"
     end
     column "Catálogo adicional" do |aditional_service|
-      aditional_service.catalogo_extra? ? "Si" : "No"
+      aditional_service.catalogo_extra? ? "Si" : aditional_service.catalogo_extra.nil? ? " " : "No"
     end
   end
 
