@@ -123,10 +123,10 @@ ActiveAdmin.register Infrastructure do
       div :class => "status_tag #{status} completed_status_tag"  do
         f.object.completed ? "Sección completa" : "Hay campos incompletos";
       end
-      f.input :alfombra, :as => :select, :collection => [["Si",true],["No",false],["-",nil]], :include_blank => false, :allow_blank => false
+      f.input :alfombra, :as => :select, :collection => [["Si",true],["No",false]], :include_blank => '-'
       f.input :alfombra_tipo, :label => "Tipo de alfombra", :as => :select, :collection => [["Estándar","estandar"],["Otra", "otra"]], :include_blank => false, :allow_blank => false, :hint => "comunicarse con el organizador para saber disponibilidad."
-      f.input :tarima, :as => :select, :collection => [["Si",true],["No",false],["-",nil]], :include_blank => false, :allow_blank => false
-      f.input :paneles, :as => :select, :collection => [["Si",true],["No",false],["-",nil]], :include_blank => false, :allow_blank => false
+      f.input :tarima, :as => :select, :collection => [["Si",true],["No",false]], :include_blank => '-'
+      f.input :paneles, :as => :select, :collection => [["Si",true],["No",false]], :include_blank => '-'
       f.has_many :blueprint_files, :heading => "Subir planos", :new_record => false, :html => { :enctype => "multipart/form-data" } do |ff|
         label = status = ''
         case ff.object.state
