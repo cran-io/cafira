@@ -8,6 +8,7 @@ class Exposition < ActiveRecord::Base
   validates :initialized_at, :presence => true, :on => :create
   validates :ends_at, :presence => true, :on => :create
   validate :ends_at, :if => :ends_at_after_initialized?
+  validates :deadline_catalogs, :deadline_credentials, :deadline_aditional_services, :deadline_infrastructures, :days_to_notify_deadlines, :presence => true
 
   private
   def ends_at_after_initialized?

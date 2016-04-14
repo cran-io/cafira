@@ -5,7 +5,6 @@ class Expositor < User
   has_one :catalog, :dependent => :destroy
   has_one :aditional_service, :dependent => :destroy
   has_one :infrastructure, :dependent => :destroy
-  before_create :set_days_to_notify_deadlines, :unless => :days_to_notify_deadlines?
 
   #returns a Set of all expositors with uncompleted tasks and without much time to complete them
   def self.near_deadline(days_quantity)
@@ -42,12 +41,6 @@ class Expositor < User
 
   def name_and_email
     (name || "") + " (" + email + ")"
-  end
-
-  private
-  
-  def set_days_to_notify_deadlines
-    self.days_to_notify_deadlines = 2
   end
 
 end
