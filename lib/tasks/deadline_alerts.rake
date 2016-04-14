@@ -7,8 +7,11 @@ end
 
 class DeadlineAlerts
   def self.send
-    Expositor.near_deadline.each do |expositor|
-        ExpositorMailer.deadline_mail(expositor).deliver_later(wait: 10)
+    Exposition.all.each do |exposition|
+      exposition.expositors.near_deadline(exposition.days_to_notify_deadlines).each do |expositor|
+          ExpositorMailer.deadline_mail(expositor,exposition).deliver_later(wait: 10)
+      end
     end
+
   end
 end
