@@ -4,6 +4,8 @@ class Catalog < ActiveRecord::Base
   accepts_nested_attributes_for :catalog_images
   before_update :verify_fields
   before_update :parse_phone_number
+  validates_length_of :phone_number, minimum: 8, too_short: "El numero debe tener al menos 8 digitos"
+  validates_length_of :aditional_phone_number, minimum: 8, too_short: "El numero debe tener al menos 8 digitos"
 
   def download_catalog
     filename = 'datos_catalogo.zip'
@@ -54,54 +56,50 @@ class Catalog < ActiveRecord::Base
     numbers = [self.phone_number, self.aditional_phone_number]
     numbers.reject! { |n| n.nil? }
     unless numbers.nil?
-    numbers.map! do |p_number|
-      #if the phone number lenght is less than 8 digits does nothing and go to the next iteration
-      if p_number.length < 8
-        next
-      end
-      country_area = '+54-'
-      aux = 0
-      # see if the last 8 digits of the phone number it's a number without any '-'
-      number = /[0-9]{8}/.match(p_number[-8,8])
-      if number.nil?
-        number = /[0-9]{4}-[0-9]{4}/.match(p_number[-9,9])
-        if !number.nil?
-          aux = 1
-          number = number.to_s
+      numbers.map! do |p_number|
+        country_area = '+54-'
+        aux = 0
+        # see if the last 8 digits of the phone number it's a number without any '-'
+        number = /[0-9]{8}/.match(p_number[-8,8])
+        if number.nil?
+          number = /[0-9]{4}-[0-9]{4}/.match(p_number[-9,9])
+          if !number.nil?
+            aux = 1
+            number = number.to_s
+          else
+            number = p_number[-8,8]
+          end
         else
-          number = p_number[-8,8]
+          number = p_number[-8,4] + '-' + p_number[-4,4]
         end
-      else
-        number = p_number[-8,4] + '-' + p_number[-4,4]
-      end
-      # now it sees if how city area code was written if there is any
-      city_area = /[0-9]{3}/.match(p_number[-11-aux,3])
-      if city_area.nil?
-        city_area = /[0-9]{2}/.match(p_number[-10-aux,2])
+        # now it sees if how city area code was written if there is any
+        city_area = /[0-9]{3}/.match(p_number[-11-aux,3])
         if city_area.nil?
-          city_area = /[0-9]{3}-/.match(p_number[-12-aux,4])
+          city_area = /[0-9]{2}/.match(p_number[-10-aux,2])
           if city_area.nil?
-            city_area = /[0-9]{2}-/.match(p_number[-11-aux,3])
+            city_area = /[0-9]{3}-/.match(p_number[-12-aux,4])
             if city_area.nil?
-              #assigns default city area code (C.A.B.A)
-              city_area = '11-'
+              city_area = /[0-9]{2}-/.match(p_number[-11-aux,3])
+              if city_area.nil?
+                #assigns default city area code (C.A.B.A)
+                city_area = '11-'
+              else
+                city_area = city_area.to_s
+              end
             else
               city_area = city_area.to_s
             end
           else
-            city_area = city_area.to_s
+            city_area = city_area.to_s.concat('-')
           end
         else
           city_area = city_area.to_s.concat('-')
         end
-      else
-        city_area = city_area.to_s.concat('-')
+
+        formatted_number = country_area + city_area + number
+
+        p_number = formatted_number
       end
-
-      formatted_number = country_area + city_area + number
-
-      p_number = formatted_number
-    end
     self.phone_number = numbers[0]
     self.aditional_phone_number = numbers[1]
     end

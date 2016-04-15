@@ -298,7 +298,7 @@ ActiveAdmin.register Catalog do
       f.input :twitter
       f.input :facebook
       f.input :phone_number, :label => "Teléfono 1", :placeholder => "Formato: +54-11-4888-8888"
-      f.input :aditional_phone_number, :label => "Teléfono 2", :placeholder => "Formato: +54-11-4888-8888"
+      f.input :aditional_phone_number, :label => "Teléfono 2", :placeholder => "Formato: +54-11-4888-8888", :required => true#, :input_html => { :minlength => 20}
       f.input :email, :label => "E-mail", :placeholder => "mail@ejemplo.com"
       f.input :aditional_email, :label => "E-mail adicional", :placeholder => "mail@ejemplo.com"
       f.input :website, :label => "Página web", :placeholder => "http://www.ejemplo.com/"
