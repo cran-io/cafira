@@ -21,8 +21,8 @@ class Catalog < ActiveRecord::Base
     temp_file
   end
 
-  private
 
+  private
   def generate_xslx
     headers = ['Nro stand', 'Website', 'Twitter', 'Facebook', 'Tel 1', 'Tel 2', 'Email', 'Email adicional', 'Dirección', 'Ciudad', 'Provincia', 'Código postal', 'Descripción']
     catalog_data  = [stand_number, website, twitter, facebook, phone_number, aditional_phone_number, email, aditional_email, address, city, province, zip_code, description]
@@ -50,7 +50,6 @@ class Catalog < ActiveRecord::Base
     nil
   end
 
-
   private
   def parse_phone_number
     numbers = [self.phone_number, self.aditional_phone_number]
@@ -71,6 +70,11 @@ class Catalog < ActiveRecord::Base
           end
         else
           number = p_number[-8,4] + '-' + p_number[-4,4]
+        end
+        # looks for the '15' prefix in the phone number
+        prefix = p_number[-10-aux,2]
+        if prefix == '15'
+          aux += 2
         end
         # now it sees if how city area code was written if there is any
         city_area = /[0-9]{3}/.match(p_number[-11-aux,3])
@@ -94,6 +98,14 @@ class Catalog < ActiveRecord::Base
           end
         else
           city_area = city_area.to_s.concat('-')
+        end
+
+        if (city_area[0] == '4') && (p_number[2] != '-' || p_number[3] != '-')
+          city_area = city_area[1,3]
+        end
+
+        if city_area[0] == '0'
+          city_area = city_area[1,3]
         end
 
         formatted_number = country_area + city_area + number
