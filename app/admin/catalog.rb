@@ -138,6 +138,16 @@ ActiveAdmin.register Catalog do
       div do
         span do
           strong do
+            "Tipo de catálogo: "
+          end
+        end
+        span do
+            catalog.catalog_type || '-'
+        end
+      end
+      div do
+        span do
+          strong do
             "Email: "
           end
         end
@@ -296,7 +306,7 @@ ActiveAdmin.register Catalog do
         f.input :stand_number, :label => "Número de stand", :input_html => { :disabled => true }
       end
       f.input :twitter
-      f.input :facebook#, :hint => image_tag(/system/catalog_images/attachments/000/000/686/original/dbexport.dump?1460764334)
+      f.input :facebook
       f.input :phone_number, :label => "Teléfono 1", :placeholder => "Formato: +54-11-4888-8888"
       f.input :aditional_phone_number, :label => "Teléfono 2", :placeholder => "Formato: +54-11-4888-8888"
       f.input :email, :label => "E-mail", :placeholder => "mail@ejemplo.com"
@@ -306,7 +316,7 @@ ActiveAdmin.register Catalog do
       f.input :city, :label => "Ciudad"
       f.input :province, :label => "Provincia"
       f.input :zip_code, :label => "Codigo postal"
-      f.input :catalog_type, :label => "Tipo de catálogo", :as => :radio, :collection => [["Vertical", "Vertical"], ["Horizontal", "Horizontal"]]
+      f.input :catalog_type, :label => "Tipo de catálogo", :as => :radio, :collection => [["", "Vertical"], ["", "Horizontal"]]
       f.input :description, :label => "Descripción catálogo (200 caracteres máx)", :input_html => { :maxlength => "200" }
       f.has_many :catalog_images, :heading => "Subir imágenes", :new_record => false, :html => { :enctype => "multipart/form-data" } do |ff|
         ff.input :priority, :label => "Tipo de imagen", :input_html => { :disabled => true, :value => "#{ff.object.priority.humanize}" }
@@ -324,6 +334,9 @@ ActiveAdmin.register Catalog do
     end
     column "Stand" do |catalog|
       catalog.stand_number
+    end
+    column "Tipo de catálogo" do |catalog|
+      catalog.catalog_type
     end
     column "Email" do |catalog|
       catalog.email

@@ -25,5 +25,11 @@ $(function() {
   $('#aditional_service_estacionamiento_input #aditional_service_estacionamiento').click(function() {
     $('#aditional_service_estacionamiento_input #aditional_service_estacionamiento').val() == "true" ? $('#aditional_service_estacionamiento_cantidad_input').show() : $('#aditional_service_estacionamiento_cantidad_input').hide();
   });
-  
+
+
+  $('#catalog_catalog_type_horizontal').parent().append( "<img src='/moon.jpg' >" );
+
+
+  $('#catalog_catalog_type_vertical').parent().append( "<img src='/moon.jpg' >" );
+
 });

@@ -24,8 +24,8 @@ class Catalog < ActiveRecord::Base
 
   private
   def generate_xslx
-    headers = ['Nro stand', 'Website', 'Twitter', 'Facebook', 'Tel 1', 'Tel 2', 'Email', 'Email adicional', 'Dirección', 'Ciudad', 'Provincia', 'Código postal', 'Descripción']
-    catalog_data  = [stand_number, website, twitter, facebook, phone_number, aditional_phone_number, email, aditional_email, address, city, province, zip_code, description]
+    headers = ['Nro stand', 'Website', 'Twitter', 'Facebook', 'Tel 1', 'Tel 2', 'Email', 'Email adicional', 'Dirección', 'Ciudad', 'Provincia', 'Código postal', 'Tipo de catálogo', 'Descripción']
+    catalog_data  = [stand_number, website, twitter, facebook, phone_number, aditional_phone_number, email, aditional_email, address, city, province, zip_code, catalog_type, description]
 
     package = Axlsx::Package.new
     package.workbook.add_worksheet(:name => "Catálogo") do |sheet|
@@ -58,31 +58,42 @@ class Catalog < ActiveRecord::Base
       numbers.map! do |p_number|
         country_area = '+54-'
         aux = 0
-        # see if the last 8 digits of the phone number it's a number without any '-'
-        number = /[0-9]{8}/.match(p_number[-8,8])
-        if number.nil?
-          number = /[0-9]{4}-[0-9]{4}/.match(p_number[-9,9])
-          if !number.nil?
-            aux = 1
-            number = number.to_s
-          else
-            number = p_number[-8,8]
-          end
+
+        province_l = self.province.downcase
+
+        if (province_l == 'cordoba' || province_l == 'córdoba' || province_l =='cba' || province_l == 'santa fe' || province_l == 'jujuy')
+          digits = 7
+        elsif(province_l == 'la pampa')
+          digits = 6
         else
-          number = p_number[-8,4] + '-' + p_number[-4,4]
+          digits = 8
         end
-        # looks for the '15' prefix in the phone number
-        prefix = p_number[-10-aux,2]
-        if prefix == '15'
-          aux += 2
-        end
-        # now it sees if how city area code was written if there is any
-        city_area = /[0-9]{3}/.match(p_number[-11-aux,3])
-        if city_area.nil?
+
+
+        if digits == 8
+          number = /[0-9]{8}/.match(p_number[-8,8])
+          if number.nil?
+            number = /[0-9]{4}-[0-9]{4}/.match(p_number[-9,9])
+            if !number.nil?
+              aux = 1
+              number = number.to_s
+            else
+              number = p_number[-8,8]
+            end
+          else
+            number = p_number[-8,4] + '-' + p_number[-4,4]
+          end
+
+          # looks for the '15' prefix in the phone number
+          prefix = p_number[-10-aux,2]
+          if prefix == '15'
+            aux += 2
+          end
+
+
+          # now it sees if how city area code was written if there is any
           city_area = /[0-9]{2}/.match(p_number[-10-aux,2])
           if city_area.nil?
-            city_area = /[0-9]{3}-/.match(p_number[-12-aux,4])
-            if city_area.nil?
               city_area = /[0-9]{2}-/.match(p_number[-11-aux,3])
               if city_area.nil?
                 #assigns default city area code (C.A.B.A)
@@ -90,15 +101,81 @@ class Catalog < ActiveRecord::Base
               else
                 city_area = city_area.to_s
               end
-            else
-              city_area = city_area.to_s
-            end
           else
             city_area = city_area.to_s.concat('-')
           end
-        else
-          city_area = city_area.to_s.concat('-')
+
         end
+
+        if digits == 7
+          number = /[0-9]{7}/.match(p_number[-7,7])
+          if number.nil?
+            number = /[0-9]{3}-[0-9]{4}/.match(p_number[-8,8])
+            if !number.nil?
+              aux = 1
+              number = number.to_s
+            else
+              number = p_number[-7,7]
+            end
+          else
+            number = p_number[-7,3] + '-' + p_number[-4,4]
+          end
+
+          # looks for the '15' prefix in the phone number
+          prefix = p_number[-9-aux,2]
+          if prefix == '15'
+            aux += 2
+          end
+
+          # now it sees if how city area code was written if there is any
+          city_area = /[0-9]{3}/.match(p_number[-10-aux,3])
+          if city_area.nil?
+              city_area = /[0-9]{3}-/.match(p_number[-11-aux,4])
+              if city_area.nil?
+                city_area = ''
+              else
+                city_area = city_area.to_s
+              end
+          else
+            city_area = city_area.to_s.concat('-')
+          end
+
+        end
+
+        if digits == 6
+          number = /[0-9]{6}/.match(p_number[-6,6])
+          if number.nil?
+            number = /[0-9]{2}-[0-9]{4}/.match(p_number[-7,7])
+            if !number.nil?
+              aux = 1
+              number = number.to_s
+            else
+              number = p_number[-6,6]
+            end
+          else
+            number = p_number[-6,2] + '-' + p_number[-4,4]
+          end
+
+          # looks for the '15' prefix in the phone number
+          prefix = p_number[-8-aux,2]
+          if prefix == '15'
+            aux += 2
+          end
+
+          # now it sees if how city area code was written if there is any
+          city_area = /[0-9]{4}/.match(p_number[-10-aux,4])
+          if city_area.nil?
+              city_area = /[0-9]{4}-/.match(p_number[-11-aux,5])
+              if city_area.nil?
+                city_area = ''
+              else
+                city_area = city_area.to_s
+              end
+          else
+            city_area = city_area.to_s.concat('-')
+          end
+        end
+
 
         if (city_area[0] == '4') && (p_number[2] != '-' || p_number[3] != '-')
           city_area = city_area[1,3]
