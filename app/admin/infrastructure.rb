@@ -168,13 +168,13 @@ ActiveAdmin.register Infrastructure do
       infrastructure.expositor.name
     end
     column "Tarima" do |infrastructure|
-      infrastructure.tarima
+      infrastructure.tarima ? 'Si' : infrastructure.tarima.nil? ? 'No' : ' '
     end
     column "Paneles" do |infrastructure|
-      infrastructure.paneles
+      infrastructure.paneles ? 'Si' : infrastructure.paneles.nil? ? 'No' : ' '
     end
     column "Alfomba" do |infrastructure|
-      infrastructure.alfombra
+      infrastructure.alfombra ? 'Si' : infrastructure.alfombra.nil? ? 'No' : ' '
     end
     column "Tipo de alfombra" do |infrastructure|
       infrastructure.alfombra_tipo
