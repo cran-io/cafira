@@ -60,10 +60,17 @@ class Catalog < ActiveRecord::Base
         aux = 0
 
         province_l = self.province.downcase
+        city_l = self.city.downcase
 
-        if (province_l == 'cordoba' || province_l == 'córdoba' || province_l =='cba' || province_l == 'santa fe' || province_l == 'jujuy')
+        if (city_l == 'la plata' || city_l == 'mar del plata' || city_l == 'bahia blanca' || city_l == 'bahía blanca'
+          || province_l == 'cordoba' || province_l == 'córdoba' || province_l =='cba' || province_l == 'santa fe' || province_l == 'jujuy'
+          || province_l == 'chaco' || province_l == 'chubut' || province_l == 'corrientes' || province_l == 'entre rios' || province_l == 'entre ríos'
+          || province_l == 'mendoza' || province_l == 'misiones' || province_l == 'neuquen' || province_l == 'neuquén' || province_l == 'neuquén'
+          || province_l == 'salta' || province_l == 'san juan' || province_l == 'santiago del estero' || province_l == 'tucuman' || province_l == 'neuquén'
+          || province_l == 'tucumán')
           digits = 7
-        elsif(province_l == 'la pampa')
+        elsif(province_l == 'la pampa' || province_l == 'catamarca' || province_l == 'formosa' || province_l == 'río negro' || province_l == 'rio negro'
+          || province_l == 'san luis' || province_l == 'santa cruz' || province_l == 'tierra del fuego')
           digits = 6
         else
           digits = 8
