@@ -82,7 +82,7 @@ ActiveAdmin.register Infrastructure do
       end
     end
   end
-  index :download_links => false do
+  index :download_links => [:csv] do
     column "Completo", :completed
     column "Expositor" do |infrastructure|
       infrastructure.expositor.name_and_email
@@ -160,6 +160,24 @@ ActiveAdmin.register Infrastructure do
     end
     f.actions do
       f.action(:submit)
+    end
+  end
+
+  csv do
+    column "Expositor" do |infrastructure|
+      infrastructure.expositor.name
+    end
+    column "Tarima" do |infrastructure|
+      infrastructure.tarima
+    end
+    column "Paneles" do |infrastructure|
+      infrastructure.paneles
+    end
+    column "Alfomba" do |infrastructure|
+      infrastructure.alfombra
+    end
+    column "Tipo de alfombra" do |infrastructure|
+      infrastructure.alfombra_tipo
     end
   end
 
