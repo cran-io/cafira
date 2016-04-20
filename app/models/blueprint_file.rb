@@ -1,4 +1,5 @@
 class BlueprintFile < ActiveRecord::Base
+  has_many :comments
   belongs_to :infrastructure
   has_attached_file :attachment
   validates_attachment :attachment,
