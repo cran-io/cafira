@@ -27,9 +27,9 @@ $(function() {
   });
 
 
-  $('#catalog_catalog_type_horizontal').parent().append( "<img src='/moon.jpg' >" );
+  $('#catalog_catalog_type_horizontal').parent().append( "<img src='/horizontal_360.png' height='55' width='55' >" );
 
 
-  $('#catalog_catalog_type_vertical').parent().append( "<img src='/moon.jpg' >" );
+  $('#catalog_catalog_type_vertical').parent().append( "<img src='/vertical_360.png' height='55' width='55' >" );
 
 });
