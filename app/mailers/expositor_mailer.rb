@@ -13,7 +13,7 @@ class ExpositorMailer < ApplicationMailer
   end
 
   def blueprint_file_mail(expositor, justification, state)
-    @state = state == 'disapproved' ? 'Desaprobado' : 'Pre aprobado'
+    @state = state == 'disapproved' ? 'Desaprobado' : state == 'approved' ? 'Aprobado' : 'Pre aprobado'
     @expositor = expositor
     @justification = justification
     mail(to: @expositor.email, subject: "PLANO #{@state.upcase}")
