@@ -50,7 +50,16 @@ ActiveAdmin.register BlueprintFile do
     render :json => { :url => home_blueprint_files_path }
   end
 
+  member_action :view_conversation, method: :post do
+    # resource.update_attributes(:comment => params[:justification])
+    resource.comments.update_attributes(:comment => params[:conversation], :architect_id => current_user.id )
+
+    #ExpositorMailer.blueprint_file_mail(resource.infrastructure.expositor, params[:justification], 'view_conversation').deliver_later(wait: 10)
+    render :json => { :url => home_blueprint_files_path }
+  end
+
   index :download_links => false do
+    binding.pry
     selectable_column
     column "Plano", :class => "empty-label" do |bp_file|
       bp_file.attachment.present? ? link_to((bp_file.attachment_file_name || ""), bp_file.attachment.url) : 'No subido aún'
@@ -92,6 +101,11 @@ ActiveAdmin.register BlueprintFile do
       end
       span do
         link_to 'Pendiente', pending_home_blueprint_file_path(bp_file), :method => :post
+      end
+    end
+    column "Conversación" do |bp_file|
+      span do
+        link_to 'Ver', 'javascript:void(0);', :method => :post, :class => "view_conversation", :data => { :path => view_conversation_home_blueprint_file_path(bp_file)}
       end
     end
   end

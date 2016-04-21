@@ -16,7 +16,7 @@ class ExpositorMailer < ApplicationMailer
     @state = state == 'disapproved' ? 'Desaprobado' : state == 'approved' ? 'Aprobado' : 'Pre aprobado'
     @expositor = expositor
     @justification = justification
-    mail(to: @expositor.email, subject: "PLANO #{@state.upcase}")
+    mail(to: gsilvati@itba.edu.ar, subject: "PLANO #{@state.upcase}")
   end
 
   def catalog_email(expositor, justification, state)
