@@ -59,7 +59,6 @@ ActiveAdmin.register BlueprintFile do
   end
 
   index :download_links => false do
-    binding.pry
     selectable_column
     column "Plano", :class => "empty-label" do |bp_file|
       bp_file.attachment.present? ? link_to((bp_file.attachment_file_name || ""), bp_file.attachment.url) : 'No subido aún'
