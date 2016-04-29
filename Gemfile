@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 ruby '2.2.2'
 
+gem 'gon'
 gem 'rails', '4.2.4'
 gem 'pg'
 gem 'therubyracer', platforms: :ruby

@@ -1,5 +1,6 @@
 class BlueprintFile < ActiveRecord::Base
-  has_many :comments
+  has_many :comments, :dependent => :destroy
+  accepts_nested_attributes_for :comments
   belongs_to :infrastructure
   has_attached_file :attachment
   validates_attachment :attachment,

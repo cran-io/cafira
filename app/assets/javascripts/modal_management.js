@@ -6,15 +6,16 @@ $(function() {
   });
   $('.view_conversation').click(function() {
     var url = $(this).data('path');
-    initializeConversationModal(url);
+    var comments = $(this).data('comments')
+    initializeConversationModal(url, comments);
   });
 });
 
 
 
-var initializeConversationModal = function(url) {
+var initializeConversationModal = function(url, comments) {
 	vex.dialog.open({
-    message: 'Conversación',
+    message: 'Conversación' + comments.comment,
 	  input: "<textarea name='conversation' maxlength='500' placeholder='Escriba su mensaje...' rows='10' />",
 	  buttons: [
       $.extend({}, vex.dialog.buttons.YES, {
@@ -29,7 +30,7 @@ var initializeConversationModal = function(url) {
 		    	type: 'POST',
 		    	url: url,
 		    	data: {
-    				justification: data.justification
+    				comment: data.comment
 		    	},
 		    	success: function(response) {
             window.location = response.url;

@@ -1,5 +1,6 @@
 ActiveAdmin.register BlueprintFile do
   actions :all, :except => [:new, :create]
+  permit_params :comments#, :comments_attributes => [:comment, :blueprint_file_id, :architect_id]
   menu :if  => proc {current_user.type != 'Expositor' && (current_user.type == 'Architect' || current_user.type == 'AdminUser') }
   menu priority: 5
   config.batch_actions = false
@@ -51,9 +52,10 @@ ActiveAdmin.register BlueprintFile do
   end
 
   member_action :view_conversation, method: :post do
+    #binding.pry
     # resource.update_attributes(:comment => params[:justification])
-    resource.comments.update_attributes(:comment => params[:conversation], :architect_id => current_user.id )
-
+    resource.comments.build(:comment => 'comment2', :architect_id => current_user.id, who_created => 0 )
+    resource.save
     #ExpositorMailer.blueprint_file_mail(resource.infrastructure.expositor, params[:justification], 'view_conversation').deliver_later(wait: 10)
     render :json => { :url => home_blueprint_files_path }
   end
@@ -104,7 +106,14 @@ ActiveAdmin.register BlueprintFile do
     end
     column "Conversación" do |bp_file|
       span do
-        link_to 'Ver', 'javascript:void(0);', :method => :post, :class => "view_conversation", :data => { :path => view_conversation_home_blueprint_file_path(bp_file)}
+        #msg =''
+        if !bp_file.comments.all[0].nil?
+            #msg = {:comment => bp_file.comments.all[0].comment}.to_json
+            msg = {:comment => bp_file.comments.all[0].comment}.to_json
+
+        end
+        #binding.pry
+        link_to 'Ver', 'javascript:void(0);', :method => :post, :class => "view_conversation", :data => { :path => view_conversation_home_blueprint_file_path(bp_file), :comments => msg}#{:comment => bp_file.comment}.to_json, :data => { :comment => "bp_file.comment"}
       end
     end
   end
