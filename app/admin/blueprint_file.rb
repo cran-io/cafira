@@ -54,7 +54,11 @@ ActiveAdmin.register BlueprintFile do
   member_action :view_conversation, method: :post do
     #binding.pry
     # resource.update_attributes(:comment => params[:justification])
-    resource.comments.build(:comment => 'comment2', :architect_id => current_user.id, who_created => 0 )
+    current = 0
+    if current_user.id == resource.id
+      current = 1
+    end
+    resource.comments.build(:comment => 'comment2', :architect_id => current_user.id, who_created => current )
     resource.save
     #ExpositorMailer.blueprint_file_mail(resource.infrastructure.expositor, params[:justification], 'view_conversation').deliver_later(wait: 10)
     render :json => { :url => home_blueprint_files_path }
@@ -106,14 +110,17 @@ ActiveAdmin.register BlueprintFile do
     end
     column "Conversación" do |bp_file|
       span do
-        #msg =''
+        msg = Array.new
         if !bp_file.comments.all[0].nil?
             #msg = {:comment => bp_file.comments.all[0].comment}.to_json
-            msg = {:comment => bp_file.comments.all[0].comment}.to_json
-
+            bp_file.comments.all.each do |cmt|
+            #  msg = {:comment => cmt.comment, :created_at => cmt.created_at, :architect_id => cmt.architect_id, :who_created => cmt.who_created}.to_json
+              msg.push({:comment => cmt.comment, :created_at => cmt.created_at, :architect_id => cmt.architect_id, :who_created => cmt.who_created}.to_json)
+            end
+            conversation = {:comments => msg}.to_json
         end
         #binding.pry
-        link_to 'Ver', 'javascript:void(0);', :method => :post, :class => "view_conversation", :data => { :path => view_conversation_home_blueprint_file_path(bp_file), :comments => msg}#{:comment => bp_file.comment}.to_json, :data => { :comment => "bp_file.comment"}
+        link_to 'Ver', 'javascript:void(0);', :method => :post, :class => "view_conversation", :data => { :path => view_conversation_home_blueprint_file_path(bp_file), :comments => conversation}#{:comment => bp_file.comment}.to_json, :data => { :comment => "bp_file.comment"}
       end
     end
   end

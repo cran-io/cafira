@@ -6,17 +6,17 @@ $(function() {
   });
   $('.view_conversation').click(function() {
     var url = $(this).data('path');
-    var comments = $(this).data('comments')
-    initializeConversationModal(url, comments);
+    var conversation = $(this).data('comments')
+    initializeConversationModal(url, conversation);
   });
 });
 
 
 
-var initializeConversationModal = function(url, comments) {
+var initializeConversationModal = function(url, conversation) {
 	vex.dialog.open({
-    message: 'Conversación' + comments.comment,
-	  input: "<textarea name='conversation' maxlength='500' placeholder='Escriba su mensaje...' rows='10' />",
+    message: "<div style='overflow-y:scroll; height: 100px;'>  <p>asfsaf</p><p>asfsaf</p><p>asfsaf</p><p>asfsaf</p><p>asfsaf</p><p>asfsaf</p><p>asfsaf</p> </div>",
+	  input: "<textarea name='conversation' maxlength='500' placeholder='Escriba su mensaje...' rows='2' />",
 	  buttons: [
       $.extend({}, vex.dialog.buttons.YES, {
         text: 'Enviar'
@@ -39,6 +39,15 @@ var initializeConversationModal = function(url, comments) {
 	    }
 	  }
 	});
+}
+
+var parseConversation = function(conversation) {
+  JSON.parse(conversation.comments[0]).comment
+  for (var i = 0; i < conversation.comments.length; i++) {
+    conversation.comments[i]
+  }
+
+
 }
 
 
