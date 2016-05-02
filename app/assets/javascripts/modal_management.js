@@ -43,15 +43,19 @@ var initializeConversationModal = function(url, conversation) {
 
 var parseConversation = function(conversation) {
   var div_tag = "<div style='overflow-y:scroll; height: 300px; word-wrap: break-word;'> "
-  for (var i = 0; i < conversation.comments.length; i++) {
-    var align_text = "align='right'";
-    if(JSON.parse(conversation.comments[i]).created_by == 'expositor' ) {
-      align_text = "align='left'";
+  if(conversation != 'empty') {
+    for (var i = 0; i < conversation.comments.length; i++) {
+      var align_text = "align='right'";
+      if(JSON.parse(conversation.comments[i]).created_by == 'expositor' ) {
+        align_text = "align='left'";
+      }
+      div_tag += "<h3 " + align_text + ">" + JSON.parse(conversation.comments[i]).comment + "</h3>";
+      div_tag += "<h5 " + align_text + ">" + "por: " + JSON.parse(conversation.comments[i]).user_name + ",  en la fecha: " + JSON.parse(conversation.comments[i]).created_at + "</h5><br>";
     }
-    div_tag += "<h3 " + align_text + ">" + JSON.parse(conversation.comments[i]).comment + "</h3>";
-    div_tag += "<h5 " + align_text + ">" + "por: " + JSON.parse(conversation.comments[i]).user_name + " en la fecha: " + JSON.parse(conversation.comments[i]).created_at + "</h5><br>";
+    div_tag += "</div>";
+  } else {
+    div_tag += "<h3>Esta conversación esta vacia</h3>"
   }
-  div_tag += "</div>";
   return div_tag;
 }
 
