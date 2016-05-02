@@ -52,13 +52,12 @@ ActiveAdmin.register BlueprintFile do
   end
 
   member_action :view_conversation, method: :post do
-    #binding.pry
-    # resource.update_attributes(:comment => params[:justification])
-    current = 0
     if current_user.id == resource.id
-      current = 1
+      current_user_type = 'expositor'
+    else
+      current_user_type = 'architect'
     end
-    resource.comments.build(:comment => 'comment2', :architect_id => current_user.id, who_created => current )
+    resource.comments.build(:comment => 'comment2', :architect_id => current_user.id, :created_by => current_user_type )
     resource.save
     #ExpositorMailer.blueprint_file_mail(resource.infrastructure.expositor, params[:justification], 'view_conversation').deliver_later(wait: 10)
     render :json => { :url => home_blueprint_files_path }
@@ -110,16 +109,22 @@ ActiveAdmin.register BlueprintFile do
     end
     column "Conversación" do |bp_file|
       span do
-        msg = Array.new
+        bp_file_comments = Array.new
+        #conversation = 'empty'
         if !bp_file.comments.all[0].nil?
-            #msg = {:comment => bp_file.comments.all[0].comment}.to_json
             bp_file.comments.all.each do |cmt|
-            #  msg = {:comment => cmt.comment, :created_at => cmt.created_at, :architect_id => cmt.architect_id, :who_created => cmt.who_created}.to_json
-              msg.push({:comment => cmt.comment, :created_at => cmt.created_at, :architect_id => cmt.architect_id, :who_created => cmt.who_created}.to_json)
+              if cmt.created_by == 'expositor'
+                user_type = 'expositor'
+                user_id = Infrastructure.find(BlueprintFile.find(cmt.blueprint_file_id).infrastructure_id).expositor_id
+              else
+                user_type = 'architect'
+                user_id = cmt.architect_id
+              end
+              name = User.find(user_id).name
+              bp_file_comments.push({:comment => cmt.comment, :created_at => cmt.created_at, :user_name => name, :created_by => user_type}.to_json)
             end
-            conversation = {:comments => msg}.to_json
+            conversation = {:comments => bp_file_comments}.to_json
         end
-        #binding.pry
         link_to 'Ver', 'javascript:void(0);', :method => :post, :class => "view_conversation", :data => { :path => view_conversation_home_blueprint_file_path(bp_file), :comments => conversation}#{:comment => bp_file.comment}.to_json, :data => { :comment => "bp_file.comment"}
       end
     end

@@ -11,12 +11,13 @@ $(function() {
   });
 });
 
+//    message: "<div style='overflow-y:scroll; height: 100px;'>  <p><strong>asfsaf</strong></p>   <h3 align='right'>asfsaf</h3>  <p>asfsaf</p> </div>",
 
 
 var initializeConversationModal = function(url, conversation) {
 	vex.dialog.open({
-    message: "<div style='overflow-y:scroll; height: 100px;'>  <p>asfsaf</p><p>asfsaf</p><p>asfsaf</p><p>asfsaf</p><p>asfsaf</p><p>asfsaf</p><p>asfsaf</p> </div>",
-	  input: "<textarea name='conversation' maxlength='500' placeholder='Escriba su mensaje...' rows='2' />",
+    message: parseConversation(conversation),
+	  input: "<textarea name='conversation' maxlength='500' placeholder='Escriba su mensaje...' rows='6' />",
 	  buttons: [
       $.extend({}, vex.dialog.buttons.YES, {
         text: 'Enviar'
@@ -30,7 +31,7 @@ var initializeConversationModal = function(url, conversation) {
 		    	type: 'POST',
 		    	url: url,
 		    	data: {
-    				comment: data.comment
+    				justification: data.justification
 		    	},
 		    	success: function(response) {
             window.location = response.url;
@@ -41,13 +42,20 @@ var initializeConversationModal = function(url, conversation) {
 	});
 }
 
+
 var parseConversation = function(conversation) {
-  JSON.parse(conversation.comments[0]).comment
+  //JSON.parse(conversation.comments[0]).comment;
+  var div_tag = "<div style='overflow-y:scroll; height: 300px;'> "
   for (var i = 0; i < conversation.comments.length; i++) {
-    conversation.comments[i]
+    var align_text = "align='right'";
+    if(JSON.parse(conversation.comments[i]).created_by == 'expositor' ) {
+      align_text = "align='left'";
+    }
+    div_tag += "<h3 " + align_text + ">" + JSON.parse(conversation.comments[i]).comment + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</h3>";
+    div_tag += "<h6 " + align_text + ">" + "por: " + JSON.parse(conversation.comments[i]).user_name + " en la fecha: " + JSON.parse(conversation.comments[i]).created_at + "</h6>";
   }
-
-
+  div_tag += "</div>";
+  return div_tag;
 }
 
 

@@ -145,11 +145,6 @@ GEM
     globalize3 (0.1.0)
       activemodel (>= 3.0.0)
       activerecord (>= 3.0.0)
-    gon (6.0.1)
-      actionpack (>= 3.0)
-      json
-      multi_json
-      request_store (>= 1.0)
     has_scope (0.6.0)
       actionpack (>= 3.2, < 5)
       activesupport (>= 3.2, < 5)
@@ -242,7 +237,6 @@ GEM
       polyamorous (~> 1.2)
     rdoc (4.2.0)
     ref (2.0.0)
-    request_store (1.3.1)
     responders (2.1.0)
       railties (>= 4.2.0, < 5)
     rspec-core (3.3.2)
@@ -330,7 +324,6 @@ DEPENDENCIES
   factory_girl_rails
   faker
   gibbon
-  gon
   jbuilder (~> 2.0)
   jquery-rails
   paperclip (~> 4.3)
