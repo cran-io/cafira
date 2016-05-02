@@ -57,7 +57,7 @@ ActiveAdmin.register BlueprintFile do
     else
       current_user_type = 'architect'
     end
-    resource.comments.build(:comment => 'comment2', :architect_id => current_user.id, :created_by => current_user_type )
+    resource.comments.build(:comment => params[:comment], :architect_id => current_user.id, :created_by => current_user_type )
     resource.save
     #ExpositorMailer.blueprint_file_mail(resource.infrastructure.expositor, params[:justification], 'view_conversation').deliver_later(wait: 10)
     render :json => { :url => home_blueprint_files_path }
