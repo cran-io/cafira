@@ -41,7 +41,7 @@ $skinBorderWindowColor: #ACACAC!default;
 }
 
 #wrapper table.index_table th a{
-	color:white;	
+	color:white;
 }
 
 
@@ -105,6 +105,18 @@ input[type=text]:disabled {
 .vex-dialog-button-primary {
 	background-color:#F38E00!important;
 }
+
+/*
+.vex-dialog-form {
+	width: 700px
+}
+
+
+.vex-content {
+	max-width: 300%;
+	width: 700px;
+}
+*/
 
 .empty-label{
 	font-style:italic;

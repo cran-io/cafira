@@ -15,6 +15,7 @@ $(function() {
 var initializeConversationModal = function(url, conversation) {
 	vex.dialog.open({
     message: parseConversation(conversation),
+    contentCSS: { width: '800px' },
 	  input: "<textarea name='conversation' maxlength='500' placeholder='Escriba su mensaje...' rows='6' />",
 	  buttons: [
       $.extend({}, vex.dialog.buttons.YES, {
@@ -42,7 +43,7 @@ var initializeConversationModal = function(url, conversation) {
 
 
 var parseConversation = function(conversation) {
-  var div_tag = "<div style='overflow-y:scroll; height: 300px; word-wrap: break-word;'> "
+  var div_tag = "<div style='overflow-y:scroll; height: 500px; word-wrap: break-word;'> "
   if(conversation != 'empty') {
     for (var i = 0; i < conversation.comments.length; i++) {
       var align_text = "align='right'";
