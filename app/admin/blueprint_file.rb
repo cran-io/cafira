@@ -54,7 +54,7 @@ ActiveAdmin.register BlueprintFile do
   member_action :view_conversation, method: :post do
     resource.comments.build(:comment => params[:comment], :architect_id => current_user.id, :created_by => 'architect' )
     resource.save
-    ExpositorMailer.blueprint_file_conversation_mail(resource.infrastructure.expositor, params[:comment], 'arquitecto', resource.attachment_file_name).deliver_later(wait: 10)
+    #ExpositorMailer.blueprint_file_conversation_mail(resource.infrastructure.expositor, params[:comment], 'arquitecto', resource.attachment_file_name).deliver_later(wait: 10)
   end
 
   index :download_links => false do

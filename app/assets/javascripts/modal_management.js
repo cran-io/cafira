@@ -77,15 +77,21 @@ $(function() {
 });
 
 var parseConversation = function(conversation) {
-  var div_tag = "<div id='vexx' style='overflow-y:scroll; height: 500px; word-wrap: break-word;'> "
+  var div_tag = "<div id='vexx' style='overflow-y:scroll; height: 500px;'> "
   if(conversation != 'empty') {
     for (var i = 0; i < conversation.comments.length; i++) {
-      var align_text = "align='right'";
+      var bubble_class = "class='bubble2'";
+      var name_class = "class='convName2'";
+      var conv_class = "class='convSay2'";
+      var date_class = "class='convDate2'";
       if(JSON.parse(conversation.comments[i]).created_by == 'expositor' ) {
-        align_text = "align='left'";
+        bubble_class = "class='bubble'";
+        name_class = "class='convName'";
+        conv_class = "class='convSay'";
+        date_class = "";
       }
-      div_tag += "<h3 " + align_text + ">" + JSON.parse(conversation.comments[i]).comment + "</h3>";
-      div_tag += "<h5 " + align_text + ">" + "por: " + JSON.parse(conversation.comments[i]).user_name + ",  en la fecha: " + JSON.parse(conversation.comments[i]).created_at + "</h5><br>";
+      div_tag += "<div " + bubble_class + ">" + "<span " + name_class + ">" + JSON.parse(conversation.comments[i]).user_name + "</span>" + "<br>" + "<span " + conv_class + ">" + JSON.parse(conversation.comments[i]).comment + "</span><br>";
+      div_tag += "<span " + date_class + ">" + JSON.parse(conversation.comments[i]).created_at + "</span>" + "<br>" + "</div>";
     }
     div_tag += "</div>";
   } else {
