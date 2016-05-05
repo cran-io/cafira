@@ -106,18 +106,6 @@ input[type=text]:disabled {
 	background-color:#F38E00!important;
 }
 
-/*
-.vex-dialog-form {
-	width: 700px
-}
-
-
-.vex-content {
-	max-width: 300%;
-	width: 700px;
-}
-*/
-
 .empty-label{
 	font-style:italic;
 }
@@ -130,4 +118,10 @@ input[type=text]:disabled {
 .sent-mail{
 	color: green;
 	font-weight:bold;
+}
+
+.btn-disabled {
+	pointer-events:none;
+	background-color: grey !important;
+	color:darkgrey!important;
 }

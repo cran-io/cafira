@@ -9,6 +9,15 @@ ActiveAdmin.register Infrastructure do
     tmpfile.close
   end
 
+  member_action :view_conversation, method: :post do
+    #binding.pry
+    #Comment.create(:comment => params[:comment], :blueprint_file_id => params[:bp_id], :architect_id => (User.find(params[:arc_name])).id, :created_by => 'expositor' )
+    #(Architect.find_by name: params[:arc_name]).id
+
+    #ExpositorMailer.blueprint_file_mail(resource.infrastructure.expositor, params[:justification], 'view_conversation').deliver_later(wait: 10)
+  end
+
+
   controller do
     before_action :redirect_to_home, :only => :index
     def edit
@@ -129,33 +138,30 @@ ActiveAdmin.register Infrastructure do
       f.input :paneles
       f.has_many :blueprint_files, :heading => "Subir planos", :new_record => false, :html => { :enctype => "multipart/form-data" } do |ff|
         label = status = ''
+        link_to_conversation = "#{link_to 'Ver conversacion', 'javascript:void(0);', :method => :post, :class => "view_conversation", :data => { :path => view_conversation_home_infrastructure_path(ff.object.infrastructure), :comments => ff.object.comments_to_json}}"
         case ff.object.state
         when 0
           status = '(NO APROBADO). Debe volver a subir el plano.'
           label  = 'label-red'
           ff.input :attachment, :label => "Plano <span class='#{label}'>#{status}</span>".html_safe, :as => :file, :require => false,
-          :hint => ff.object.attachment.present? ? "Justificación: " + ff.object.comment : content_tag(:span, "No hay un plano subido aún")
+          :hint => ff.object.attachment.present? ? "Justificación: " + ff.object.comment + (ff.object.comments_to_json == 'empty' ? '' : link_to_conversation.html_safe) : content_tag(:span, "No hay un plano subido aún")
         when 1
           status = '(APROBADO)'
           label  = 'label-green'
           label_tag 'name'
           ff.input :attachment_file_name, :label => "Plano <span class='#{label}'>#{status}</span>".html_safe, :input_html => { :disabled => true },
-          :hint => "#{link_to 'Ver conversacion', 'javascript:void(0);', :method => :post, :class => "view_conversation", :data => { :path => view_conversation_home_blueprint_file_path(ff.object), :comments => ff.object.comments_to_json}}".html_safe
-          #link_to 'Ver conversacion', 'javascript:void(0);', :method => :post, :class => "view_conversation", :data => { :path => view_conversation_home_blueprint_file_path(ff.object), :comments => ff.object.comments_to_json}
+          :hint => ff.object.comments_to_json == 'empty' ? 'No se ha iniciado una conversación aun' : link_to_conversation.html_safe
         when 2
           status = '(PRE APROBADO)'
           label  = 'label-grey'
           ff.input :attachment, :label => "Plano <span class='#{label}'>#{status}</span>".html_safe, :as => :file, :require => false,
-          :hint => ff.object.attachment.present? ? "Justificación: " + ff.object.comment : content_tag(:span, "No hay un plano subido aún")
+          :hint => ff.object.attachment.present? ? "Justificación: " + ff.object.comment + (ff.object.comments_to_json == 'empty' ? '' : link_to_conversation.html_safe) : content_tag(:span, "No hay un plano subido aún")
         else
           status = '(PENDIENTE A REVISIÓN)'
           label  = 'label-orange'
           ff.input :attachment, :label => "Plano <span class='#{label}'>#{status}</span>".html_safe, :as => :file, :require => false,
-          :hint => ff.object.attachment.present? ? ff.object.attachment_file_name : content_tag(:span, "No hay un plano subido aún")
+          :hint => ff.object.attachment.present? ? ff.object.attachment_file_name + (ff.object.comments_to_json == 'empty' ? '' : link_to_conversation.html_safe) : content_tag(:span, "No hay un plano subido aún")
         end
-        # li do
-        #   link_to 'Ver conversacion', 'javascript:void(0);', :method => :post, :class => "view_conversation", :data => { :path => view_conversation_home_blueprint_file_path(ff.object), :comments => ff.object.comments_to_json}
-        # end
       end
     end
     f.actions do

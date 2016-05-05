@@ -8,11 +8,38 @@ $(function() {
     var url = $(this).data('path');
     var conversation = $(this).data('comments')
     initializeConversationModal(url, conversation);
+    $('#vexx').scrollTop($('#vexx')[0].scrollHeight);
+
+    disableSubmitButton();
+
   });
 });
 
+var disableSubmitButton = function() {
+  $('.vex-first').addClass('btn-disabled');
+  $("textarea[name='conversation']").keyup(function() {
+    console.log("foo")
+    if($(this).val().length == 0){
+      $('.vex-first').addClass('btn-disabled');
+    } else {
+      $('.vex-first').removeClass('btn-disabled');
+    }
+  })
+}
+
 
 var initializeConversationModal = function(url, conversation) {
+  var conversation_length = 5
+  var bp = conversation.id;
+  var arch = 0;
+  if(conversation.user_type == 'expositor') {
+    for(var i = conversation.comments.length - 1; i >= 0; i--){
+      if(JSON.parse(conversation.comments[i]).created_by == 'architect') {
+        arch = JSON.parse(conversation.comments[i]).architect_id;
+        break;
+      }
+    }
+  }
 	vex.dialog.open({
     message: parseConversation(conversation),
     contentCSS: { width: '800px' },
@@ -25,25 +52,44 @@ var initializeConversationModal = function(url, conversation) {
 	    })
 	  ],
 	  callback: function(data) {
-	    if(data){
+      if(data){
 		    $.ajax({
 		    	type: 'POST',
 		    	url: url,
 		    	data: {
-    				comment: data.conversation
+    				comment: data.conversation,
+            bp_id: bp,
+            arc_id: arch,
 		    	},
 		    	success: function(response) {
             window.location = response.url;
 		    	}
 		    });
 	    }
-	  }
+      location.reload(true);
+	  },
+    afterOpen: function(vexContent) {
+      var submit = $(vexContent).find('.vex-first')[0];
+      // $submit.attr('disabled', true);
+      // return $vexContent.find('input').on('input', function() {
+      //   if ($(this).val()) {
+      //     return $submit.removeAttr('disabled');
+      //   } else {
+      //     return $submit.attr('disabled', true);
+      //   }
+      // });
+      //debugger;
+    }
 	});
 }
 
 
+$(function() {
+
+});
+
 var parseConversation = function(conversation) {
-  var div_tag = "<div style='overflow-y:scroll; height: 500px; word-wrap: break-word;'> "
+  var div_tag = "<div id='vexx' style='overflow-y:scroll; height: 500px; word-wrap: break-word;'> "
   if(conversation != 'empty') {
     for (var i = 0; i < conversation.comments.length; i++) {
       var align_text = "align='right'";
@@ -59,6 +105,7 @@ var parseConversation = function(conversation) {
   }
   return div_tag;
 }
+
 
 
 

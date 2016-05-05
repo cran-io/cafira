@@ -52,15 +52,11 @@ ActiveAdmin.register BlueprintFile do
   end
 
   member_action :view_conversation, method: :post do
-    if current_user.id == resource.id
-      current_user_type = 'expositor'
-    else
-      current_user_type = 'architect'
-    end
-    resource.comments.build(:comment => params[:comment], :architect_id => current_user.id, :created_by => current_user_type )
+    #resource.comments.build(:comment => params[:comment], :architect_id => current_user.id, :created_by => 'architect' )
     resource.save
     #ExpositorMailer.blueprint_file_mail(resource.infrastructure.expositor, params[:justification], 'view_conversation').deliver_later(wait: 10)
-    render :json => { :url => home_blueprint_files_path }
+    #render :json => { :url => home_blueprint_files_path }
+    #redirect_to home_users_path
   end
 
   index :download_links => false do
@@ -109,7 +105,7 @@ ActiveAdmin.register BlueprintFile do
     end
     column "Conversación" do |bp_file|
       span do
-        link_to 'Ver', 'javascript:void(0);', :method => :post, :class => "view_conversation", :data => { :path => view_conversation_home_blueprint_file_path(bp_file), :comments => bp_file.comments_to_json}
+        link_to 'Ver', 'javascript:void(0);', :method => :post, :class => "view_conversation", :data => { :path => view_conversation_home_blueprint_file_path(bp_file), :comments => bp_file.comments_to_json('architect')}
       end
     end
   end

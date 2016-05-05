@@ -10,6 +10,4 @@ $(function() {
     $('#infrastructure_alfombra_tipo').val() == 'otra' ? $('#infrastructure_alfombra_tipo_input .inline-hints').show() : $('#infrastructure_alfombra_tipo_input .inline-hints').hide();
   });
 
-  $('.vex-dialog-message').append("<strong>Hello</strong>");
-
 });
