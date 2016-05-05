@@ -67,19 +67,7 @@ var initializeConversationModal = function(url, conversation) {
 		    });
 	    }
       location.reload(true);
-	  },
-    afterOpen: function(vexContent) {
-      var submit = $(vexContent).find('.vex-first')[0];
-      // $submit.attr('disabled', true);
-      // return $vexContent.find('input').on('input', function() {
-      //   if ($(this).val()) {
-      //     return $submit.removeAttr('disabled');
-      //   } else {
-      //     return $submit.attr('disabled', true);
-      //   }
-      // });
-      //debugger;
-    }
+	  }
 	});
 }
 

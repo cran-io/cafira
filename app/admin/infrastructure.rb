@@ -10,11 +10,10 @@ ActiveAdmin.register Infrastructure do
   end
 
   member_action :view_conversation, method: :post do
-    #binding.pry
-    #Comment.create(:comment => params[:comment], :blueprint_file_id => params[:bp_id], :architect_id => (User.find(params[:arc_name])).id, :created_by => 'expositor' )
-    #(Architect.find_by name: params[:arc_name]).id
-
-    #ExpositorMailer.blueprint_file_mail(resource.infrastructure.expositor, params[:justification], 'view_conversation').deliver_later(wait: 10)
+    architect = Architect.find(params[:arc_id])
+    Comment.create(:comment => params[:comment], :blueprint_file_id => params[:bp_id], :architect_id => architect.id, :created_by => 'expositor' )
+    bp_name = BlueprintFile.find(params[:bp_id]).attachment_file_name
+    ExpositorMailer.blueprint_file_conversation_mail(architect, params[:comment], 'expositor', bp_name).deliver_later(wait: 10)
   end
 
 
