@@ -4,8 +4,8 @@ class Catalog < ActiveRecord::Base
   accepts_nested_attributes_for :catalog_images
   before_update :verify_fields
   before_update :parse_phone_number
-  validates_length_of :phone_number, minimum: 8, too_short: "El numero debe tener al menos 8 digitos"
-  validates_length_of :aditional_phone_number, minimum: 8, too_short: "El numero debe tener al menos 8 digitos", :allow_blank => true
+  validates_length_of :phone_number, minimum: 8, too_short: "El numero debe tener al menos 8 digitos", :on => :update
+  validates_length_of :aditional_phone_number, minimum: 8, too_short: "El numero debe tener al menos 8 digitos", :allow_blank => true, :on => :update
 
   def download_catalog
     filename = 'datos_catalogo.zip'
