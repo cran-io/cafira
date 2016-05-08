@@ -5,6 +5,7 @@ class Expositor < User
   has_one :catalog, :dependent => :destroy
   has_one :aditional_service, :dependent => :destroy
   has_one :infrastructure, :dependent => :destroy
+  before_create :build_expositor
 
   #returns a Set of all expositors with uncompleted tasks and without much time to complete them
   def self.near_deadline(days_quantity)
@@ -41,6 +42,20 @@ class Expositor < User
 
   def name_and_email
     (name || "") + " (" + email + ")"
+  end
+
+  private
+
+  def build_expositor
+    self.aditional_service = AditionalService.new
+    self.infrastructure    = Infrastructure.new
+    self.catalog           = Catalog.new
+    ['logo', 'primaria', 'secundaria', 'secundaria', 'secundaria'].each do |priority|
+      self.catalog.catalog_images << CatalogImage.new(:priority => priority)
+    end
+    2.times do |i|
+      self.infrastructure.blueprint_files << BlueprintFile.new
+    end
   end
 
 end

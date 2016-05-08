@@ -11,17 +11,6 @@ ActiveAdmin.register User do
 
     def create
       create! do
-        if resource.type == 'Expositor'
-          resource.aditional_service = AditionalService.new
-          resource.infrastructure    = Infrastructure.new
-          resource.catalog           = Catalog.new
-          ['logo', 'primaria', 'secundaria', 'secundaria', 'secundaria'].each do |priority|
-            resource.catalog.catalog_images << CatalogImage.new( :priority => priority )
-          end
-          2.times do |i|
-            resource.infrastructure.blueprint_files << BlueprintFile.new
-          end
-        end
        home_users_path
       end
       ExpositorMailer.signup_mail(resource, params[:user][:password]).deliver_later(wait: 10) if Expositor.exists?(:id => resource.id)
