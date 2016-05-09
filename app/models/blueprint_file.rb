@@ -25,7 +25,7 @@ class BlueprintFile < ActiveRecord::Base
           end
           name = User.find(user_id).name
           date = cmt.created_at.strftime("%d/%m/%y a las: %H:%M")
-          bp_file_comments.push({:comment => cmt.comment, :created_at => date, :user_name => name, :architect_id => cmt.architect_id, :created_by => user_type}.to_json)
+          bp_file_comments.push({:comment => cmt.comment, :created_at => date, :user_name => name, :architect_id => cmt.architect_id, :created_by => user_type, :reason => cmt.reason}.to_json)
         end
         conversation = {:comments => bp_file_comments, :id => self.id, :user_type => current_user_type}.to_json
     end

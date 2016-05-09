@@ -33,6 +33,8 @@ ActiveAdmin.register BlueprintFile do
 
   member_action :approve, method: :post do
     resource.update_attributes(:state => 1, :comment => params[:justification])
+    resource.comments.build(:comment => params[:justification], :architect_id => current_user.id, :created_by => 'architect', :reason => 1 )
+    resource.save
     ExpositorMailer.blueprint_file_mail(resource.infrastructure.expositor, params[:justification], 'approved').deliver_later(wait: 10)
     render :json => { :url => home_blueprint_files_path }
   end
@@ -40,6 +42,8 @@ ActiveAdmin.register BlueprintFile do
   member_action :disapprove, method: :post do
     resource.update_attributes(:state => 0, :comment => params[:justification])
     resource.infrastructure.update_attribute(:completed, false)
+    resource.comments.build(:comment => params[:justification], :architect_id => current_user.id, :created_by => 'architect', :reason => 0 )
+    resource.save
     ExpositorMailer.blueprint_file_mail(resource.infrastructure.expositor, params[:justification], 'disapproved').deliver_later(wait: 10)
     render :json => { :url => home_blueprint_files_path }
   end
@@ -47,6 +51,8 @@ ActiveAdmin.register BlueprintFile do
 
   member_action :pre_approve, method: :post do
     resource.update_attributes(:state => 2, :comment => params[:justification])
+    resource.comments.build(:comment => params[:justification], :architect_id => current_user.id, :created_by => 'architect', :reason => 2 )
+    resource.save
     ExpositorMailer.blueprint_file_mail(resource.infrastructure.expositor, params[:justification], 'pre_approved').deliver_later(wait: 10)
     render :json => { :url => home_blueprint_files_path }
   end
@@ -54,7 +60,7 @@ ActiveAdmin.register BlueprintFile do
   member_action :view_conversation, method: :post do
     resource.comments.build(:comment => params[:comment], :architect_id => current_user.id, :created_by => 'architect' )
     resource.save
-    #ExpositorMailer.blueprint_file_conversation_mail(resource.infrastructure.expositor, params[:comment], 'arquitecto', resource.attachment_file_name).deliver_later(wait: 10)
+    ExpositorMailer.blueprint_file_conversation_mail(resource.infrastructure.expositor, params[:comment], 'arquitecto', resource.attachment_file_name).deliver_later(wait: 10)
   end
 
   index :download_links => false do

@@ -9,16 +9,13 @@ $(function() {
     var conversation = $(this).data('comments')
     initializeConversationModal(url, conversation);
     $('#vexx').scrollTop($('#vexx')[0].scrollHeight);
-
     disableSubmitButton();
-
   });
 });
 
 var disableSubmitButton = function() {
   $('.vex-first').addClass('btn-disabled');
   $("textarea[name='conversation']").keyup(function() {
-    console.log("foo")
     if($(this).val().length == 0){
       $('.vex-first').addClass('btn-disabled');
     } else {
@@ -29,7 +26,7 @@ var disableSubmitButton = function() {
 
 
 var initializeConversationModal = function(url, conversation) {
-  var conversation_length = 5
+  var flag = false;
   var bp = conversation.id;
   var arch = 0;
   if(conversation.user_type == 'expositor') {
@@ -65,16 +62,12 @@ var initializeConversationModal = function(url, conversation) {
             window.location = response.url;
 		    	}
 		    });
-	    }
       location.reload(true);
-	  }
+	   }
+   }
 	});
 }
 
-
-$(function() {
-
-});
 
 var parseConversation = function(conversation) {
   var div_tag = "<div id='vexx' style='overflow-y:scroll; height: 500px;'> "
@@ -84,14 +77,33 @@ var parseConversation = function(conversation) {
       var name_class = "class='convName2'";
       var conv_class = "class='convSay2'";
       var date_class = "class='convDate2'";
+      var state_class = "";
       if(JSON.parse(conversation.comments[i]).created_by == 'expositor' ) {
         bubble_class = "class='bubble'";
         name_class = "class='convName'";
         conv_class = "class='convSay'";
         date_class = "";
       }
-      div_tag += "<div " + bubble_class + ">" + "<span " + name_class + ">" + JSON.parse(conversation.comments[i]).user_name + "</span>" + "<br>" + "<span " + conv_class + ">" + JSON.parse(conversation.comments[i]).comment + "</span><br>";
-      div_tag += "<span " + date_class + ">" + JSON.parse(conversation.comments[i]).created_at + "</span>" + "<br>" + "</div>";
+      switch(JSON.parse(conversation.comments[i]).reason) {
+          case 0:
+              state = 'DESAPROBADO';
+              state_class = "class = 'disapproved'  style = 'color:#a60707; font-weight: bold'>";
+              break;
+          case 1:
+              state = 'APROBADO';
+              state_class = "class = 'approved' style = 'color:#318712; font-weight: bold'>";
+              break;
+          case 2:
+              state = 'PRE APROBADO';
+              state_class = "class = 'preapproved' style = 'color:#5d5b5b; font-weight: bold'>";
+              break;
+          default:
+              state = '';
+              state_class = '';
+      }
+      div_tag += "<div " + bubble_class + ">" + "<span " + name_class + ">" + JSON.parse(conversation.comments[i]).user_name + "</span>" + "<br>";
+      div_tag += "<span " + conv_class + ">" + JSON.parse(conversation.comments[i]).comment + "</span><br>";
+      div_tag += "<span " + state_class + state + "</span>" + "<span " + date_class + ">" + JSON.parse(conversation.comments[i]).created_at + "</span>" + "<br>" + "</div>";
     }
     div_tag += "</div>";
   } else {
@@ -99,8 +111,6 @@ var parseConversation = function(conversation) {
   }
   return div_tag;
 }
-
-
 
 
 var initializeJustificationModal = function(url) {
