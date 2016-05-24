@@ -1,5 +1,6 @@
 ActiveAdmin.register BlueprintFile do
   actions :all, :except => [:new, :create]
+  permit_params :comments#, :comments_attributes => [:comment, :blueprint_file_id, :architect_id]
   menu :if  => proc {current_user.type != 'Expositor' && (current_user.type == 'Architect' || current_user.type == 'AdminUser') }
   menu priority: 5
   config.batch_actions = false
@@ -31,13 +32,18 @@ ActiveAdmin.register BlueprintFile do
   end
 
   member_action :approve, method: :post do
-    resource.update_attributes(:state => 1, :comment => nil)
-    redirect_to home_blueprint_files_path
+    resource.update_attributes(:state => 1, :comment => params[:justification])
+    resource.comments.build(:comment => params[:justification], :architect_id => current_user.id, :created_by => 'architect', :reason => 1 )
+    resource.save
+    ExpositorMailer.blueprint_file_mail(resource.infrastructure.expositor, params[:justification], 'approved').deliver_later(wait: 10)
+    render :json => { :url => home_blueprint_files_path }
   end
 
   member_action :disapprove, method: :post do
     resource.update_attributes(:state => 0, :comment => params[:justification])
     resource.infrastructure.update_attribute(:completed, false)
+    resource.comments.build(:comment => params[:justification], :architect_id => current_user.id, :created_by => 'architect', :reason => 0 )
+    resource.save
     ExpositorMailer.blueprint_file_mail(resource.infrastructure.expositor, params[:justification], 'disapproved').deliver_later(wait: 10)
     render :json => { :url => home_blueprint_files_path }
   end
@@ -45,15 +51,23 @@ ActiveAdmin.register BlueprintFile do
 
   member_action :pre_approve, method: :post do
     resource.update_attributes(:state => 2, :comment => params[:justification])
+    resource.comments.build(:comment => params[:justification], :architect_id => current_user.id, :created_by => 'architect', :reason => 2 )
+    resource.save
     ExpositorMailer.blueprint_file_mail(resource.infrastructure.expositor, params[:justification], 'pre_approved').deliver_later(wait: 10)
     render :json => { :url => home_blueprint_files_path }
   end
 
-  index :download_links => false do 
+  member_action :view_conversation, method: :post do
+    resource.comments.build(:comment => params[:comment], :architect_id => current_user.id, :created_by => 'architect' )
+    resource.save
+    ExpositorMailer.blueprint_file_conversation_mail(resource.infrastructure.expositor, params[:comment], 'arquitecto', resource.attachment_file_name).deliver_later(wait: 10)
+  end
+
+  index :download_links => false do
     selectable_column
     column "Plano", :class => "empty-label" do |bp_file|
       bp_file.attachment.present? ? link_to((bp_file.attachment_file_name || ""), bp_file.attachment.url) : 'No subido aún'
-    end 
+    end
     column "Estado", :state do |bp_file|
       case bp_file.state
       when 0
@@ -61,7 +75,7 @@ ActiveAdmin.register BlueprintFile do
       when 1
         status_tag 'Aprobado', :yes
       when 2
-        status_tag 'Pre aprobación', :grey 
+        status_tag 'Pre aprobación', :grey
       else
         status_tag 'Pendiente', :orange
       end
@@ -72,28 +86,33 @@ ActiveAdmin.register BlueprintFile do
     column "Último upload", :attachment_updated_at
     column "Acciones" do |bp_file|
       span do
-        link_to 'Aprobar', approve_home_blueprint_file_path(bp_file), :method => :post
+        link_to 'Aprobar', 'javascript:void(0);', :method => :post, :class => "approve_blueprint_file", :data => { :path => approve_home_blueprint_file_path(bp_file)}
       end
-      span do 
+      span do
         ' | '
       end
       span do
         link_to 'Desaprobar', 'javascript:void(0);', :method => :post, :class => "dissaprove_blueprint_file", :data => { :path => disapprove_home_blueprint_file_path(bp_file)}
       end
-      span do 
+      span do
         ' | '
       end
       span do
         link_to 'Pre aprobar', 'javascript:void(0);', :method => :post, :class => "pre_approve_blueprint_file", :data => { :path => pre_approve_home_blueprint_file_path(bp_file)}
       end
-      span do 
+      span do
         ' | '
       end
       span do
         link_to 'Pendiente', pending_home_blueprint_file_path(bp_file), :method => :post
       end
     end
+    column "Conversación" do |bp_file|
+      span do
+        link_to 'Ver', 'javascript:void(0);', :method => :post, :class => "view_conversation", :data => { :path => view_conversation_home_blueprint_file_path(bp_file), :comments => bp_file.comments_to_json('architect')}
+      end
+    end
   end
 
   filter :state, :as => :select, :label => "Estado", :collection => [['Desaprobado', 0], ['Aprobado', 1], ['Pre aprobado', 2], ['Pendiente a aprobación', 3]]
-end 
+end

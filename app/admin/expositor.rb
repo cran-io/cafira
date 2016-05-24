@@ -12,7 +12,7 @@ ActiveAdmin.register Expositor do
     end
     redirect_to home_expositors_path(:exposition_id => Rails.cache.read(:exposition_id))
   end
-  
+
   batch_action :add_expositors_to_exposition, if: proc{ params[:type] == 'all_expositors' } do |ids|
     if Rails.cache.read(:exposition_id)
       exposition_id = Rails.cache.read(:exposition_id)
@@ -22,11 +22,11 @@ ActiveAdmin.register Expositor do
     end
     redirect_to home_expositors_path(:exposition_id => Rails.cache.read(:exposition_id))
   end
-  
+
   action_item :only => :index, if: proc { params[:type].nil? } do
     link_to 'Agregar expositores a esta exposición', home_expositors_path(:type => 'all_expositors', :exposition_id => params[:exposition_id])
   end
-  
+
   action_item :only => :index, if: proc{ params[:type] == 'all_expositors' } do
     link_to 'Ver expositores de esta exposición', home_expositors_path(:exposition_id => params[:exposition_id])
   end
@@ -34,18 +34,18 @@ ActiveAdmin.register Expositor do
   controller do
     def index
       if params[:exposition_id]
-        Rails.cache.write('exposition_id', params[:exposition_id])      
+        Rails.cache.write('exposition_id', params[:exposition_id])
         @exposition_id = params[:exposition_id]
         index!
       else
         redirect_to home_expositions_path
       end
     end
-    
+
     def show
       redirect_to edit_home_expositor_path
     end
-    
+
     def update
       update! do
         flash[:message] = "Datos del expositor actualizados correctamente."
@@ -55,14 +55,22 @@ ActiveAdmin.register Expositor do
 
     def edit
       edit! do
-        exposition = Rails.cache.read(:exposition_id)
-        exposition = Exposition.find(exposition)
-        @manual_url = exposition.exposition_files.find_by_file_type("manual").attachment.url
-        @plan_url = exposition.exposition_files.find_by_file_type("plan_tiempos").attachment.url
-        @bylaw_url = exposition.exposition_files.find_by_file_type("reglamento").attachment.url
+        exposition = nil
+        @exposition_active = false
+        if(current_user.type == 'Expositor')
+          if current_user.expositions.last.active
+            exposition = current_user.expositions.last.id
+            #binding.pry
+            @exposition_active = true
+            exposition = Exposition.find(exposition)
+            @manual_url = exposition.exposition_files.find_by_file_type("manual").attachment.url
+            @plan_url = exposition.exposition_files.find_by_file_type("plan_tiempos").attachment.url
+            @bylaw_url = exposition.exposition_files.find_by_file_type("reglamento").attachment.url
+          end
+        end
       end
     end
-    
+
     def scoped_collection
       if params[:exposition_id]
         if params[:type] == 'all_expositors'
@@ -74,7 +82,7 @@ ActiveAdmin.register Expositor do
       else
         @expositors = Expositor.all
       end
-    end 
+    end
   end
 
   sidebar "Acciones del expositor", :priority => 0, :only => [:show, :edit] do
@@ -106,30 +114,36 @@ ActiveAdmin.register Expositor do
       end
     end
   end
-  
+
+
   sidebar "Descargas", :priority => 1, :only => [:show, :edit] do
-    ul do
-      li do
-        span do
-          link_to("Manual", manual_url)
+    if exposition_active
+      ul do
+        li do
+          span do
+            link_to("Manual", manual_url)
+          end
+        end
+        li do
+          span do
+            link_to("Plan de tiempos", plan_url)
+          end
+        end
+        li do
+          span do
+            link_to("Reglamento técnico", bylaw_url)
+          end
         end
       end
-      li do
-        span do
-          link_to("Plan de tiempos", plan_url)
-        end
-      end
-      li do
-        span do
-          link_to("Reglamento técnico", bylaw_url)
-        end
-      end
+    else
+      "No esta en una exposicion activa"
     end
   end
 
+
   index :download_links => false do
     if exposition_id
-      h2 "Expositores en \"" + Exposition.find(params[:exposition_id]).name + "\"" 
+      h2 "Expositores en \"" + Exposition.find(params[:exposition_id]).name + "\""
       selectable_column
     else
       h2 "Expositores"

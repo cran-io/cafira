@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160411180752) do
+ActiveRecord::Schema.define(version: 20160509182712) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -94,6 +94,16 @@ ActiveRecord::Schema.define(version: 20160411180752) do
     t.integer  "state",                  default: 3
     t.string   "fantasy_name"
     t.string   "catalog_type"
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.integer  "architect_id"
+    t.integer  "blueprint_file_id"
+    t.text     "comment"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.string   "created_by"
+    t.integer  "reason"
   end
 
   create_table "credentials", force: :cascade do |t|
