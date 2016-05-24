@@ -44,7 +44,11 @@ class Expositor < User
     (name || "") + " (" + email + ")"
   end
 
-  private
+  def destroy_expositor_info
+    self.aditional_service.destroy
+    self.infrastructure.destroy
+    self.catalog.destroy
+  end
 
   def build_expositor
     self.aditional_service = AditionalService.new
