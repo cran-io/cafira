@@ -58,9 +58,8 @@ ActiveAdmin.register Expositor do
         exposition = nil
         @exposition_active = false
         if(current_user.type == 'Expositor')
-          if current_user.expositions.last.active
+          if !current_user.expositions.empty? && current_user.expositions.last.active
             exposition = current_user.expositions.last.id
-            #binding.pry
             @exposition_active = true
             exposition = Exposition.find(exposition)
             @manual_url = exposition.exposition_files.find_by_file_type("manual").attachment.url
