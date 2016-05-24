@@ -149,7 +149,7 @@ ActiveAdmin.register Infrastructure do
           status = '(NO APROBADO). Debe volver a subir el plano.'
           label  = 'label-red'
           ff.input :attachment, :label => "Plano <span class='#{label}'>#{status}</span>".html_safe, :as => :file, :require => false,
-          :hint => ff.object.attachment.present? ? "Justificación: " + ff.object.comment + (ff.object.comments_to_json == 'empty' ? '' : link_to_conversation.html_safe) : content_tag(:span, "No hay un plano subido aún")
+          :hint => ff.object.attachment.present? ?  link_to_conversation.html_safe : content_tag(:span, "No hay un plano subido aún")
         when 1
           status = '(APROBADO)'
           label  = 'label-green'
@@ -160,12 +160,12 @@ ActiveAdmin.register Infrastructure do
           status = '(PRE APROBADO)'
           label  = 'label-grey'
           ff.input :attachment, :label => "Plano <span class='#{label}'>#{status}</span>".html_safe, :as => :file, :require => false,
-          :hint => ff.object.attachment.present? ? "Justificación: " + ff.object.comment + (ff.object.comments_to_json == 'empty' ? '' : link_to_conversation.html_safe) : content_tag(:span, "No hay un plano subido aún")
+          :hint => ff.object.attachment.present? ? link_to_conversation.html_safe : content_tag(:span, "No hay un plano subido aún")
         else
           status = '(PENDIENTE A REVISIÓN)'
           label  = 'label-orange'
           ff.input :attachment, :label => "Plano <span class='#{label}'>#{status}</span>".html_safe, :as => :file, :require => false,
-          :hint => ff.object.attachment.present? ? ff.object.attachment_file_name + (ff.object.comments_to_json == 'empty' ? '' : link_to_conversation.html_safe) : content_tag(:span, "No hay un plano subido aún")
+          :hint => ff.object.attachment.present? ?  link_to_conversation.html_safe : content_tag(:span, "No hay un plano subido aún")
         end
       end
     end
