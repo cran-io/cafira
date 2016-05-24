@@ -29,7 +29,7 @@ ActiveAdmin.register MassiveMail do
         campaign = GIBBON.campaigns.create(body: body)
         params[:massive_mail][:campaign] = campaign["id"]
         create! do
-          image = resource.attachment.present? ? "<img src='http://intranetcafira.com#{resource.attachment.url}'>" : ""
+          image = resource.attachment.present? ? "<img src='http://intranet.cafira.com#{resource.attachment.url}'>" : ""
           body = { 
             :template => {
               :id => 50381,
@@ -56,7 +56,7 @@ ActiveAdmin.register MassiveMail do
 
     def update
       update! do
-        image = resource.attachment.present? ? "<img src='http://intranetcafira.com/#{resource.attachment.url}'>" : ""
+        image = resource.attachment.present? ? "<img src='http://intranet.cafira.com/#{resource.attachment.url}'>" : ""
         body = { 
           :template => {
             :id => 50381,
