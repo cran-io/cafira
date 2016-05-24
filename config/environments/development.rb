@@ -43,11 +43,10 @@ Rails.application.configure do
   ActionMailer::Base.smtp_settings = {
     :port           => 587,
     :address        => 'smtp.mandrillapp.com',
-    :user_name      => 'info@cran.io',
-    :password       => 'I5RPvtYJ5B0p4FHllUVRFg',
+    :user_name      => 'CAFIRA',
+    :password       => 'DpOZRZ4EJMMoyf96hnuarg',
     :domain         => 'cafira.com',
-    :authentication => :plain,
-    :enable_starttls_auto => true
+    :authentication => :plain
   }
 
 end
