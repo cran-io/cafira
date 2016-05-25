@@ -24,7 +24,7 @@ class ExpositorMailer < ApplicationMailer
     @bp_name = bp_name
     @user = user
     @comment = comment
-    mail(to: @user.email, subject: "Nuevo mensaje en la conversacion de: #{@bp_name}")
+    mail(to: @user.email, subject: "Nuevo mensaje sobre el plano: #{@bp_name}")
   end
 
   def catalog_email(expositor, justification, state)
