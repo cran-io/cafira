@@ -31,7 +31,8 @@ group :development, :test do
 	gem 'factory_girl_rails'
 	gem 'faker'
 	gem 'spring'
-  gem 'capistrano', '~> 3.1.0'
+  gem 'capistrano', '~> 3.4.0'
+  gem 'capistrano3-delayed-job', '~> 1.0'
   gem 'capistrano-bundler', '~> 1.1.2'
   gem 'capistrano-rails', '~> 1.1.1'
   gem 'capistrano-rbenv', github: "capistrano/rbenv"
