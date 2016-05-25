@@ -23,6 +23,7 @@ gem 'rubyzip'
 gem 'delayed_job_active_record'
 gem 'gibbon'
 gem 'ckeditor', github: 'galetahub/ckeditor'
+gem 'daemons'
 
 group :development, :test do
 	gem 'rspec-rails'

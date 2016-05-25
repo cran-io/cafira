@@ -107,6 +107,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.9.1.1)
+    daemons (1.2.3)
     database_cleaner (1.5.1)
     delayed_job (4.1.1)
       activesupport (>= 3.0, < 5.0)
@@ -320,6 +321,7 @@ DEPENDENCIES
   capistrano3-delayed-job (~> 1.0)
   ckeditor!
   coffee-rails (~> 4.1.0)
+  daemons
   database_cleaner
   delayed_job_active_record
   devise
