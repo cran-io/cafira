@@ -63,8 +63,8 @@ ActiveAdmin.register Expositor do
             @exposition_active = true
             exposition = Exposition.find(exposition)
             @manual_url = exposition.exposition_files.find_by_file_type("manual").attachment.url
-            @plan_url = exposition.exposition_files.find_by_file_type("plan_tiempos").attachment.url
-            @bylaw_url = exposition.exposition_files.find_by_file_type("reglamento").attachment.url
+            @plan_url   = exposition.exposition_files.find_by_file_type("plan_tiempos").attachment.url
+            @bylaw_url  = exposition.exposition_files.find_by_file_type("reglamento").attachment.url
           end
         end
       end

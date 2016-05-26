@@ -158,16 +158,6 @@ ActiveAdmin.register Catalog do
       div do
         span do
           strong do
-            "Nombre de fantasía: "
-          end
-        end
-        span do
-            catalog.fantasy_name || '-'
-        end
-      end
-      div do
-        span do
-          strong do
             "Email: "
           end
         end
@@ -326,7 +316,6 @@ ActiveAdmin.register Catalog do
       else
         f.input :stand_number, :label => "Número de stand", :input_html => { :disabled => true }
       end
-      f.input :fantasy_name, :label => "Nombre de fantasía"
       f.input :twitter
       f.input :facebook
       f.input :phone_number, :label => "Teléfono 1", :placeholder => "Formato: +54-11-4888-8888"
