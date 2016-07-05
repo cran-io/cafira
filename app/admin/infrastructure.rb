@@ -9,6 +9,13 @@ ActiveAdmin.register Infrastructure do
     tmpfile.close
   end
 
+  Exposition.all.each do |exposition|
+    scope(exposition.name) do |scope|
+      expositors = ExpositionExpositor.where(:exposition_id => exposition.id).map(&:expositor_id)
+      scope.where(:expositor_id => expositors)
+    end
+  end
+
   member_action :view_conversation, method: :post do
     architect = Architect.find(params[:arc_id])
     Comment.create(:comment => params[:comment], :blueprint_file_id => params[:bp_id], :architect_id => architect.id, :created_by => 'expositor' )

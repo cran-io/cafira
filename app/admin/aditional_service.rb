@@ -4,6 +4,13 @@ ActiveAdmin.register AditionalService do
   config.batch_actions = false
   actions :all, :except => [:new, :create]
 
+  Exposition.all.each do |exposition|
+    scope(exposition.name) do |scope|
+      expositors = ExpositionExpositor.where(:exposition_id => exposition.id).map(&:expositor_id)
+      scope.where(:expositor_id => expositors)
+    end
+  end
+
   controller do
     after_action :set_aditional_catalog, :only => :update
     before_action :redirect_to_home, :only => :index

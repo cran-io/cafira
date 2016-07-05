@@ -5,6 +5,16 @@ ActiveAdmin.register BlueprintFile do
   menu priority: 5
   config.batch_actions = false
 
+  Exposition.all.each do |exposition|
+    scope(exposition.name) do |scope|
+      expositors = ExpositionExpositor.where(:exposition_id => exposition.id).map(&:expositor_id)
+      scope
+        .joins("INNER JOIN infrastructures ON blueprint_files.infrastructure_id = infrastructures.id ")
+        .select("infrastructures.*, blueprint_files.*")
+        .where("infrastructures.expositor_id IN (?)", expositors)
+    end
+  end
+
   batch_action :destroy, false
 
   batch_action :approve_blueprint_files do |ids|

@@ -4,6 +4,12 @@ ActiveAdmin.register Credential, :as => 'admin_credential' do
   actions :all, :except => [:new, :create, :show]
   config.batch_actions = false
 
+  Exposition.all.each do |exposition|
+    scope(exposition.name) do |scope|
+      expositors = ExpositionExpositor.where(:exposition_id => exposition.id).map(&:expositor_id)
+      scope.where(:expositor_id => expositors)
+    end
+  end
   index :download_links => [:csv] do
     h2 "Credenciales"
     column "Expositor" do |credential|

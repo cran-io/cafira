@@ -3,6 +3,13 @@ ActiveAdmin.register Catalog do
   actions :all, :except => [:new, :create, :show]
   menu :if  => proc {current_user.type != 'Expositor' && (current_user.type == 'Designer' || current_user.type == 'AdminUser') }
   config.batch_actions = false
+  
+  Exposition.all.each do |exposition|
+    scope(exposition.name) do |scope|
+      expositors = ExpositionExpositor.where(:exposition_id => exposition.id).map(&:expositor_id)
+      scope.where(:expositor_id => expositors)
+    end
+  end
 
   member_action :pending, method: :post do
     resource.update_columns(:state => 3, :comment => nil, :completed => false)
